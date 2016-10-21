@@ -66,7 +66,12 @@ void Server::init(bool is_daemon, bool udp, quint16 port)
         connect(m_socket.tcp, SIGNAL(readyRead()),
                 this, SLOT(readyReadTcp()));
     }
+    // start writing to wav file //
+    // TODO: test wit real wav stream
+    // from client side
     m_wavWriter.startWriter();
+
+    // starrt  logging writer //
     m_logger.startWriter();
 
 }
