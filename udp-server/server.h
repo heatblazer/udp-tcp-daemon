@@ -11,6 +11,19 @@
 
 namespace iz {
 
+struct UdpHdr
+{
+    union {
+        qint16 i;
+        char c[sizeof(qint16)];
+    } port;
+
+    union {
+        qint16 i;
+        char c[sizeof(qint16)];
+    } info;
+};
+
 class Server : public QObject
 {
     Q_OBJECT
@@ -23,6 +36,7 @@ private slots:
     void readyReadUdp();
     void readyReadTcp();
 
+
 private:
     union {
         QUdpSocket* udp;
@@ -31,6 +45,7 @@ private:
 
     Writer      m_wavWriter;
     Writer      m_logger;
+    // remove it after tests //
     Wav         m_test;
 };
 

@@ -1,5 +1,7 @@
 #include "server.h"
 #include "wav-writer.h"
+
+// remove it after tests //
 #include <iostream>
 
 namespace iz {
@@ -58,8 +60,10 @@ void Server::readyReadUdp()
         buff.resize(m_socket.udp->pendingDatagramSize());
         QHostAddress sender;
         quint16 sender_port;
+
         m_socket.udp->readDatagram(buff.data(), buff.size(),
                                &sender, &sender_port);
+
         m_wavWriter.write(buff);
         if(/* something is not OK*/ 0) {
             m_logger.write("Some error message\n");
