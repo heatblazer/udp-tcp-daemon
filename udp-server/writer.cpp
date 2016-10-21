@@ -33,12 +33,12 @@ void Writer::run()
     dblBuff.reserve(100);
     do {
         usleep(50);
+
         m_mutex.lock();
         while (!m_buffer.isEmpty()) {
             dblBuff.enqueue(m_buffer.dequeue());
         }
         m_mutex.unlock();
-      //  QTextStream strm(&m_file);
 
         while (!dblBuff.isEmpty()) {
             QByteArray d = dblBuff.dequeue();
@@ -58,9 +58,7 @@ void Writer::startWriter()
 void Writer::stopWriter()
 {
     m_isRunning = false;
-    wait(400);
+    wait(400); // qt`s variant for joining
 }
-
-
 
 } // iz
