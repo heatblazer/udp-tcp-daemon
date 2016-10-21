@@ -30,12 +30,14 @@ class Server : public QObject
 public:
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
-    void init(bool udp=true, quint16 port=7755);
+    void init(bool is_daemon=false, bool udp=true, quint16 port=7755);
 
 private slots:
     void readyReadUdp();
     void readyReadTcp();
 
+private:
+    void daemonize();
 
 private:
     union {
