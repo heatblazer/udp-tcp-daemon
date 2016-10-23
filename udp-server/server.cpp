@@ -14,12 +14,33 @@
 #include <unistd.h> // cwd
 #include <fcntl.h>
 #include <errno.h>
-#include <signal.h>
 
 // remove it after tests //
 #include <iostream>
 
 namespace iz {
+
+struct sigaction Server::m_signals[32];
+Server* Server::s_instance = nullptr;
+
+// usr_data can be cast to the object that
+// called the sighandler... not useful
+static void testSig(int a, siginfo_t *info ,void* usr_data)
+{
+    FILE* fp = fopen("siglog.log", "a+");
+    if(!fp) {
+        return;
+    } else {
+        char buff[256]={0};
+        sprintf(buff, "args: [%d]\tinfo: signo:[%d]\t\n",
+                a, info->si_signo);
+        fwrite(buff, 256, 256, fp);
+        fflush(fp);
+    }
+    fclose(fp);
+}
+
+
 
 Server::Server(QObject *parent)
     : QObject(parent),
@@ -41,6 +62,9 @@ Server::Server(QObject *parent)
     h.fsize = 12345678;
 
     m_test.writeHeader(&h);
+
+    // pass the class to the static signal handlers
+    Server::s_instance = this;
 }
 
 Server::~Server()
@@ -51,6 +75,7 @@ Server::~Server()
 
 void Server::init(bool is_daemon, bool udp, quint16 port)
 {
+
     if (is_daemon) {
         daemonize();
     }
@@ -73,6 +98,8 @@ void Server::init(bool is_daemon, bool udp, quint16 port)
 
     // starrt  logging writer //
     m_logger.startWriter();
+
+    attachSignalHandler(testSig, SIGTERM);
 
 }
 
@@ -110,7 +137,6 @@ void Server::daemonize()
 {
     umask(0);
     struct rlimit rl;
-    struct sigaction m_sig;
     pid_t m_pid;
 
     if (getrlimit(RLIMIT_NOFILE, &rl) < 0) {
@@ -133,13 +159,10 @@ void Server::daemonize()
         exit(EXIT_FAILURE);
     }
 
-    m_sig.sa_handler = SIG_IGN;
-    sigemptyset(&m_sig.sa_mask);
-    m_sig.sa_flags = 0;
-
-    if(sigaction(SIGHUP, &m_sig, NULL) < 0) {
-        fprintf(stderr, "Can`t ignore SIGHUP\n");
-        exit(3);
+    for(int i=0; i < 32; ++i) {
+        m_signals[i].sa_sigaction = NULL;
+        sigemptyset(&m_signals[i].sa_mask);
+        m_signals[i].sa_flags = 0;
     }
 
     if ((m_pid = fork()) < 0) {
@@ -169,6 +192,24 @@ void Server::daemonize()
     fd2 = dup(0);
     // why does ide says they are unused???
     (void) fd0; (void) fd1; (void) fd2;
+}
+
+void Server::attachSignalHandler(sigHndl hnd, int slot)
+{
+    if (slot < 1 || slot > 31) {
+        return;
+    } else {
+        m_signals[slot].sa_sigaction = hnd;
+        // union - set a handler function!
+
+        if(sigaction(SIGHUP, &m_signals[SIGHUP], NULL) < 0) {
+            fprintf(stderr, "Can`t ignore SIGHUP\n");
+            exit(3);
+        } else {
+            sigaction(slot, &m_signals[slot], NULL);
+        }
+
+    }
 }
 
 } // namespce iz

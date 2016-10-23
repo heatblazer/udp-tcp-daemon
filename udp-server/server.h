@@ -1,15 +1,23 @@
 #ifndef SERVER_H
 #define SERVER_H
+
 // qt //
+#include <QFile>
 #include <QObject>
 #include <QTcpSocket>
 #include <QUdpSocket>
+
+// unix //
+#include <signal.h>
+
 
 // custom //
 #include "writer.h"
 #include "wav-writer.h"
 
 namespace iz {
+
+typedef void (*sigHndl)(int, siginfo_t *,void*);
 
 struct UdpHdr
 {
@@ -28,6 +36,7 @@ class Server : public QObject
 {
     Q_OBJECT
 public:
+
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
     void init(bool is_daemon=false, bool udp=true, quint16 port=7755);
@@ -37,7 +46,8 @@ private slots:
     void readyReadTcp();
 
 private:
-    void daemonize();
+    static void daemonize();
+    static void attachSignalHandler(sigHndl hnd, int slot);
 
 private:
     union {
@@ -49,6 +59,9 @@ private:
     Writer      m_logger;
     // remove it after tests //
     Wav         m_test;
+    static struct sigaction m_signals[32];
+
+    static Server* s_instance; // set after init
 };
 
 } // namespace iz
