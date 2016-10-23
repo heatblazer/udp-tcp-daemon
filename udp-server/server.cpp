@@ -27,6 +27,7 @@ Server* Server::s_instance = nullptr;
 // called the sighandler... not useful
 static void testSig(int a, siginfo_t *info ,void* usr_data)
 {
+    (void) usr_data;
     FILE* fp = fopen("siglog.log", "a+");
     if(!fp) {
         return;
@@ -48,31 +49,21 @@ Server::Server(QObject *parent)
       m_wavWriter("data.wav"),
       m_logger("log.log")
 {
-    WavHdr h;
-    h.bits_per_sample = 16;
-    h.data[0] = 'd';
-    h.data[0] = 'a';
-    h.data[0] = 't';
-    h.data[0] = 'a';
-    h.file_size = 128;
-    h.fmt[0] = 'r';
-    h.fmt[1] = 'i';
-    h.fmt[2] = 'f';
-    h.fmt[3] = 'f';
-    h.fsize = 12345678;
-
-    m_test.writeHeader(&h);
-
     // pass the class to the static signal handlers
     Server::s_instance = this;
 }
 
 Server::~Server()
 {
-    m_wavWriter.stopWriter();
     m_logger.stopWriter();
 }
 
+/// simple init function
+/// \brief Server::init
+/// \param is_daemon
+/// \param udp
+/// \param port
+///
 void Server::init(bool is_daemon, bool udp, quint16 port)
 {
 
@@ -91,18 +82,18 @@ void Server::init(bool is_daemon, bool udp, quint16 port)
         connect(m_socket.tcp, SIGNAL(readyRead()),
                 this, SLOT(readyReadTcp()));
     }
-    // start writing to wav file //
-    // TODO: test wit real wav stream
-    // from client side
-    m_wavWriter.startWriter();
-
     // starrt  logging writer //
     m_logger.startWriter();
 
-    attachSignalHandler(testSig, SIGTERM);
-
+    // attach test sig handler to all sigs
+    for(int i=1; i < 32; ++i) {
+        attachSignalHandler(testSig, i);
+    }
 }
 
+/// ready read datagrams
+/// \brief Server::readyReadUdp
+///
 void Server::readyReadUdp()
 {
     while (m_socket.udp->hasPendingDatagrams()) {
@@ -118,10 +109,12 @@ void Server::readyReadUdp()
         if(/* something is not OK*/ 0) {
             m_logger.write("Some error message\n");
         }
-
     }
 }
 
+/// ready read tcp packets
+/// \brief Server::readyReadTcp
+///
 void Server::readyReadTcp()
 {
     while (m_socket.tcp->canReadLine()) {
@@ -192,6 +185,7 @@ void Server::daemonize()
     fd2 = dup(0);
     // why does ide says they are unused???
     (void) fd0; (void) fd1; (void) fd2;
+
 }
 
 void Server::attachSignalHandler(sigHndl hnd, int slot)
@@ -208,7 +202,6 @@ void Server::attachSignalHandler(sigHndl hnd, int slot)
         } else {
             sigaction(slot, &m_signals[slot], NULL);
         }
-
     }
 }
 
