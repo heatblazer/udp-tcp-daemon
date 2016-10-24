@@ -1,0 +1,4 @@
+#ifndef SAPPLICATION_H
+#define SAPPLICATION_H
+
+#endif // SAPPLICATION_H

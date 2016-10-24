@@ -1,10 +1,8 @@
-#include <QCoreApplication>
-#include "server.h"
+#include "sapplication.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-    iz::Server s;
-    s.init();
-    return a.exec();
+    iz::SApplication app(argc, argv);
+    app.init();
+    return app.exec();
 }
