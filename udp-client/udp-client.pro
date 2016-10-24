@@ -11,7 +11,13 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    client.cpp
+    client.cpp \
+    wav-writer.cpp
 
 HEADERS += \
-    client.h
+    client.h \
+    defs.h \
+    wav-writer.h
+
+DISTFILES += \
+    ../assets/ring-0db.wav

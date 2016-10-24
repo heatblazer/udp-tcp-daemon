@@ -1,7 +1,11 @@
 #ifndef CLIENT_H
 #define CLIENT_H
+// qt //
 #include <QObject>
 #include <QUdpSocket>
+
+//defs //
+#include "defs.h"
 
 namespace iz {
 
@@ -14,6 +18,7 @@ public:
     void init();
 
 public slots:
+
     void transmit();
 private:
 

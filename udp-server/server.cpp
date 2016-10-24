@@ -35,19 +35,18 @@ void Server::init(bool udp, quint16 port)
 
     if (udp) {
         m_socket.udp = new QUdpSocket(this);
-        m_socket.udp->bind(QHostAddress::LocalHost, port);
+        m_socket.udp->bind(QHostAddress::Any, port);
         connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp()));
 
     } else {
         m_socket.tcp = new QTcpSocket(this);
-        m_socket.tcp->bind(QHostAddress::LocalHost, port);
+        m_socket.tcp->bind(QHostAddress::Any, port);
         connect(m_socket.tcp, SIGNAL(readyRead()),
                 this, SLOT(readyReadTcp()));
     }
     // starrt  logging writer //
     m_logger.startWriter();
-
 
 }
 
