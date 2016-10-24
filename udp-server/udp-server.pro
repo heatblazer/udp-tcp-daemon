@@ -13,9 +13,11 @@ TEMPLATE = app
 SOURCES += main.cpp \
     server.cpp \
     writer.cpp \
-    wav-writer.cpp
+    wav-writer.cpp \
+    sapplication.cpp
 
 HEADERS += \
     server.h \
     writer.h \
-    wav-writer.h
+    wav-writer.h \
+    sapplication.h
