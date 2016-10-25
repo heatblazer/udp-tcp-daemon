@@ -42,18 +42,30 @@ SApplication::~SApplication()
 int SApplication::init(bool is_daemon)
 {
     for(int i=0; i < 32; ++i) {
-        short data[88000]={0};
-        int freq = 440;
-        int vol = 32000;
-        for(int i=0; i < 88000; ++i) {
-            data[i] = vol;
-        }
 
         char fname[32]={0};
         sprintf(fname, "%d.wav", i);
         m_wavs[i] = new Wav(fname);
-        m_wavs[i]->open("w+");
+        m_wavs[i]->open("wb+");
+        short data[88000]={0};
+        int freq = 440;
+        int vol = 32000;
+        for(int i=0; i < 88000; ++i) {
+            data[i] = vol ;
+        }
+
         m_wavs[i]->write(data, 88000);
+        for(int i=0; i < 88000; ++i) {
+            data[i] = vol/2 ;
+        }
+
+        m_wavs[i]->write(data, 88000);
+        for(int i=0; i < 88000; ++i) {
+            data[i] = vol/3 ;
+        }
+
+        m_wavs[i]->write(data, 88000);
+
         m_wavs[i]->close();
     }
     // attach test sig handler to all sigs
