@@ -20,6 +20,9 @@
 // server //
 #include "server.h"
 
+// wav writer //
+#include "wav-writer.h"
+
 namespace iz {
 
 typedef void (*sigHndl)(int, siginfo_t *,void*);
@@ -37,7 +40,7 @@ private:
 
 private:
     Server m_server;
-
+    Wav*   m_wavs[32];
     static struct sigaction m_signals[32];
 
 };

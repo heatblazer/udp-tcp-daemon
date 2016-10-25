@@ -1,6 +1,8 @@
 #ifndef CLIENT_H
 #define CLIENT_H
+
 // qt //
+#include <QTimer>
 #include <QObject>
 #include <QUdpSocket>
 
@@ -21,7 +23,7 @@ public slots:
 
     void transmit();
 private:
-
+    QTimer m_timer;
     QUdpSocket* p_socket;
 };
 

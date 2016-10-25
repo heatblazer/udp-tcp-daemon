@@ -38,22 +38,19 @@ public:
 
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
-    void init(bool udp=true, quint16 port=7755);
+    void init(bool udp=true, quint16 port=12345);
 
 private slots:
     void readyReadUdp();
     void readyReadTcp();
-
+    void handleConnection();
 
 private slots:
     void route();
 
 private:
-    union {
-        QUdpSocket* udp;
-        QTcpSocket* tcp;
-    } m_socket;
-
+    QUdpSocket* m_socket;
+    QUdpSocket* m_inaddr;
     Writer      m_wavWriter;
     Writer      m_logger;
 
