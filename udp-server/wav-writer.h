@@ -2,6 +2,8 @@
 #define WAVWRITER_H
 
 // qt //
+#include <QFile>
+#include <QDataStream>
 #include <QThread>
 #include <QMutex>
 
@@ -47,6 +49,21 @@ private:
     FILE*   m_file;
     char m_filename[64];
 };
+
+class QWav : public QFile
+{
+    Q_OBJECT
+public:
+    explicit QWav(const QString& fname, QFile* parent=nullptr);
+    virtual ~QWav();
+    void append(short data[], int size);
+private:
+    void write_hdr();
+private:
+    QString m_filename;
+    QDataStream m_stream;
+};
+
 
 } // iz
 

@@ -32,15 +32,15 @@ class SApplication : public QCoreApplication
 public:
     explicit SApplication(int& argc, char** argv);
     virtual ~SApplication();
-
-    int init(bool is_daemon=false);
-private:
     static void daemonize();
     static void attachSignalHandler(sigHndl hnd, int slot);
+
+    int init();
 
 private:
     Server m_server;
     Wav*   m_wavs[32];
+    QWav*  test_wav;
     static struct sigaction m_signals[32];
 
 };

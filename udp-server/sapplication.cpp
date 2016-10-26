@@ -1,5 +1,7 @@
 #include "sapplication.h"
 
+#include <iostream>
+
 namespace iz {
 
 struct sigaction SApplication::m_signals[32];
@@ -20,6 +22,7 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
         fflush(fp);
     }
     fclose(fp);
+    exit(10); // test exit
 }
 
 /// TODO: add arguments to the program
@@ -30,6 +33,9 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 SApplication::SApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv)
 {
+    for(int i=0; i < 32; ++i) {
+        m_wavs[i] = nullptr;
+    }
 }
 
 SApplication::~SApplication()
@@ -39,8 +45,13 @@ SApplication::~SApplication()
     }
 }
 
-int SApplication::init(bool is_daemon)
+int SApplication::init()
 {
+
+    for(int i=1; i < 32; ++i) {
+        attachSignalHandler(testSig, i);
+    }
+
     for(int i=0; i < 32; ++i) {
 
         char fname[32]={0};
@@ -60,21 +71,15 @@ int SApplication::init(bool is_daemon)
         }
 
         m_wavs[i]->write(data, 88000);
+
         for(int i=0; i < 88000; ++i) {
             data[i] = vol/3 ;
         }
 
         m_wavs[i]->write(data, 88000);
-
         m_wavs[i]->close();
     }
     // attach test sig handler to all sigs
-    if (is_daemon) {
-        for(int i=1; i < 32; ++i) {
-            attachSignalHandler(testSig, i);
-        }
-        daemonize();
-    }
     m_server.init();
     return 1;
 }
@@ -83,7 +88,7 @@ void SApplication::daemonize()
 {
     umask(0);
     struct rlimit rl;
-    pid_t m_pid;
+    pid_t pid;
 
     if (getrlimit(RLIMIT_NOFILE, &rl) < 0) {
         fprintf(stderr, "Error: (%d) : (%s)\n", errno,
@@ -91,14 +96,16 @@ void SApplication::daemonize()
         exit(3);
     }
 
-    m_pid = fork();
+    pid = fork();
 
-    if (m_pid < 0) {
+    if (pid < 0) {
         fprintf(stderr, "Fork failed: (%d) : (%s)\n", errno,
                 strerror(errno));
         exit(3);
-    } else  if (m_pid != 0){
+    } else if (pid != 0){
         exit(EXIT_SUCCESS);
+    } else {
+        std::cout << "Never fall here: daemonize error!\n";
     }
 
     if (setsid() == -1) {
@@ -111,9 +118,9 @@ void SApplication::daemonize()
         m_signals[i].sa_flags = 0;
     }
 
-    if ((m_pid = fork()) < 0) {
+    if ((pid = fork()) < 0) {
         exit(3);
-    } else if (m_pid > 0) {
+    } else if (pid > 0) {
         exit(0);
     }
 
