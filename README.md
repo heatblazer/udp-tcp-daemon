@@ -1,7 +1,7 @@
 udp-server
 ==========
 
-Udp server, for recording to wav files.
+A wav recorder over udp.
 
 
 ## Build
