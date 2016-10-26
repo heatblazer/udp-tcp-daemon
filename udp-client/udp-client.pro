@@ -18,4 +18,5 @@ HEADERS += \
     defs.h
 
 DISTFILES += \
-    ../assets/ring-0db.wav
+    ../assets/ring-0db.wav \
+    ../assets/1.wav
