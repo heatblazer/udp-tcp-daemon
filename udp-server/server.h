@@ -4,12 +4,8 @@
 // qt //
 #include <QFile>
 #include <QObject>
-#include <QTcpSocket>
+#include <QTimer>
 #include <QUdpSocket>
-
-// unix //
-#include <signal.h>
-
 
 // custom //
 #include "writer.h"
@@ -47,12 +43,13 @@ private slots:
 
 private slots:
     void route();
+    void sendHeartbeat();
 
 private:
     QUdpSocket* m_socket;
     Writer      m_logger;
+    QTimer      m_hearbeat;
 
-    static Server* s_instance; // set after init
 };
 
 } // namespace iz
