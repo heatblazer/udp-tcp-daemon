@@ -1,6 +1,11 @@
 #ifndef WAVWRITER_H
 #define WAVWRITER_H
 
+// qt //
+#include <QThread>
+#include <QMutex>
+
+// ansi c //
 #include <stdio.h>
 #include <stdint.h>
 
@@ -26,13 +31,16 @@ struct wav_hdr_t
 
 class Wav
 {
-
+    // don`t treat me like an OBJECT just because I am Qt
 public:
     Wav(const char* fname);
     ~Wav();
+    // in case we migrate to other file api we made these virtual
+    // but provide some defailt implementation
     virtual bool open(const char* perms);
     virtual void close();
     virtual int write(short int data[], int len);
+
 private:
     void write_hdr();
 private:

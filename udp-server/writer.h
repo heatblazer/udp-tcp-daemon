@@ -13,8 +13,9 @@ class Writer : public QThread
 public:
     explicit Writer(const QString& fname, QThread* parent=nullptr);
     virtual ~Writer();
-    void write(const QByteArray& data);
-    void run() override;
+    // we may need to extend this class later
+    virtual void write(const QByteArray& data);
+    virtual void run();
 
     void startWriter();
     void stopWriter();

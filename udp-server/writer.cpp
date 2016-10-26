@@ -32,7 +32,7 @@ void Writer::run()
     QQueue<QByteArray> dblBuff;
     dblBuff.reserve(100);
     do {
-        usleep(50);
+        usleep(200);
 
         m_mutex.lock();
         while (!m_buffer.isEmpty()) {
@@ -58,7 +58,7 @@ void Writer::startWriter()
 void Writer::stopWriter()
 {
     m_isRunning = false;
-    wait(400); // qt`s variant for joining
+    wait(1000); // qt`s variant for joining
 }
 
 } // iz
