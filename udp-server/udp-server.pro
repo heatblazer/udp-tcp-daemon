@@ -14,10 +14,12 @@ SOURCES += main.cpp \
     server.cpp \
     writer.cpp \
     wav-writer.cpp \
-    sapplication.cpp
+    sapplication.cpp \
+    daemon.cpp
 
 HEADERS += \
     server.h \
     writer.h \
     wav-writer.h \
-    sapplication.h
+    sapplication.h \
+    daemon.h
