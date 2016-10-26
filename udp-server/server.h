@@ -50,8 +50,6 @@ private slots:
 
 private:
     QUdpSocket* m_socket;
-    QUdpSocket* m_inaddr;
-    Writer      m_wavWriter;
     Writer      m_logger;
 
     static Server* s_instance; // set after init
