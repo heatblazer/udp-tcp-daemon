@@ -34,7 +34,6 @@ int SApplication::init()
         m_wavs[i] = new Wav(fname);
         m_wavs[i]->open("wb+");
         short data[88000]={0};
-        int freq = 440;
         int vol = 32000;
         for(int i=0; i < 88000; ++i) {
             data[i] = vol ;
