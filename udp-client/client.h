@@ -25,6 +25,7 @@ public slots:
 private:
     QTimer m_timer;
     QUdpSocket* p_socket;
+    char    m_data[512];
 };
 
 }

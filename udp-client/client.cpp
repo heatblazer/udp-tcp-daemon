@@ -22,13 +22,21 @@ void Client::init()
     if (p_socket->state() == QUdpSocket::ConnectedState) {
         m_timer.start();
     }
+
+    FILE* fp = fopen("assets/1.wav", "rb");
+    if (!fp) {
+        std::cout << "Error opening wav file!" << std::endl;
+    } else {
+        fgets(m_data, 512, fp);
+    }
+    fclose(fp);
 }
 
 void Client::transmit()
 {
     std::cout << "Transmiting...\n";
-    QByteArray data("test data");
-    p_socket->write(data);
+
+    p_socket->write(m_data);
 
 }
 

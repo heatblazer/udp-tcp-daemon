@@ -31,7 +31,7 @@ struct wav_hdr_t
 
 class Wav
 {
-    // don`t treat me like an OBJECT just because I am Qt
+
 public:
     Wav(const char* fname);
     ~Wav();
