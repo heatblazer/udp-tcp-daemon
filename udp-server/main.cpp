@@ -21,6 +21,9 @@ static int getOpts(char* str)
 
 int main(int argc, char *argv[])
 {
+    // if no args - run in lab mode to test
+    // and debug , later we`ll be sure
+    // the >1 arg is provided
     if (argc > 1) {
         int opts = 0;
         for(int i=0; i < argc; ++i) {
@@ -35,6 +38,7 @@ int main(int argc, char *argv[])
            }
         }
     }
+
     iz::SApplication app(argc, argv);
     app.init();
     return app.exec();
