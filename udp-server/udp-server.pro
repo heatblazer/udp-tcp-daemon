@@ -22,7 +22,8 @@ HEADERS += \
     writer.h \
     wav-writer.h \
     sapplication.h \
-    daemon.h
+    daemon.h \
+    defs.h
 
 
 QMAKE_CFLAGS += \
