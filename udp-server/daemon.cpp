@@ -77,8 +77,10 @@ void daemonize()
     }
 
     char pwd[512]={0};
+    // get current dir
     getcwd(pwd, sizeof(pwd)/sizeof(pwd[0]));
 
+    // set to current dir
     if (chdir(pwd) < 0) {
         exit(3);
     }
