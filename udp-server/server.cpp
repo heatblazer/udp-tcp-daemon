@@ -4,13 +4,23 @@
 // remove it after tests //
 #include <iostream>
 
+// defs //
+#include "defs.h"
+
 namespace iz {
 
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket(nullptr),
-      m_logger("log.log")
+      m_hearSocket(nullptr),
+      m_logger("recorder.log"),
+      m_senderHost("127.0.0.1"),
+      m_senderPort(1234)
 {
+    // explicitly null all
+    for(int i=0; i < 32; ++i) {
+        m_wavs[i] = nullptr;
+    }
     // pass the class to the static signal handlers
     m_logger.setObjectName("logger thread");
     m_logger.startWriter();
@@ -34,8 +44,15 @@ Server::~Server()
 void Server::init(bool udp, quint16 port)
 {
 
+    for(int i=0; i < 32; ++i) {
+        char fname[16]={0};
+        sprintf(fname, "%d.wav", i+1);
+        m_wavs[i] = new Wav(fname);
+        m_wavs[i]->open("wb");
+    }
     if (udp) {
         m_socket = new QUdpSocket(this);
+        m_hearSocket = new QUdpSocket(this);
 
         bool bres = m_socket->bind(port, QUdpSocket::ShareAddress);
 
@@ -66,25 +83,25 @@ void Server::init(bool udp, quint16 port)
 ///
 void Server::readyReadUdp()
 {
-    std::cout << "Ready read UDP!" << std::endl;
-
     while (m_socket->hasPendingDatagrams()) {
 
         QByteArray buff;
+        wav_hdr_t* hdr = NULL;
+
         buff.resize(m_socket->pendingDatagramSize());
-        QHostAddress sender;
-        quint16 sender_port;
 
         qint64 read = m_socket->readDatagram(buff.data(), buff.size(),
-                               &sender, &sender_port);
+                               &m_senderHost, &m_senderPort);
+
+        hdr = (wav_hdr_t*) buff.data();
+        // TODO
         if (read > 0) {
             // we have something
             // organize it and
             // send it to the writers
-        }
 
-        if(/* something is not OK*/ 0) {
-            m_logger.write("Some error message\n");
+        } else {
+            m_logger.write("Missed an UDP\n");
         }
     }
 }
@@ -115,8 +132,15 @@ void Server::route()
 ///
 void Server::sendHeartbeat()
 {
-    // send instant datagram to host
-    // each 1 second to eport we are alive
+    m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
+}
+
+void Server::writeToChannel(short data[], int len, int chan)
+{
+    if (chan < 0 || chan > 31) {
+        return ;
+    }
+    m_wavs[chan]->write(data, len);
 }
 
 } // namespce iz

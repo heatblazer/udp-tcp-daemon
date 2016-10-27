@@ -13,20 +13,6 @@
 
 namespace iz {
 
-
-struct UdpHdr
-{
-    union {
-        qint16 i;
-        char c[sizeof(qint16)];
-    } port;
-
-    union {
-        qint16 i;
-        char c[sizeof(qint16)];
-    } info;
-};
-
 class Server : public QObject
 {
     Q_OBJECT
@@ -44,11 +30,17 @@ private slots:
 private slots:
     void route();
     void sendHeartbeat();
+    void writeToChannel(short data[], int len, int chan);
 
 private:
     QUdpSocket* m_socket;
+    QUdpSocket* m_hearSocket;
     Writer      m_logger;
-    QTimer      m_hearbeat;
+    QTimer      m_heartbeat;
+    QHostAddress m_senderHost;
+    quint16      m_senderPort;
+    Wav*   m_wavs[32]; // channels
+
 
 };
 
