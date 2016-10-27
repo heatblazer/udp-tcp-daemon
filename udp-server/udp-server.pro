@@ -47,6 +47,3 @@ QMAKE_INSTALL_PROGRAM = install -m 4755 -p
 
 target.path = /usr/bin
 INSTALLS += target
-
-DISTFILES += \
-    ../README.md
