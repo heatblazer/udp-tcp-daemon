@@ -13,20 +13,15 @@ namespace iz {
 SApplication::SApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv)
 {
-    for(int i=0; i < 32; ++i) {
-        m_wavs[i] = nullptr;
-    }
 }
 
 SApplication::~SApplication()
 {
-    for(int i=0; i < 31; ++i) {
-        m_wavs[i]->close();
-    }
 }
 
 int SApplication::init()
 {
+#if 0 // hinting
     for(int i=0; i < 32; ++i) {
 
         char fname[32]={0};
@@ -53,7 +48,7 @@ int SApplication::init()
         m_wavs[i]->write(data, 88000);
         m_wavs[i]->close();
     }
-    // attach test sig handler to all sigs
+#endif
     m_server.init();
     return 1;
 }

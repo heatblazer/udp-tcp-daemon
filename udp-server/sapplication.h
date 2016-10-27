@@ -22,7 +22,6 @@ public:
 
 private:
     Server m_server;
-    Wav*   m_wavs[32]; // channels
 };
 
 } // iz
