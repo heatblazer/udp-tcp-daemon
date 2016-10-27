@@ -25,17 +25,44 @@ RecConfig::RecConfig(const QString &fname)
         QByteArray line;
         do {
             line = m_file.file.readLine().trimmed();
+            // skip inproper lines
             if (!line.contains(":")) {
                 continue;
             }
+            // this is safety check because toInt
+            // may fail if the element is not parsable
+            int param ;
+            bool res ;
             if (line.contains("SAMPLES_PER_FRAME")) {
-                m_attribs[SAMPLES_PER_FRAME] = line.split(':').at(1).toInt();
+                param = line.split(':').at(1).toInt(&res);
+                if (res) {
+                    m_attribs[SAMPLES_PER_FRAME] = param;
+                } else {
+                    m_attribs[SAMPLES_PER_FRAME] = -1;
+                }
             } else if (line.contains("BITS_PER_SEC")) {
-                m_attribs[BITS_PER_SEC] = line.split(':').at(1).toInt();
+                param = line.split(':').at(1).toInt(&res);
+                if (res) {
+                    m_attribs[BITS_PER_SEC] = param;
+                } else {
+                    m_attribs[BITS_PER_SEC] = -1;
+                }
             } else if (line.contains("AUD_FORMAT")) {
-                m_attribs[AUD_FORMAT] = line.split(':').at(1).toInt();
+                param = line.split(':').at(1).toInt(&res);
+                if (res) {
+                    m_attribs[AUD_FORMAT] = param;
+                } else {
+                    m_attribs[AUD_FORMAT] = -1;
+                }
             } else if (line.contains("CHANNELS")) {
-                m_attribs[CHANNELS] = line.split(':').at(1).toInt();
+                param = line.split(':').at(1).toInt(&res);
+                if (res) {
+                    m_attribs[CHANNELS] = param;
+                } else {
+                    m_attribs[CHANNELS] = -1;
+                }
+            } else {
+                // nothing
             }
         } while (!line.isEmpty());
 
