@@ -86,14 +86,16 @@ void Server::readyReadUdp()
     while (m_socket->hasPendingDatagrams()) {
 
         QByteArray buff;
-        wav_hdr_t* hdr = NULL;
 
         buff.resize(m_socket->pendingDatagramSize());
 
         qint64 read = m_socket->readDatagram(buff.data(), buff.size(),
                                &m_senderHost, &m_senderPort);
 
-        hdr = (wav_hdr_t*) buff.data();
+        // just a test section to view the contents of the
+        // packet
+        wav_hdr_t* hdr = (wav_hdr_t*) buff.data();
+        (void) hdr;
         // TODO
         if (read > 0) {
             // we have something

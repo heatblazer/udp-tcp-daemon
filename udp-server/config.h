@@ -1,13 +1,14 @@
 #ifndef CONFIG_H
 #define CONFIG_H
+
 // qt stuff //
 #include <QFile>
-#include <QXmlStreamReader>
-#include <QXmlStreamWriter>
 
 namespace iz {
 
 // simple cfg file reader for now
+// no xml walkers and complex stuff,
+// for fast editing a simple .cfg file
 class RecConfig
 {
     //int spf, int bps, int rifflen, int fmtlen, short audfmt, short chans

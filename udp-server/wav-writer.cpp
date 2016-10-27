@@ -3,8 +3,6 @@
 #include <math.h>
 #include <string.h> // strcpy
 
-#define WAVFILE_SAMPLES_PER_SECOND 44100
-
 namespace iz {
 
 Wav::Wav(const char *fname)

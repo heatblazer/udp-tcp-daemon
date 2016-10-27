@@ -6,7 +6,7 @@
 
 namespace iz {
 RecConfig::RecConfig(const QString &fname)
-    : m_file{(fname)}
+    : m_file{{fname},{fname}} // C++11 only!!!
 {
     m_file.file.setFileName(m_file.name);
 

@@ -1,16 +1,12 @@
 #ifndef SAPPLICATION_H
 #define SAPPLICATION_H
+
 // parent //
 #include <QCoreApplication>
 
-
-// cfg //
+// application stuff //
 #include "config.h"
-
-// server //
 #include "server.h"
-
-// wav writer //
 #include "wav-writer.h"
 
 namespace iz {
