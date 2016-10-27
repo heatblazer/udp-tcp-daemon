@@ -48,11 +48,9 @@ int Wav::write(short data[], int len)
     return (int)written;
 }
 
-void Wav::write_hdr()
+void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, short chans)
 {
     struct wav_hdr_t hdr;
-    int samples_per_second = WAVFILE_SAMPLES_PER_SECOND;
-    int bits_per_sample = 16;
     hdr.riff_tag[0] = 'R';
     hdr.riff_tag[1] = 'I';
     hdr.riff_tag[2] = 'F';
@@ -73,14 +71,14 @@ void Wav::write_hdr()
     hdr.data_tag[2] = 't';
     hdr.data_tag[3] = 'a';
 
-    hdr.riff_len = 0;
-    hdr.fmt_len = 16;
-    hdr.audio_format = 1;
-    hdr.num_channels = 1;
-    hdr.sample_rate = samples_per_second;
-    hdr.byte_rate = samples_per_second * (bits_per_sample/8);
-    hdr.block_align = bits_per_sample / 8;
-    hdr.bits_per_sample = bits_per_sample;
+    hdr.riff_len = rifflen;
+    hdr.fmt_len = fmtlen;
+    hdr.audio_format = audfmt;
+    hdr.num_channels = chans;
+    hdr.sample_rate = spf;
+    hdr.byte_rate = spf * (bps/8);
+    hdr.block_align = bps / 8;
+    hdr.bits_per_sample = bps;
     hdr.data_len = 0;
 
     fwrite(&hdr, sizeof(hdr), 1, m_file);

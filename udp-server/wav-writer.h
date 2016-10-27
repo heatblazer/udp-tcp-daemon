@@ -11,25 +11,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
+// defs //
+#include "defs.h"
+
 namespace iz {
-
-struct wav_hdr_t
-{
-    char riff_tag[4];
-    int  riff_len;
-    char wav_tag[4];
-    char fmt_tag[4];
-    int fmt_len;
-    short audio_format;
-    short num_channels;
-    int sample_rate;
-    int byte_rate;
-    short block_align;
-    short bits_per_sample;
-    char data_tag[4];
-    int data_len;
-};
-
 
 class Wav
 {
@@ -44,7 +29,8 @@ public:
     virtual int write(short int data[], int len);
 
 private:
-    void write_hdr();
+    void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
+
 private:
     FILE*   m_file;
     char m_filename[64];
