@@ -23,6 +23,8 @@ bool Wav::open(const char *perms)
     if (m_file == NULL) {
         return false;
     }
+
+    // TODO use the config file
     write_hdr();
     return true;
 }
@@ -36,6 +38,8 @@ void Wav::close()
     fseek(m_file, sizeof(struct wav_hdr_t) - sizeof(int), SEEK_SET);
     fwrite(&data_len, sizeof(data_len), 1, m_file);
 
+    // this writes riff len to the position in
+    // the header
     int riff_len = file_len - 8;
     fseek(m_file, 4, SEEK_SET);
     fwrite(&riff_len, sizeof(riff_len), 1, m_file);

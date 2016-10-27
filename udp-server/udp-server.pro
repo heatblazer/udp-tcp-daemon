@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     writer.cpp \
     wav-writer.cpp \
     sapplication.cpp \
-    daemon.cpp
+    daemon.cpp \
+    config.cpp
 
 HEADERS += \
     server.h \
@@ -23,7 +24,8 @@ HEADERS += \
     wav-writer.h \
     sapplication.h \
     daemon.h \
-    defs.h
+    defs.h \
+    config.h
 
 
 QMAKE_CFLAGS += \

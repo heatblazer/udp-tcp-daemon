@@ -11,7 +11,8 @@ namespace iz {
 /// \param argv
 ///
 SApplication::SApplication(int &argc, char **argv)
-    : QCoreApplication(argc, argv)
+    : QCoreApplication(argc, argv),
+      m_config("recorder.cfg")
 {
 }
 

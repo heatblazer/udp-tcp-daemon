@@ -18,6 +18,7 @@
 
 
 namespace iz {
+
 typedef void (*sigHndl)(int, siginfo_t *,void*);
 
 extern void daemonize();
