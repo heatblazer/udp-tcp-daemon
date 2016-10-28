@@ -14,7 +14,6 @@ namespace iz {
 /// a minimal and portable
 /// wav file writer library
 /// \brief The Wav class
-///
 class Wav
 {
 
@@ -29,6 +28,16 @@ public:
     virtual int write(short int data[], int len);
 
 protected:
+    /// using UNIX fwrite
+    /// \brief write_hdr
+    /// writes a proper wav header, has
+    /// set default parameters
+    /// \param spf - samples per frm
+    /// \param bps - bits per second
+    /// \param rifflen - riff length
+    /// \param fmtlen - format length
+    /// \param audfmt - audo format
+    /// \param chans - channels count
     virtual void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
 
 private:
