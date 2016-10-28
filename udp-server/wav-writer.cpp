@@ -45,9 +45,11 @@ bool Wav::open(const char *perms)
 void Wav::close()
 {
     int file_len = ftell(m_file);
+
     // get the len from the offset
     int data_len = file_len - sizeof(struct wav_hdr_t);
-    // move the fp to that position
+
+    // move the fp to that position of the data len
     fseek(m_file, sizeof(struct wav_hdr_t) - sizeof(int), SEEK_SET);
     fwrite(&data_len, sizeof(data_len), 1, m_file);
 

@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QObject>
 #include <QTimer>
+#include <QTcpSocket>
 #include <QUdpSocket>
 
 // custom //
@@ -33,7 +34,10 @@ private slots:
     void writeToChannel(short data[], int len, int chan);
 
 private:
-    QUdpSocket* m_socket;
+    union {
+        QUdpSocket* udp;
+        QTcpSocket* tcp;
+    } m_socket;
     QUdpSocket* m_hearSocket;
     Writer      m_logger;
     QTimer      m_heartbeat;

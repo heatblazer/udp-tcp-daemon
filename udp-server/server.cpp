@@ -13,7 +13,7 @@ RecConfig* Server::s_conf = new RecConfig("recorder.cfg");
 
 Server::Server(QObject *parent)
     : QObject(parent),
-      m_socket(nullptr),
+      m_socket({nullptr}),
       m_hearSocket(nullptr),
       m_logger("recorder.log"),
       m_senderHost("127.0.0.1"),
@@ -53,12 +53,12 @@ void Server::init(bool udp, quint16 port)
         m_wavs[i]->open("wb");
     }
     if (udp) {
-        m_socket = new QUdpSocket(this);
+        m_socket.udp = new QUdpSocket(this);
         m_hearSocket = new QUdpSocket(this);
 
-        bool bres = m_socket->bind(port, QUdpSocket::ShareAddress);
+        bool bres = m_socket.udp->bind(port, QUdpSocket::ShareAddress);
 
-        connect(m_socket, SIGNAL(readyRead()),
+        connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp())/*, Qt::DirectConnection*/);
 
         char msg[64]={0};
@@ -74,7 +74,10 @@ void Server::init(bool udp, quint16 port)
             m_logger.write(msg);
         }
     } else {
-        // TODO: implement the TCP logic
+        m_socket.tcp = new QTcpSocket(this);
+        m_socket.tcp->connectToHost(QHostAddress::LocalHost, port);
+        connect(m_socket.tcp, SIGNAL(connected()),
+                this, SLOT(handleConnection()));
     }
     // starrt  logging writer //
 
@@ -85,13 +88,13 @@ void Server::init(bool udp, quint16 port)
 ///
 void Server::readyReadUdp()
 {
-    while (m_socket->hasPendingDatagrams()) {
+    while (m_socket.udp->hasPendingDatagrams()) {
 
         QByteArray buff;
 
-        buff.resize(m_socket->pendingDatagramSize());
+        buff.resize(m_socket.udp->pendingDatagramSize());
 
-        qint64 read = m_socket->readDatagram(buff.data(), buff.size(),
+        qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                &m_senderHost, &m_senderPort);
 
         // just a test section to view the contents of the
@@ -122,6 +125,9 @@ void Server::readyReadTcp()
 ///
 void Server::handleConnection()
 {
+    while (m_socket.tcp->canReadLine()) {
+        // do something here
+    }
 }
 
 /// stub
