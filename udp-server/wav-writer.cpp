@@ -6,7 +6,15 @@
 namespace iz {
 
 Wav::Wav(const char *fname)
-    : m_file(NULL)
+    : m_file(NULL),
+      m_conf(NULL)
+{
+    strcpy(m_filename, fname);
+}
+
+Wav::Wav(const char *fname, RecConfig *cfg)
+    : m_file(NULL),
+      m_conf(cfg)
 {
     strcpy(m_filename, fname);
 }
@@ -22,8 +30,15 @@ bool Wav::open(const char *perms)
         return false;
     }
 
-    // TODO use the config file
-    write_hdr();
+    if (m_conf == NULL) {
+        write_hdr();
+    } else {
+        write_hdr(m_conf->getAttribute(RecConfig::SAMPLES_PER_FRAME),
+                  m_conf->getAttribute(RecConfig::BITS_PER_SEC),
+                  0, 0,
+                  m_conf->getAttribute(RecConfig::AUD_FORMAT),
+                  m_conf->getAttribute(RecConfig::CHANNELS));
+    }
     return true;
 }
 
