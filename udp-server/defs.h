@@ -3,7 +3,7 @@
 
 /// the default wav header
 /// \brief The wav_hdr_t struct
-///
+
 struct wav_hdr_t
 {
     char riff_tag[4];
