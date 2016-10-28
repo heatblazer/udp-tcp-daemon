@@ -1,7 +1,8 @@
 TEMPLATE = subdirs
 
 DISTFILES += assets/1.wav \
-        README.md
+        README.md \
+        packet_parser.c
 
 SUBDIRS += \
     udp-server \

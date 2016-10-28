@@ -1,11 +1,10 @@
-#include "server.h"
-#include "wav-writer.h"
-
 // remove it after tests //
 #include <iostream>
 
-// defs //
 #include "defs.h"
+#include "server.h"
+#include "wav-writer.h"
+
 
 namespace iz {
 
