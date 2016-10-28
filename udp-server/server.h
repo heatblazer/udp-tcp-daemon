@@ -21,7 +21,7 @@ public:
 
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
-    void init(bool udp=true, quint16 port=12345);
+    void init(bool udp=true, quint16 port=1234);
 
 private slots:
     void readyReadUdp();

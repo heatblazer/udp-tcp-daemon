@@ -1,6 +1,9 @@
 // remove it after tests //
 #include <iostream>
 
+// unix time //
+#include <time.h>
+
 #include "defs.h"
 #include "server.h"
 #include "wav-writer.h"
@@ -62,9 +65,21 @@ void Server::init(bool udp, quint16 port)
 
         char msg[64]={0};
         if (bres) {
+            time_t current_time;
+            struct tm * time_info;
+            char timeString[9];  // space for "HH:MM:SS\0"
+
+            time(&current_time);
+            time_info = localtime(&current_time);
+
+            strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+            char msg2[64] ={0};
+            sprintf(msg2, "Server started at: (%s)\n", timeString);
+
             std::cout << "Bind OK!" << std::endl;
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
             m_logger.write(msg);
+            m_logger.write(msg2);
             m_heartbeat.start();
 
         } else {
@@ -98,15 +113,47 @@ void Server::readyReadUdp()
 
         // just a test section to view the contents of the
         // packet
-        wav_hdr_t* hdr = (wav_hdr_t*) buff.data();
-        (void) hdr;
-        // TODO
+
+        // counter!!!
+        int32_t* b = (int32_t*)buff.data();
+        static QByteArray pcm;
+
         if (read > 0) {
+            static int32_t pktcnt = *b;
+
+            // one shot lost for synching
+            if (*b != ++pktcnt) {
+                time_t current_time;
+                struct tm * time_info;
+                char timeString[9];  // space for "HH:MM:SS\0"
+
+                time(&current_time);
+                time_info = localtime(&current_time);
+
+                strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+
+                char msg[64]={0};
+                sprintf(msg, "Packet lost:(%d) at: [%s]\n", *b, timeString);
+
+                m_logger.write(QByteArray(msg));
+                pktcnt = *b;
+            }
             // we have something
             // organize it and
             // send it to the writers
+            static bool write = true;
+            static int cnt = 0;
+            if (cnt++ > 200 && write) {
+                write = false;
+                m_wavs[4]->write((short*)pcm.data(), pcm.size());
+                m_wavs[4]->close();
+            }
+            if (write) {
+                pcm.append((char*)b, 196);
+            }
 
         } else {
+            std::cout << "Missed an UDP" << std::endl;
             m_logger.write("Missed an UDP\n");
         }
     }
@@ -151,5 +198,7 @@ void Server::writeToChannel(short data[], int len, int chan)
     }
     m_wavs[chan]->write(data, len);
 }
+
+
 
 } // namespce iz
