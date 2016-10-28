@@ -1,6 +1,6 @@
 #include "wav-writer.h"
 
-#include <math.h>
+#include <math.h> // sine waves - test only
 #include <string.h> // strcpy
 
 namespace iz {

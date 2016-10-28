@@ -24,6 +24,7 @@ RecConfig::RecConfig(const QString &fname)
         // read the fields
         QByteArray line;
         do {
+            // good I don`t have to write all string stuff in C ...
             line = m_file.file.readLine().trimmed();
             // skip inproper lines
             if (!line.contains(":")) {
@@ -65,7 +66,6 @@ RecConfig::RecConfig(const QString &fname)
                 // nothing
             }
         } while (!line.isEmpty());
-
     }
 }
 
