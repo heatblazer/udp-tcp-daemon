@@ -9,6 +9,8 @@
 
 namespace iz {
 
+RecConfig* Server::s_conf = new RecConfig("recorder.cfg");
+
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket(nullptr),
@@ -47,7 +49,7 @@ void Server::init(bool udp, quint16 port)
     for(int i=0; i < 32; ++i) {
         char fname[16]={0};
         sprintf(fname, "%d.wav", i+1);
-        m_wavs[i] = new Wav(fname);
+        m_wavs[i] = new Wav(fname, s_conf);
         m_wavs[i]->open("wb");
     }
     if (udp) {
