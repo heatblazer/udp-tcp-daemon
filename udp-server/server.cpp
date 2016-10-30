@@ -10,6 +10,17 @@
 
 
 namespace iz {
+#define UDP_SIZE (196)
+union udp_data
+{
+    struct {
+        int32_t counter;
+        char null_bytes[32];
+        char data[UDP_SIZE];
+    } udp;
+    char c[196];
+};
+
 
 RecConfig* Server::s_conf = new RecConfig("recorder.cfg");
 
@@ -121,7 +132,7 @@ void Server::readyReadUdp()
         if (read > 0) {
             static int32_t pktcnt = *b;
 
-            // one shot lost for synching
+            // one time lost for synching
             if (*b != ++pktcnt) {
                 time_t current_time;
                 struct tm * time_info;
@@ -138,10 +149,11 @@ void Server::readyReadUdp()
                 m_logger.write(QByteArray(msg));
                 pktcnt = *b;
             }
+////////////////// remove after test //////////////////
             // we have something
             // organize it and
             // send it to the writers
-            static bool write = true;
+                static bool write = true;
             static int cnt = 0;
             if (cnt++ > 200 && write) {
                 write = false;
@@ -152,7 +164,7 @@ void Server::readyReadUdp()
                 pcm.append((char*)b, 196);
             }
 
-        } else {
+         } else {
             std::cout << "Missed an UDP" << std::endl;
             m_logger.write("Missed an UDP\n");
         }
@@ -188,7 +200,10 @@ void Server::route()
 ///
 void Server::sendHeartbeat()
 {
+#ifndef TEST
+#else
     m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
+#endif
 }
 
 void Server::writeToChannel(short data[], int len, int chan)

@@ -1,6 +1,24 @@
 #include "sapplication.h"
 #include "daemon.h"
 
+#define WAV_TEST 1
+
+
+#ifdef WAV_TEST
+int main(int argc, char *argv[])
+{
+    (void) argc;
+    (void) argv;
+    // configure is buggy parameters
+    iz::RecConfig conf("recorder.cfg");
+    iz::Wav w("test.wav");
+    w.open("wb");
+    short garbage[64*1024]; // not initialzed on purpose
+    w.write(garbage, 64 * 1024);
+    w.close();
+    return 0;
+}
+#else
 /// for now one option for
 /// daemonizing
 /// \brief getOpts
@@ -43,4 +61,4 @@ int main(int argc, char *argv[])
     app.init();
     return app.exec();
 }
-
+#endif

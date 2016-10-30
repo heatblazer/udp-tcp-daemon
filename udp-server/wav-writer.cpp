@@ -1,10 +1,26 @@
 #include "wav-writer.h"
 
-#include <math.h> // sine waves - test only
 #include <string.h> // strcpy
+#include <fcntl.h>
+#include <unistd.h>
 
 namespace iz {
+#ifdef UNUSED
+static int open_file(const char *__file, int __oflag)
+{
+    return open(__file, __oflag);
+}
 
+static int write_file(int fd, void* data, int count)
+{
+    return write(fd, data, count);
+}
+
+static void close_file(int fd)
+{
+    close(fd);
+}
+#endif
 Wav::Wav(const char *fname)
     : m_file(NULL),
       m_conf(NULL)
@@ -30,6 +46,7 @@ bool Wav::open(const char *perms)
         return false;
     }
 
+
     if (m_conf == NULL) {
         write_hdr();
     } else {
@@ -52,13 +69,13 @@ void Wav::close()
     // move the fp to that position of the data len
     fseek(m_file, sizeof(struct wav_hdr_t) - sizeof(int), SEEK_SET);
     fwrite(&data_len, sizeof(data_len), 1, m_file);
-
     // this writes riff len to the position in
     // the header
     int riff_len = file_len - 8;
     fseek(m_file, 4, SEEK_SET);
     fwrite(&riff_len, sizeof(riff_len), 1, m_file);
     fclose(m_file);
+
 }
 
 int Wav::write(short data[], int len)
@@ -99,9 +116,9 @@ void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, sho
     hdr.block_align = bps / 8;
     hdr.bits_per_sample = bps;
     hdr.data_len = 0;
-
     fwrite(&hdr, sizeof(hdr), 1, m_file);
     fflush(m_file);
+
 }
 
 }  // iz
