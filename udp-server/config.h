@@ -16,6 +16,7 @@ public:
     enum Params {
         SAMPLES_PER_FRAME,
         BITS_PER_SEC,
+        RIFF_LEN,
         AUD_FORMAT,
         CHANNELS,
         SIZE

@@ -15,6 +15,7 @@ RecConfig::RecConfig(const QString &fname)
         QTextStream strm(&m_file.file);
         strm << "SAMPLES_PER_FRAME : 44100" << endl;
         strm << "BITS_PER_SEC : 16" << endl;
+        strm << "RIFF_LEN : 16" << endl;
         strm << "AUD_FORMAT : 1" << endl;
         strm << "CHANNELS : 1" << endl;
         m_file.file.flush();
@@ -47,6 +48,13 @@ RecConfig::RecConfig(const QString &fname)
                     m_attribs[BITS_PER_SEC] = param;
                 } else {
                     m_attribs[BITS_PER_SEC] = -1;
+                }
+            } else if (line.contains("RIFF_LEN")) {
+                param = line.split(':').at(1).toInt(&res);
+                if (res) {
+                    m_attribs[RIFF_LEN] = param;
+                } else {
+                    m_attribs[RIFF_LEN] = -1;
                 }
             } else if (line.contains("AUD_FORMAT")) {
                 param = line.split(':').at(1).toInt(&res);
