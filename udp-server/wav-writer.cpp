@@ -82,6 +82,12 @@ Wav::~Wav()
 {
 }
 
+/// open a wav file
+/// and write a wav header on it
+/// \brief Wav::open
+/// \param perms
+/// \return
+///
 bool Wav::open(const char *perms)
 {
     m_file = fopen(m_filename, perms);
@@ -89,10 +95,10 @@ bool Wav::open(const char *perms)
         return false;
     }
 
-
     if (m_conf == NULL) {
-        write_hdr();
+        write_hdr(); // use defaults
     } else {
+        // use from config
         write_hdr(m_conf->getAttribute(RecConfig::SAMPLES_PER_FRAME),
                   m_conf->getAttribute(RecConfig::BITS_PER_SEC),
                   0,
@@ -103,6 +109,11 @@ bool Wav::open(const char *perms)
     return true;
 }
 
+/// close the file and write
+/// needed info to the header
+/// as length and riff len
+/// \brief Wav::close
+///
 void Wav::close()
 {
     int file_len = ftell(m_file);
@@ -122,12 +133,28 @@ void Wav::close()
 
 }
 
+/// write data to wav file
+/// \brief Wav::write
+/// \param data - samples
+/// \param len - size
+/// \return  bytes writen if needed
+///
 int Wav::write(short data[], int len)
 {
     size_t written = fwrite(data, sizeof(short), len, m_file);
     return (int)written;
 }
 
+/// write the needed header to
+/// a wav file
+/// \brief Wav::write_hdr
+/// \param spf
+/// \param bps
+/// \param rifflen
+/// \param fmtlen
+/// \param audfmt
+/// \param chans
+///
 void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, short chans)
 {
     struct wav_hdr_t hdr;
