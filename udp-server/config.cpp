@@ -5,6 +5,12 @@
 
 
 namespace iz {
+
+/// generate a config file if not present
+/// or open an existing one
+/// \brief RecConfig::RecConfig
+/// \param fname
+///
 RecConfig::RecConfig(const QString &fname)
     : m_file{{fname},{fname}} // C++11 only!!!
 {
@@ -79,9 +85,14 @@ RecConfig::RecConfig(const QString &fname)
 
 RecConfig::~RecConfig()
 {
-
 }
 
+/// get mapped attribute from the
+/// configuration
+/// \brief RecConfig::getAttribute
+/// \param atrib - attrib number
+/// \return  - value
+///
 int RecConfig::getAttribute(RecConfig::Params atrib)
 {
     if (atrib < 0 || atrib > Params::SIZE) {
