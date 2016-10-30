@@ -147,12 +147,8 @@ void Server::readyReadUdp()
         qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                &m_senderHost, &m_senderPort);
 
-        // just a test section to view the contents of the
-        // packet
-
         // counter!!!
         int32_t* b = (int32_t*)buff.data();
-        static QByteArray pcm;
 
         if (read > 0) {
             static int32_t pktcnt = *b;
@@ -173,20 +169,6 @@ void Server::readyReadUdp()
 
                 m_logger.write(QByteArray(msg));
                 pktcnt = *b;
-            }
-////////////////// remove after test //////////////////
-            // we have something
-            // organize it and
-            // send it to the writers
-                static bool write = true;
-            static int cnt = 0;
-            if (cnt++ > 200 && write) {
-                write = false;
-                m_wavs[4]->write((short*)pcm.data(), pcm.size());
-                m_wavs[4]->close();
-            }
-            if (write) {
-                pcm.append((char*)b, 196);
             }
 
          } else {
@@ -238,7 +220,5 @@ void Server::writeToChannel(short data[], int len, int chan)
     }
     m_wavs[chan]->write(data, len);
 }
-
-
 
 } // namespce iz

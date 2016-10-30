@@ -28,7 +28,6 @@ private slots:
     void readyReadTcp();
     void handleConnection();
 
-private slots:
     void route();
     void sendHeartbeat();
     void writeToChannel(short data[], int len, int chan);
