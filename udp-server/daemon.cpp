@@ -17,6 +17,7 @@ namespace iz {
 static void testSig(int a, siginfo_t *info ,void* usr_data)
 {
     (void) usr_data;
+    (void) info;
     s_logFile << "args: " << a << std::endl;
     s_logFile.close();
     exit(10); // test exit

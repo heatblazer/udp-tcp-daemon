@@ -1,6 +1,9 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#define SUPRESS_UNUSED(foo) (void)foo
+
+
 /// the default wav header
 /// \brief The wav_hdr_t struct
 
