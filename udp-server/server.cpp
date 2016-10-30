@@ -70,13 +70,14 @@ Server::Server(QObject *parent)
       m_socket({nullptr}),
       m_hearSocket(nullptr),
       m_logger("recorder.log"),
-      m_senderHost("127.0.0.1"),
+      m_senderHost("127.0.0.1"), // default
       m_senderPort(1234)
 {
     // explicitly null all
     for(int i=0; i < 32; ++i) {
         m_wavs[i] = nullptr;
     }
+
     // pass the class to the static signal handlers
     m_logger.setObjectName("logger thread");
     m_logger.startWriter();
@@ -130,6 +131,7 @@ void Server::init(bool udp, quint16 port)
 
             std::cout << "Bind OK!" << std::endl;
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
+            route(CONNECTED);
             m_logger.write(msg);
             m_logger.write(msg2);
             m_heartbeat.start();
@@ -137,6 +139,7 @@ void Server::init(bool udp, quint16 port)
         } else {
             std::cout << "Bind FAIL!" << std::endl;
             sprintf(msg,"Binding to port (%d) failed!\n", port);
+            route(DISCONNECTED);
             m_logger.write(msg);
         }
     } else {
@@ -146,7 +149,6 @@ void Server::init(bool udp, quint16 port)
                 this, SLOT(handleConnection()));
     }
     // starrt  logging writer //
-
 }
 
 /// ready read datagrams
