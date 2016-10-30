@@ -3,7 +3,6 @@
 
 #define WAV_TEST 1
 
-
 #ifdef WAV_TEST
 int main(int argc, char *argv[])
 {
