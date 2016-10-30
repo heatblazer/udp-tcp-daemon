@@ -24,7 +24,6 @@ HEADERS += \
     wav-writer.h \
     sapplication.h \
     daemon.h \
-    defs.h \
     config.h
 
 

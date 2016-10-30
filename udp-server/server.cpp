@@ -4,7 +4,6 @@
 // unix time //
 #include <time.h>
 
-#include "defs.h"
 #include "server.h"
 #include "wav-writer.h"
 
