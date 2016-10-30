@@ -8,6 +8,14 @@
 #include "server.h"
 #include "wav-writer.h"
 
+/// generate small unsigned checksum
+/// based on the LSB of a data stream
+/// with a fixed length
+/// \brief gen8bitCheckSum
+/// \param data
+/// \param len
+/// \return
+///
 static uint8_t gen8bitCheckSum(char* data, int len=8)
 {
     (void)gen8bitCheckSum;
@@ -21,6 +29,14 @@ static uint8_t gen8bitCheckSum(char* data, int len=8)
     return key;
 }
 
+/// generate a bigger chechksum
+/// based on the LSB of the data stream
+/// with a fixed length
+/// \brief gen16bitCheckSum
+/// \param data
+/// \param len
+/// \return
+///
 static uint16_t gen16bitCheckSum(char* data, int len=16)
 {
     (void)gen16bitCheckSum;

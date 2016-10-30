@@ -1,3 +1,5 @@
+# remove that project later when we no longer need
+# test to the server
 QT += core
 QT -= gui
 QT += network

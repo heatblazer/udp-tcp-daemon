@@ -8,6 +8,12 @@
 
 namespace iz {
 
+/// flip endiness 32 bit
+/// on big endian machines
+/// \brief flip32
+/// \param input
+/// \return
+///
 static int32_t flip32(int input)
 {
     (void)flip32;
@@ -21,6 +27,11 @@ static int32_t flip32(int input)
     return output;
 }
 
+/// flip endiness 16 bit
+/// \brief flip16
+/// \param input
+/// \return
+///
 static int16_t flip16(int16_t input)
 {
     (void)flip16;
