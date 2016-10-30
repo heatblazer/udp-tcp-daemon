@@ -10,7 +10,7 @@ namespace iz {
 
 static int32_t flip32(int input)
 {
-    SUPRESS_UNUSED(flip32);
+    (void)flip32;
     int32_t output=0;
     uint8_t* s = reinterpret_cast<uint8_t*>(&input);
     uint8_t* d = reinterpret_cast<uint8_t*>(&output);
@@ -23,7 +23,7 @@ static int32_t flip32(int input)
 
 static int16_t flip16(int16_t input)
 {
-    SUPRESS_UNUSED(flip16);
+    (void)flip16;
     int16_t output = 0;
     uint8_t* s = reinterpret_cast<uint8_t*>(&input);
     uint8_t* d = reinterpret_cast<uint8_t*>(&output);
