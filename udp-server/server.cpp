@@ -10,8 +10,11 @@
 
 static uint8_t gen8bitCheckSum(char* data, int len)
 {
-    SUPRESS_UNUSED(gen8bitCheckSum);
+    (void)gen8bitCheckSum;
     uint8_t key = 0;
+    if (data == NULL) {
+        return key;
+    }
     for(int i=0; i < len; ++i) {
         key |= (1 << i) | (data[i] & 1);
     }
@@ -20,8 +23,11 @@ static uint8_t gen8bitCheckSum(char* data, int len)
 
 static uint16_t gen16bitCheckSum(char* data, int len)
 {
-    SUPRESS_UNUSED(gen16bitCheckSum);
+    (void)gen16bitCheckSum;
     uint16_t key = 0;
+    if (data == NULL) {
+        return key;
+    }
     for(int i=0; i < len; ++i) {
         key |= (1 << i) | (data[i] & 1);
     }
