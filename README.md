@@ -9,6 +9,6 @@ A wav recorder over udp.
 
 ## Usage
 
-    $ ./udp-server -d 
-    $ ./udp-server 
+    $ ./udp-server -d # as daemon
+    $ ./udp-server    # as normal app
 
