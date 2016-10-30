@@ -52,7 +52,8 @@ bool Wav::open(const char *perms)
     } else {
         write_hdr(m_conf->getAttribute(RecConfig::SAMPLES_PER_FRAME),
                   m_conf->getAttribute(RecConfig::BITS_PER_SEC),
-                  0, 0,
+                  0,
+                  m_conf->getAttribute(RecConfig::RIFF_LEN),
                   m_conf->getAttribute(RecConfig::AUD_FORMAT),
                   m_conf->getAttribute(RecConfig::CHANNELS));
     }

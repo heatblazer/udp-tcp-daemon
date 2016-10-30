@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     (void) argv;
     // configure is buggy parameters
     iz::RecConfig conf("recorder.cfg");
-    iz::Wav w("test.wav");
+    iz::Wav w("test.wav", &conf);
     w.open("wb");
     short garbage[64*1024]; // not initialzed on purpose
     w.write(garbage, 64 * 1024);
