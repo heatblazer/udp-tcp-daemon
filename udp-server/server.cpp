@@ -1,11 +1,23 @@
-// remove it after tests //
-#include <iostream>
-
 // unix time //
-#include <time.h>
+#include <time.h> // for time stamping
 
 #include "server.h"
 #include "wav-writer.h"
+
+
+static inline char* getTimeString()
+{
+    (void) getTimeString;
+    time_t current_time;
+    struct tm * time_info;
+    static char timeString[9];  // space for "HH:MM:SS\0"
+
+    time(&current_time);
+    time_info = localtime(&current_time);
+    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+    return timeString;
+}
+
 
 /// generate small unsigned checksum
 /// based on the LSB of a data stream
@@ -50,9 +62,10 @@ static uint16_t gen16bitCheckSum(char* data, int len=16)
 }
 
 namespace iz {
-#define UDP_SIZE (196)
+
 union udp_data
 {
+    // TODO: review the header that is sent to me
     // dummy
 };
 
@@ -116,18 +129,10 @@ void Server::init(bool udp, quint16 port)
 
         char msg[64]={0};
         if (bres) {
-            time_t current_time;
-            struct tm * time_info;
-            char timeString[9];  // space for "HH:MM:SS\0"
-
-            time(&current_time);
-            time_info = localtime(&current_time);
-
-            strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
             char msg2[64] ={0};
-            sprintf(msg2, "Server started at: (%s)\n", timeString);
+            sprintf(msg2, "Server started at: (%s)\n", getTimeString());
+            printf("Bind OK!\n");
 
-            std::cout << "Bind OK!" << std::endl;
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
             route(CONNECTED);
             m_logger.write(msg);
@@ -137,7 +142,8 @@ void Server::init(bool udp, quint16 port)
             m_recTime.start();
 
         } else {
-            std::cout << "Bind FAIL!" << std::endl;
+            printf("Bind FAIL!\n");
+
             sprintf(msg,"Binding to port (%d) failed!\n", port);
             route(DISCONNECTED);
             m_logger.write(msg);
@@ -166,12 +172,15 @@ void Server::readyReadUdp()
                                &m_senderHost, &m_senderPort);
 
 
+        // this is the packet counter - top of the data
         int32_t* b = (int32_t*)buff.data();
+
         if (read > 0) {
             // packet loss logic below
+            // TODO: check if the counter is signed or unsigned
             static int32_t pktcnt = *b;
 
-            // one time lost for synching
+            // one frame lost for synching with my counter
             if (*b != ++pktcnt) {
                 time_t current_time;
                 struct tm * time_info;
@@ -186,7 +195,7 @@ void Server::readyReadUdp()
                 sprintf(msg, "Packet lost:(%d) at: [%s]\n", *b, timeString);
 
                 m_logger.write(QByteArray(msg));
-                pktcnt = *b;
+                pktcnt = *b; // synch back
             }
             // we can now write data to channels ...
             // write data in this section
@@ -194,7 +203,7 @@ void Server::readyReadUdp()
             // TODO:
 
          } else {
-            std::cout << "Missed an UDP" << std::endl;
+            printf("Missed an UDP\n");
             m_logger.write("Missed an UDP\n");
         }
     }
