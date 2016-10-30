@@ -5,7 +5,7 @@ A wav recorder over udp.
 
 
 ## Build
-
+   Added the dummy project for the gui interface of the recorder.
 
 ## Usage
 
@@ -14,3 +14,4 @@ A wav recorder over udp.
 
 ## TODO
     I have to remove the udp-client project when I am done with tests.
+
