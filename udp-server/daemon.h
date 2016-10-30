@@ -17,12 +17,13 @@
 #include <errno.h>
 
 namespace iz {
-
+class SApplication;
 
 typedef void (*sigHndl)(int, siginfo_t *,void*);
 
 extern void daemonize();
 extern void attachSignalHandler(sigHndl hnd, int slot);
+extern void registerAppData(SApplication* data);
 
 } // iz
 

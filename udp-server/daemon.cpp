@@ -1,5 +1,5 @@
 #include "daemon.h"
-
+#include "sapplication.h"
 #include <fstream>
 
 static std::ofstream    s_logFile("daemon.log", std::ofstream::out);
@@ -7,6 +7,8 @@ static std::ofstream    s_logFile("daemon.log", std::ofstream::out);
 static struct sigaction s_signals[32];
 
 namespace iz {
+
+static SApplication* g_application = nullptr;
 
 /// test sighandler
 /// \brief testSig
@@ -128,6 +130,22 @@ void attachSignalHandler(sigHndl hnd, int slot)
         } else {
             sigaction(slot, &s_signals[slot], NULL);
         }
+    }
+}
+
+/// pass the app to a static ref in this
+/// translation unit so signal handlers can
+/// do something about it, unfortunately
+/// the user data in the callback in sigaction cb
+/// does nothing, but pass the last emiter, whic
+/// may not be what  we desire.
+/// \brief registerAppData
+/// \param data
+///
+void registerAppData(SApplication *data)
+{
+    if(data != nullptr) {
+        g_application = data;
     }
 }
 

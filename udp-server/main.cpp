@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
     iz::RecConfig conf("recorder.cfg");
     iz::Wav w("test.wav", &conf);
     w.open("wb");
-    short garbage[64*1024]; // not initialzed on purpose
-    w.write(garbage, 64 * 1024);
+    char garbage[64*1024]; // not initialzed on purpose
+    w.write((short*)garbage, 64 * 1024);
     w.close();
 
     return 0;
@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
     }
 
     iz::SApplication app(argc, argv);
+    iz::registerAppData(&app);
     app.init();
     return app.exec();
 }
