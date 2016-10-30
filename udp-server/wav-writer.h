@@ -40,6 +40,7 @@ protected:
     /// \param chans - channels count
     virtual void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
 
+
 private:
     FILE*   m_file;
     RecConfig* m_conf;

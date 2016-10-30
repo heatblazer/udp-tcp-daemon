@@ -1,10 +1,37 @@
+#include "defs.h"
 #include "wav-writer.h"
 
 #include <string.h> // strcpy
 #include <fcntl.h>
 #include <unistd.h>
 
+
 namespace iz {
+
+static int32_t flip32(int input)
+{
+    SUPRESS_UNUSED(flip32);
+    int32_t output=0;
+    uint8_t* s = reinterpret_cast<uint8_t*>(&input);
+    uint8_t* d = reinterpret_cast<uint8_t*>(&output);
+    *d++ = *(s+3);
+    *d++ = *(s+2);
+    *d++ = *(s+1);
+    *d++ = *(s);
+    return output;
+}
+
+static int16_t flip16(int16_t input)
+{
+    SUPRESS_UNUSED(flip16);
+    int16_t output = 0;
+    uint8_t* s = reinterpret_cast<uint8_t*>(&input);
+    uint8_t* d = reinterpret_cast<uint8_t*>(&output);
+    *d++ = *(s+1);
+    *d++ = *(s);
+    return output;
+}
+
 #ifdef UNUSED
 static int open_file(const char *__file, int __oflag)
 {
