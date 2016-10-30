@@ -8,7 +8,7 @@
 #include "server.h"
 #include "wav-writer.h"
 
-static uint8_t gen8bitCheckSum(char* data, int len)
+static uint8_t gen8bitCheckSum(char* data, int len=8)
 {
     (void)gen8bitCheckSum;
     uint8_t key = 0;
@@ -16,12 +16,12 @@ static uint8_t gen8bitCheckSum(char* data, int len)
         return key;
     }
     for(int i=0; i < len; ++i) {
-        key |= (1 << i) | (data[i] & 1);
+        key |= ((data[i] & 0x1) << i);
     }
     return key;
 }
 
-static uint16_t gen16bitCheckSum(char* data, int len)
+static uint16_t gen16bitCheckSum(char* data, int len=16)
 {
     (void)gen16bitCheckSum;
     uint16_t key = 0;
@@ -29,7 +29,7 @@ static uint16_t gen16bitCheckSum(char* data, int len)
         return key;
     }
     for(int i=0; i < len; ++i) {
-        key |= (1 << i) | (data[i] & 1);
+        key |= ((data[i] & 0x1) << i);
     }
     return key;
 }
