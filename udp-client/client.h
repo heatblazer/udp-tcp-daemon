@@ -6,9 +6,6 @@
 #include <QObject>
 #include <QUdpSocket>
 
-//defs //
-#include "defs.h"
-
 namespace iz {
 
 class Client : public QObject

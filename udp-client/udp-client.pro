@@ -14,6 +14,5 @@ SOURCES += main.cpp \
     client.cpp
 
 HEADERS += \
-    client.h \
-    defs.h
+    client.h
 
