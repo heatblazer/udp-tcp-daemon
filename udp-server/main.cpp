@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     short garbage[64*1024]; // not initialzed on purpose
     w.write(garbage, 64 * 1024);
     w.close();
+
     return 0;
 }
 #else

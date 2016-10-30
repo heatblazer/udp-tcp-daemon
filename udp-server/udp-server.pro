@@ -39,7 +39,7 @@ QMAKE_CFLAGS += \
     -Wcast-qual \
     -Wlogical-op \
     -Wnormalized=nfkc \
-    -std=gnu11 \
+    -std=gnu11
 
 
 # redefine a Makefile INSTALL_PROGRAM variable. We want to instal wit SUID bit

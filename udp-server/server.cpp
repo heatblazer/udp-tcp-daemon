@@ -8,6 +8,25 @@
 #include "server.h"
 #include "wav-writer.h"
 
+static uint8_t gen8bitCheckSum(char* data, int len)
+{
+    SUPRESS_UNUSED(gen8bitCheckSum);
+    uint8_t key = 0;
+    for(int i=0; i < len; ++i) {
+        key |= (1 << i) | (data[i] & 1);
+    }
+    return key;
+}
+
+static uint16_t gen16bitCheckSum(char* data, int len)
+{
+    SUPRESS_UNUSED(gen16bitCheckSum);
+    uint16_t key = 0;
+    for(int i=0; i < len; ++i) {
+        key |= (1 << i) | (data[i] & 1);
+    }
+    return key;
+}
 
 namespace iz {
 #define UDP_SIZE (196)
