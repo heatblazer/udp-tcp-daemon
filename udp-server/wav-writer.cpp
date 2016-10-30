@@ -32,7 +32,11 @@ static int16_t flip16(int16_t input)
     return output;
 }
 
-#ifdef UNUSED
+// remove later, these are used since my open, close and
+// write, shadows the IDE to match the one in unsitd and
+// fcntl.h
+#ifndef UNUSED
+#else
 static int open_file(const char *__file, int __oflag)
 {
     return open(__file, __oflag);
@@ -48,6 +52,7 @@ static void close_file(int fd)
     close(fd);
 }
 #endif
+
 Wav::Wav(const char *fname)
     : m_file(NULL),
       m_conf(NULL)
