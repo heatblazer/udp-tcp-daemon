@@ -54,12 +54,7 @@ namespace iz {
 #define UDP_SIZE (196)
 union udp_data
 {
-    struct {
-        int32_t counter;
-        char null_bytes[32];
-        char data[UDP_SIZE];
-    } udp;
-    char c[196];
+    // dummy
 };
 
 
@@ -83,8 +78,12 @@ Server::Server(QObject *parent)
     m_logger.startWriter();
 
     m_heartbeat.setInterval(1000);
+    m_recTime.setInterval(10000); // 10 seconds for test recording
+
     connect(&m_heartbeat, SIGNAL(timeout()),
             this, SLOT(sendHeartbeat()));
+    connect(&m_recTime, SIGNAL(timeout()),
+            this, SLOT(stopRecording()));
 }
 
 Server::~Server()
@@ -134,7 +133,9 @@ void Server::init(bool udp, quint16 port)
             route(CONNECTED);
             m_logger.write(msg);
             m_logger.write(msg2);
+            // start timers
             m_heartbeat.start();
+            m_recTime.start();
 
         } else {
             std::cout << "Bind FAIL!" << std::endl;
@@ -190,6 +191,7 @@ void Server::readyReadUdp()
             }
             // we can now write data to channels ...
             // write data in this section
+            // organize bytes and write them to the files
             // TODO:
 
          } else {
@@ -255,6 +257,13 @@ void Server::writeToChannel(short data[], int len, int chan)
         return ;
     }
     m_wavs[chan]->write(data, len);
+}
+
+void Server::stopRecording()
+{
+    for (int i=0; i < 32; ++i) {
+        m_wavs[i]->close();
+    }
 }
 
 } // namespce iz

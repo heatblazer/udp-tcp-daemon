@@ -39,6 +39,7 @@ private slots:
     void route(States state);
     void sendHeartbeat();
     void writeToChannel(short data[], int len, int chan);
+    void stopRecording();
 
 private:
     union {
@@ -48,6 +49,7 @@ private:
     QUdpSocket* m_hearSocket;
     Writer      m_logger;
     QTimer      m_heartbeat;
+    QTimer      m_recTime;
     QHostAddress m_senderHost;
     quint16      m_senderPort;
     Wav*   m_wavs[32]; // channels
