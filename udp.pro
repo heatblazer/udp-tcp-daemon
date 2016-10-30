@@ -6,4 +6,5 @@ DISTFILES += assets/1.wav \
 
 SUBDIRS += \
     udp-server \
-    udp-client
+    udp-client \
+    recorder-gui
