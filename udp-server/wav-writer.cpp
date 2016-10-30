@@ -1,8 +1,7 @@
-#include "defs.h"
 #include "wav-writer.h"
 
-#include <string.h> // strcpy
 #include <fcntl.h>
+#include <string.h> // strcpy
 #include <unistd.h>
 
 
