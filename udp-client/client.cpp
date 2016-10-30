@@ -42,7 +42,6 @@ void Client::init()
         for(int i=0; i < 196; ++i) {
             m_data[i] = c[i];
         }
-        int i = 0xdeadcafe;
 
     }
     fclose(fp);
