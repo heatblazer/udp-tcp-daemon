@@ -18,6 +18,14 @@ class Server : public QObject
 {
     Q_OBJECT
 public:
+    enum States {UNKNOWN=0,
+                DISCONNECTED = 1,
+                CONNECTED = 2,
+                LOST_CONNECTION = 3,
+                GOT_CONNECTION = 4,
+                GOT_DATAGRAM = 5,
+                MISSED_DATAGRAM = 6
+               };
 
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
@@ -28,7 +36,7 @@ private slots:
     void readyReadTcp();
     void handleConnection();
 
-    void route();
+    void route(States state);
     void sendHeartbeat();
     void writeToChannel(short data[], int len, int chan);
 

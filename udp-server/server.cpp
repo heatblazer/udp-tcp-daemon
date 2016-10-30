@@ -163,10 +163,10 @@ void Server::readyReadUdp()
         qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                &m_senderHost, &m_senderPort);
 
-        // counter!!!
-        int32_t* b = (int32_t*)buff.data();
 
+        int32_t* b = (int32_t*)buff.data();
         if (read > 0) {
+            // packet loss logic below
             static int32_t pktcnt = *b;
 
             // one time lost for synching
@@ -186,6 +186,9 @@ void Server::readyReadUdp()
                 m_logger.write(QByteArray(msg));
                 pktcnt = *b;
             }
+            // we can now write data to channels ...
+            // write data in this section
+            // TODO:
 
          } else {
             std::cout << "Missed an UDP" << std::endl;
@@ -194,28 +197,43 @@ void Server::readyReadUdp()
     }
 }
 
-/// stub
+/// handle incomming TCP connections
 /// \brief Server::readyReadTcp
 ///
 void Server::readyReadTcp()
 {
 }
 
-/// stub
+/// Connect and read TCP packets
 /// \brief Server::handleConnection
 ///
 void Server::handleConnection()
 {
-    while (m_socket.tcp->canReadLine()) {
-        // do something here
+    if (m_socket.tcp->canReadLine()) {
+        while (m_socket.tcp->canReadLine()) {
+            QByteArray data = m_socket.tcp->readLine();
+            (void) data;
+        }
     }
 }
 
-/// stub
+/// dummy router for future uses of the states
 /// \brief Server::route
 ///
-void Server::route()
+void Server::route(States state)
 {
+    // handle state in this routing function
+    switch (state) {
+    case DISCONNECTED:
+    case CONNECTED:
+    case LOST_CONNECTION:
+    case GOT_CONNECTION:
+    case GOT_DATAGRAM:
+    case MISSED_DATAGRAM:
+    case UNKNOWN:
+    default:
+        break;
+    }
 }
 
 /// stub
