@@ -19,4 +19,5 @@ A wav recorder over udp.
 
 ## NOTES
     31.10.2016: now correctly records the samples from the incomming device.
+    31.10.2016: added libary project for crypting files or adding checksums
 
