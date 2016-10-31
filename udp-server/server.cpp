@@ -126,7 +126,7 @@ void Server::init(bool udp, quint16 port)
         m_hearSocket = new QUdpSocket(this);
 
         bool bres = m_socket.udp->bind(port, QUdpSocket::ShareAddress);
-80
+
         connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp())/*, Qt::DirectConnection*/);
 
