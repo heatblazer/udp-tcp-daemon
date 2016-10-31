@@ -272,11 +272,19 @@ void Server::writeToChannel(short data[], int len, int chan)
     m_wavs[chan]->write(data, len);
 }
 
+/// handle the timeout by stop
+/// recording
+/// \brief Server::stopRecording
+///
 void Server::stopRecording()
 {
     for (int i=0; i < 32; ++i) {
         m_wavs[i]->close();
     }
+
+#ifdef TEST
+    exit(0);
+#endif
 }
 
 } // namespce iz
