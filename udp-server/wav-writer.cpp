@@ -17,8 +17,8 @@ static int32_t flip32(int input)
 {
     (void)flip32;
     int32_t output=0;
-    uint8_t* s = reinterpret_cast<uint8_t*>(&input);
-    uint8_t* d = reinterpret_cast<uint8_t*>(&output);
+    unsigned char* s = reinterpret_cast<unsigned char*>(&input);
+    unsigned char* d = reinterpret_cast<unsigned char*>(&output);
     *d++ = *(s+3);
     *d++ = *(s+2);
     *d++ = *(s+1);
@@ -35,13 +35,12 @@ static int16_t flip16(int16_t input)
 {
     (void)flip16;
     int16_t output = 0;
-    uint8_t* s = reinterpret_cast<uint8_t*>(&input);
-    uint8_t* d = reinterpret_cast<uint8_t*>(&output);
+    unsigned char* s = reinterpret_cast<unsigned char*>(&input);
+    unsigned char* d = reinterpret_cast<unsigned char*>(&output);
     *d++ = *(s+1);
     *d++ = *(s);
     return output;
 }
-
 
 Wav::Wav(const char *fname)
     : m_file(NULL),
