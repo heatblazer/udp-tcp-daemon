@@ -7,7 +7,8 @@ class CRYPTOSHARED_EXPORT Crypto
 {
 
 public:
-    Crypto();
+    explicit Crypto();
+    virtual ~Crypto();
 };
 
 #endif // CRYPTO_H

@@ -11,3 +11,8 @@ static const char crypt_key_symbols[] = "!@#$%^&*()+-=/\\";
 Crypto::Crypto()
 {
 }
+
+Crypto::~Crypto()
+{
+
+}
