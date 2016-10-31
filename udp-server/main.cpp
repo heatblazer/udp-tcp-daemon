@@ -25,7 +25,8 @@ int main(int argc, char *argv[])
 {
     (void) argc;
     (void) argv;
-    Crypto xor;
+    Crypto c;
+    c.dummy();
     return 0;
 }
 #else
