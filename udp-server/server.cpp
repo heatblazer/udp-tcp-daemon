@@ -63,10 +63,11 @@ static uint16_t gen16bitCheckSum(char* data, int len=16)
 
 namespace iz {
 
-union udp_data
+struct udp_data
 {
-    // TODO: review the header that is sent to me
-    // dummy
+    uint32_t    counter;
+    uint8_t     null_bytes[32];
+    uint16_t    data[80];
 };
 
 
@@ -90,7 +91,9 @@ Server::Server(QObject *parent)
     m_logger.startWriter();
 
     m_heartbeat.setInterval(1000);
+    // now I have a pretty sine wave
     m_recTime.setInterval(10000); // 10 seconds for test recording
+                                    // closes program - crashes for test
 
     connect(&m_heartbeat, SIGNAL(timeout()),
             this, SLOT(sendHeartbeat()));
@@ -123,7 +126,7 @@ void Server::init(bool udp, quint16 port)
         m_hearSocket = new QUdpSocket(this);
 
         bool bres = m_socket.udp->bind(port, QUdpSocket::ShareAddress);
-
+80
         connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp())/*, Qt::DirectConnection*/);
 
@@ -172,16 +175,16 @@ void Server::readyReadUdp()
                                &m_senderHost, &m_senderPort);
 
 
-        // this is the packet counter - top of the data
-        int32_t* b = (int32_t*)buff.data();
+        // the udp structure from the device
+        udp_data* udp = (udp_data*) buff.data();
 
         if (read > 0) {
             // packet loss logic below
             // TODO: check if the counter is signed or unsigned
-            static int32_t pktcnt = *b;
+            static uint32_t pktcnt = udp->counter;
 
             // one frame lost for synching with my counter
-            if (*b != ++pktcnt) {
+            if (udp->counter != ++pktcnt) {
                 time_t current_time;
                 struct tm * time_info;
                 char timeString[9];  // space for "HH:MM:SS\0"
@@ -192,15 +195,17 @@ void Server::readyReadUdp()
                 strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
 
                 char msg[64]={0};
-                sprintf(msg, "Packet lost:(%d) at: [%s]\n", *b, timeString);
+                sprintf(msg, "Packet lost:(%d) at: [%s]\n",
+                        udp->counter, timeString);
 
                 m_logger.write(QByteArray(msg));
-                pktcnt = *b; // synch back
+                pktcnt = udp->counter; // synch back
             }
             // we can now write data to channels ...
             // write data in this section
             // organize bytes and write them to the files
             // TODO:
+            m_wavs[0]->write((short*)udp->data, 80);
 
          } else {
             printf("Missed an UDP\n");
