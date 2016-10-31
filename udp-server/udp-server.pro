@@ -40,6 +40,9 @@ QMAKE_CFLAGS += \
     -Wnormalized=nfkc \
     -std=gnu11
 
+# custom macrodefs for the tests
+QMAKE_CXXFLAGS += -DTEST
+
 
 # redefine a Makefile INSTALL_PROGRAM variable. We want to instal wit SUID bit
 QMAKE_INSTALL_PROGRAM = install -m 4755 -p
