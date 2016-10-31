@@ -19,48 +19,6 @@ static inline char* getTimeString()
 }
 
 
-/// generate small unsigned checksum
-/// based on the LSB of a data stream
-/// with a fixed length
-/// \brief gen8bitCheckSum
-/// \param data
-/// \param len
-/// \return
-///
-static uint8_t gen8bitCheckSum(char* data, int len=8)
-{
-    (void)gen8bitCheckSum;
-    uint8_t key = 0;
-    if (data == NULL) {
-        return key;
-    }
-    for(int i=0; i < len; ++i) {
-        key |= ((data[i] & 0x1) << i);
-    }
-    return key;
-}
-
-/// generate a bigger chechksum
-/// based on the LSB of the data stream
-/// with a fixed length
-/// \brief gen16bitCheckSum
-/// \param data
-/// \param len
-/// \return
-///
-static uint16_t gen16bitCheckSum(char* data, int len=16)
-{
-    (void)gen16bitCheckSum;
-    uint16_t key = 0;
-    if (data == NULL) {
-        return key;
-    }
-    for(int i=0; i < len; ++i) {
-        key |= ((data[i] & 0x1) << i);
-    }
-    return key;
-}
-
 namespace iz {
 
 struct udp_data
