@@ -15,3 +15,6 @@ A wav recorder over udp.
 ## TODO
     I have to remove the udp-client project when I am done with tests.
 
+## NOTES
+    31.10.2016: now correctly records the samples from the incomming device.
+
