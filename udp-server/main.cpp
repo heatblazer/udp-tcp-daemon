@@ -1,5 +1,6 @@
 #include "sapplication.h"
 #include "daemon.h"
+#include "crypto.h"
 
 
 #ifdef WAV_TEST
@@ -17,7 +18,20 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+#elif defined (CRYPTO_TEST)
+// I will test crypt algorithms here
+// and checksums for SHA and MD5 stuff here
+int main(int argc, char *argv[])
+{
+    (void) argc;
+    (void) argv;
+    Crypto xor;
+    return 0;
+}
 #else
+// the standart server test - passed for now
+// I got a correct sine wave from the client
+// and recorded it to a wav file
 /// for now one option for
 /// daemonizing
 /// \brief getOpts
@@ -37,7 +51,7 @@ static int getOpts(char* str)
 }
 
 int main(int argc, char *argv[])
-{
+{    
     // if no args - run in lab mode to test
     // and debug , later we`ll be sure
     // the >1 arg is provided
