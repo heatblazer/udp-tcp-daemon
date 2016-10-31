@@ -9,4 +9,5 @@ DISTFILES += assets/1.wav \
 SUBDIRS += \
     udp-server \
     udp-client \
-    recorder-gui
+    recorder-gui \
+    crypto
