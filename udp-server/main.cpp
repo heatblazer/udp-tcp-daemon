@@ -2,6 +2,9 @@
 #include "daemon.h"
 #include "crypto.h"
 #include "utils/recorder-config.h"
+#include "types.h"
+
+#include <iostream>
 
 #ifdef WAV_TEST
 int main(int argc, char *argv[])
@@ -30,13 +33,21 @@ int main(int argc, char *argv[])
     return 0;
 }
 #elif defined (XML_TEST)
+using namespace iz;
+
 int main(int argc, char *argv[])
 {
     (void) argc;
     (void) argv;
-    iz::RecorderConfig cfg;
     // assume we have argv
-    cfg.loadFile(QString(argv[1]));
+    RecorderConfig::Instance().loadFile(QString(argv[1]));
+    PairList& lref = RecorderConfig::Instance().getTagPairs("Wave");
+
+    for(int i=0; i < lref.count(); ++i) {
+        MPair<QString, QString> p = lref.at(i);
+        std::cout << p[p.m_type1]->toStdString() << std::endl;
+    }
+
     return 0;
 }
 #else
