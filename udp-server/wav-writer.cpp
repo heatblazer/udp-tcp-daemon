@@ -44,7 +44,8 @@ static int16_t flip16(int16_t input)
 
 Wav::Wav(const char *fname)
     : m_file(NULL),
-      m_conf(NULL)
+      m_conf(NULL),
+      m_isSetup(false)
 {
     strcpy(m_filename, fname);
 }
@@ -65,7 +66,7 @@ Wav::~Wav()
 /// \brief Wav::open
 /// \param perms
 /// \return
-///
+/// TODO: new logic here : write the filled header
 bool Wav::open(const char *perms)
 {
     m_file = fopen(m_filename, perms);
@@ -73,16 +74,23 @@ bool Wav::open(const char *perms)
         return false;
     }
 
-    if (m_conf == NULL) {
-        write_hdr(); // use defaults
+    // we have not called setup! Load some defaults !
+    if (!m_isSetup) {
+
+        if (m_conf == NULL) {
+            write_hdr(); // use defaults
+        } else {
+            // use from config
+            write_hdr(m_conf->getAttribute(WavConfig::SAMPLES_PER_FRAME),
+                      m_conf->getAttribute(WavConfig::BITS_PER_SEC),
+                      0,
+                      m_conf->getAttribute(WavConfig::RIFF_LEN),
+                      m_conf->getAttribute(WavConfig::AUD_FORMAT),
+                      m_conf->getAttribute(WavConfig::CHANNELS));
+        }
     } else {
-        // use from config
-        write_hdr(m_conf->getAttribute(WavConfig::SAMPLES_PER_FRAME),
-                  m_conf->getAttribute(WavConfig::BITS_PER_SEC),
-                  0,
-                  m_conf->getAttribute(WavConfig::RIFF_LEN),
-                  m_conf->getAttribute(WavConfig::AUD_FORMAT),
-                  m_conf->getAttribute(WavConfig::CHANNELS));
+        fwrite(&m_header, sizeof(m_header), 1, m_file);
+        fflush(m_file);
     }
     return true;
 }
@@ -121,6 +129,42 @@ int Wav::write(short data[], int len)
 {
     size_t written = fwrite(data, sizeof(short), len, m_file);
     return (int)written;
+}
+
+void Wav::setupWave(int samples_per_sec, int bits_per_sec, int riff_len,
+                    int fmt_len, short audio_fmt, short chann_cnt)
+{
+    m_header.riff_tag[0] = 'R';
+    m_header.riff_tag[1] = 'I';
+    m_header.riff_tag[2] = 'F';
+    m_header.riff_tag[3] = 'F';
+
+    m_header.wav_tag[0] = 'W';
+    m_header.wav_tag[1] = 'A';
+    m_header.wav_tag[2] = 'V';
+    m_header.wav_tag[3] = 'E';
+
+    m_header.fmt_tag[0] = 'f';
+    m_header.fmt_tag[1] = 'm';
+    m_header.fmt_tag[2] = 't';
+    m_header.fmt_tag[3] = ' ';
+
+    m_header.data_tag[0] = 'd';
+    m_header.data_tag[1] = 'a';
+    m_header.data_tag[2] = 't';
+    m_header.data_tag[3] = 'a';
+
+    m_header.riff_len = riff_len;
+    m_header.fmt_len = fmt_len;
+    m_header.audio_format = audio_fmt;
+    m_header.num_channels = chann_cnt;
+    m_header.sample_rate = samples_per_sec;
+    m_header.byte_rate = samples_per_sec * (bits_per_sec/8);
+    m_header.block_align = bits_per_sec / 8;
+    m_header.bits_per_sample = bits_per_sec;
+    m_header.data_len = 0;
+
+    m_isSetup = true;
 }
 
 /// write the needed header to

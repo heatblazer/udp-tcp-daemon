@@ -53,8 +53,10 @@ public:
     virtual bool open(const char* perms);
     virtual void close();
     virtual int write(short int data[], int len);
+    virtual void setupWave(int samples_per_sec=8000, int bits_per_sec=16, int riff_len=0,
+                            int fmt_len=16, short audio_fmt=1,  short chann_cnt=1);
 
-protected:
+public:
     /// using UNIX fwrite
     /// \brief write_hdr
     /// writes a proper wav header, has
@@ -71,18 +73,12 @@ protected:
 
 private:
     FILE*   m_file;
-#ifndef OLDVER
     WavConfig* m_conf;
-#else
-    int m_samplesPerSec;
-    int m_bitsPerSec;
-    int m_riffLen;
-    int m_fmtLen;
-    short m_audioFmt;
-    short m_chanCount;
-#endif
+    wav_hdr_t m_header;
     char m_filename[64];
+    // to be deprecated
     int m_attribs[Params::SIZE];
+    bool m_isSetup;
 };
 
 
