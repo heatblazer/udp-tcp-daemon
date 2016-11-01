@@ -4,27 +4,27 @@
         xsi:noNamespaceSchemaLocation="../schema/recorder-config.xsd"
         version="1.0" >
         <!--the root element-->
+<!-- interval to save wav files and to start 
+     the new ones -->
+     
+<HotSwap interval="10000" />  
+<Channels count="32" />
 
-<Audio>
-    <HotSwap interval="10000" />  <!-- 10000 msec for now -->
-    <Channels count="32" />
-    
-    <!-- setup for the wav header -->
-    <!-- endiness: if require endian swap of the data -->
-    <!-- checksum -->
-    <Wave samplesPerFrame="8000" 
-         bitsPerSec="16"
-         riffLength="16"
-         audioFormat="1"
-         channels="1"
-         />
-         
-    <Record 
-        hasTimeStamp="true"
-        hasNumericConvention="true"
-        />
-        
-</Audio>
+<!-- setup for the wav header -->
+<!-- endiness: if require endian swap of the data -->
+<!-- checksum -->
+<Wave samplesPerFrame="8000" 
+     bitsPerSec="16"
+     riffLength="16"
+     audioFormat="1"
+     channels="1"
+     />
+     
+<Record 
+    dir="/records/"
+    hasTimeStamp="true"
+    hasNumericConvention="true"
+    />
 
 <Network transport="udp"
          port="1234" 
