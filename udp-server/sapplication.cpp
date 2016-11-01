@@ -13,6 +13,7 @@ namespace iz {
 SApplication::SApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv)
 {
+    // TODO: use other logic to specify xml file
 }
 
 SApplication::~SApplication()
@@ -25,6 +26,7 @@ SApplication::~SApplication()
 ///
 int SApplication::init()
 {
+    m_recorder.init();
     m_server.init();
     return 1;
 }

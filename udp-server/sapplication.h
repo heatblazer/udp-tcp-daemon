@@ -8,6 +8,8 @@
 #include "config.h"
 #include "server.h"
 #include "wav-writer.h"
+#include "utils/recorder-config.h"
+#include "recorder.h"
 
 namespace iz {
 
@@ -24,6 +26,8 @@ public:
 
 private:
     Server m_server;
+    Recorder m_recorder;
+    QString m_recConf;
 };
 
 } // iz
