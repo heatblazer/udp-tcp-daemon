@@ -1,6 +1,6 @@
 #include "sapplication.h"
 #include "daemon.h"
-#include "crypto.h"
+//#include "crypto.h"
 #include "utils/recorder-config.h"
 #include "types.h"
 
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     (void) argc;
     (void) argv;
     // assume we have argv
-    RecorderConfig::Instance().loadFile(QString(argv[1]));
+    RecorderConfig::Instance().fastLoadFile(QString(argv[1]));
     PairList& lref = RecorderConfig::Instance().getTagPairs("Wave");
 
     for(int i=0; i < lref.count(); ++i) {
