@@ -58,9 +58,9 @@ QMAKE_INSTALL_PROGRAM = install -m 4755 -p
 target.path = /usr/bin
 INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../crypto/release/ -lcrypto
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../crypto/debug/ -lcrypto
-else:unix: LIBS += -L$$OUT_PWD/../crypto/ -lcrypto
+#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../crypto/release/ -lcrypto
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../crypto/debug/ -lcrypto
+#else:unix: LIBS += -L$$OUT_PWD/../crypto/ -lcrypto
 
-INCLUDEPATH += $$PWD/../crypto
-DEPENDPATH += $$PWD/../crypto
+#INCLUDEPATH += $$PWD/../crypto
+#DEPENDPATH += $$PWD/../crypto
