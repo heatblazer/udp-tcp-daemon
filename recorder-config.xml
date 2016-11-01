@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Config xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../schema/recorder-config.xsd"
+        version="1.0" >
+        <!--the root element-->
+
+<Audio>
+    <HotSwap interval="10000" />  <!-- 10000 msec for now -->
+    <Channels count="32" />
+    <Wave /> <!-- setup wave writer options from here -->
+</Audio>
+
+<Network transport="udp"
+         port="1234" 
+         />
+         
+<Log
+    path="/logs/"
+    time="enabled"
+/>
+
+</Config>
