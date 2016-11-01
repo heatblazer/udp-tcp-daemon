@@ -34,6 +34,15 @@ namespace iz {
 /// \brief The Wav class
 class Wav
 {
+public:
+    enum Params {
+        SAMPLES_PER_FRAME,
+        BITS_PER_SEC,
+        RIFF_LEN,
+        AUD_FORMAT,
+        CHANNELS,
+        SIZE
+    };
 
 public:
     Wav(const char* fname);
@@ -64,6 +73,7 @@ private:
     FILE*   m_file;
     WavConfig* m_conf;
     char m_filename[64];
+    int m_attribs[Params::SIZE];
 };
 
 
