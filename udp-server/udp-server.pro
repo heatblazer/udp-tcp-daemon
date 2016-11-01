@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     sapplication.cpp \
     daemon.cpp \
     config.cpp \
-    utils/recorder-config.cpp
+    utils/recorder-config.cpp \
+    recorder.cpp
 
 HEADERS += \
     server.h \
@@ -28,7 +29,8 @@ HEADERS += \
     daemon.h \
     config.h \
     utils/recorder-config.h \
-    types.h
+    types.h \
+    recorder.h
 
 
 QMAKE_CFLAGS += \
