@@ -6,6 +6,7 @@
 
 namespace iz {
 
+/// wav file config: old concept
 /// generate a config file if not present
 /// or open an existing one
 /// \brief WavConfig::WavConfig
