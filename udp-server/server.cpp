@@ -124,12 +124,6 @@ void Server::readyReadUdp()
         qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                &m_senderHost, &m_senderPort);
 
-        if (read > 0) {
-            // recorder - record
-        } else {
-            // do a better message
-            m_logger.write("Missed an UDP\n");
-        }
 
         // the udp structure from the device
         udp_data_t* udp = (udp_data_t*) buff.data();
@@ -156,13 +150,17 @@ void Server::readyReadUdp()
                 pktcnt = udp->counter; // synch back
             }
 // just move the writing logic to the recorder
+// delete the ifdef
 #if 0
             // we can now write data to channels ...
             // write data in this section
             // organize bytes and write them to the files
             // TODO:
             m_wavs[0]->write((short*)udp->data, 80);
-#endif // will use a new logic
+#endif
+            // will use a new logic emit the udp struct
+            // to the recorder, so now we don`t need
+            // to depend each other
             emit dataReady(*udp, /*desired slot*/ 0);
 
          } else {
