@@ -28,6 +28,9 @@ int SApplication::init()
 {
     m_recorder.init();
     m_server.init();
+    // connect rec to server
+    connect(&m_server, SIGNAL(dataReady(udp_data_t)),
+            &m_recorder, SLOT(record(udp_data_t,uint32_t)));
     return 1;
 }
 
