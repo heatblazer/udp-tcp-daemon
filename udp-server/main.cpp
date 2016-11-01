@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
     return 0;
 }
 #elif defined (XML_TEST)
+
 using namespace iz;
 
 int main(int argc, char *argv[])
