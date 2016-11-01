@@ -97,7 +97,6 @@ void Server::init(bool udp, quint16 port)
 
         } else {
             printf("Bind FAIL!\n");
-
             sprintf(msg,"Binding to port (%d) failed!\n", port);
             route(DISCONNECTED);
             m_logger.write(msg);
@@ -133,14 +132,11 @@ void Server::readyReadUdp()
         }
 
         // the udp structure from the device
-#if 0
-        udp_data_t* udp = (udp_data*) buff.data();
+        udp_data_t* udp = (udp_data_t*) buff.data();
 
         if (read > 0) {
             // packet loss logic below
-            // TODO: check if the counter is signed or unsigned
             static uint32_t pktcnt = udp->counter;
-
             // one frame lost for synching with my counter
             if (udp->counter != ++pktcnt) {
                 time_t current_time;
@@ -159,17 +155,20 @@ void Server::readyReadUdp()
                 m_logger.write(QByteArray(msg));
                 pktcnt = udp->counter; // synch back
             }
+// just move the writing logic to the recorder
+#if 0
             // we can now write data to channels ...
             // write data in this section
             // organize bytes and write them to the files
             // TODO:
             m_wavs[0]->write((short*)udp->data, 80);
+#endif // will use a new logic
+            emit dataReady(*udp, /*desired slot*/ 0);
+
          } else {
             printf("Missed an UDP\n");
             m_logger.write("Missed an UDP\n");
         }
-#endif // will use a new logic
-
     }
 }
 

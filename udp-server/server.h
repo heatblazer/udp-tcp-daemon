@@ -9,6 +9,7 @@
 #include <QUdpSocket>
 
 // custom //
+#include "types.h"
 #include "writer.h"
 #include "wav-writer.h"
 
@@ -32,7 +33,7 @@ public:
     void init(bool udp=true, quint16 port=1234);
 
 signals:
-    void dataReady(const QByteArray& data);
+    void dataReady(const udp_data_t& data, uint32_t slot);
 
 private slots:
     void readyReadUdp();
