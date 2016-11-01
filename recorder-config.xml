@@ -8,14 +8,30 @@
 <Audio>
     <HotSwap interval="10000" />  <!-- 10000 msec for now -->
     <Channels count="32" />
-    <Wave /> <!-- setup wave writer options from here -->
+    
+    <!-- setup for the wav header -->
+    <!-- endiness: if require endian swap of the data -->
+    <!-- checksum -->
+    <Wave samplesPerFrame="8000" 
+         bitsPerSec="16"
+         riffLength="16"
+         audioFormat="1"
+         channels="1"
+         />
+         
+    <Record 
+        hasTimeStamp="true"
+        hasNumericConvention="true"
+        />
+        
 </Audio>
 
 <Network transport="udp"
          port="1234" 
          />
-         
+<!-- name of file, path and timestamp appended -->
 <Log
+    name="recorder.log"
     path="/logs/"
     time="enabled"
 />
