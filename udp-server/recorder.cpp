@@ -11,29 +11,42 @@ Recorder::Recorder(QObject *parent)
 
 }
 
+// handle with care the opened files
 Recorder::~Recorder()
 {
     // cleanup()
+    for(int i=0; i < 32; ++i) {
+        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
+            m_wavs[i]->close();
+            delete m_wavs[i];
+            m_wavs[i] = nullptr;
+        }
+    }
 }
 
 /// TODO: config file
 /// will apply timestapm from the config later
 /// \brief Recorder::init
-/// \return
-///
+/// \return true by default , false for future if something happens
 bool Recorder::init()
 {
+    bool res = true;
     char buff[16]={0};
     for(int i=0; i < 32; ++i) {
         sprintf(buff, "%d.wav", i+1);
         m_wavs[i] = new Wav(buff);
     }
 
-    return true;
+    return res;
 }
 
+/// setup all wav files for writing
+/// \brief Recorder::setupWavFiles
+/// \return true bu default
 bool Recorder::setupWavFiles()
 {
+    bool res = true;
+
     int samples_per_sec = 0;
     int bits_per_sec = 0;
     int riff_len = 0;
@@ -41,7 +54,13 @@ bool Recorder::setupWavFiles()
     short audio_fmt = 0;
     short chann_cnt = 0;
 
+    // careful now: we dont want the parser to fail and to
+    // generate bad stuff to our wave header, the
+    // parseInt() and parseShort() can return bool for success
+    // if we fail it, then we assign our custom default wav header
+    // valuse
     PairList& attribs = RecorderConfig::Instance().getTagPairs("Wave");
+
     for(int i=0; i < attribs.count(); ++i) {
         bool parse_result = false; // careful when converting to int
         MPair<QString, QString> it = attribs.at(i);
@@ -76,19 +95,34 @@ bool Recorder::setupWavFiles()
         }
     }
 
+    // one time setup all waves at a time
+    // don`t open them yet... do this later, after server
+    // init and binding
     for(int i=0; i < 32; ++i) {
         m_wavs[i]->setupWave(samples_per_sec, bits_per_sec, riff_len,
                              fmt_len, audio_fmt, chann_cnt);
     }
 
-    return true;
+    return res;
 }
 
+/// asume the file is opened and setup,
+/// now we handle the signals from the server
+/// and write the sample data to a specific slot
+/// \brief Recorder::record
+/// \param data - samples
+/// \param slot of the wav file
 void Recorder::record(const udp_data_t &data, uint32_t slot)
 {
-    if (slot > 31) {
+    // more precautions
+    if (slot > 31 || m_wavs[slot] == nullptr ||
+            !m_wavs[slot]->isOpened()) {
         return; // out of max chan index
     }
+
+    // just calculate the data size based on the known
+    // for now udp header, for future we may change the size
+    // but if the udp header remains, the above calc will be ok
     uint32_t data_size = (sizeof(data) -
             (sizeof(data.counter) + (sizeof(data.null_bytes)/sizeof(data.null_bytes[0])))
             );
