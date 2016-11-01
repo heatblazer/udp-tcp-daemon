@@ -49,7 +49,7 @@ Wav::Wav(const char *fname)
     strcpy(m_filename, fname);
 }
 
-Wav::Wav(const char *fname, RecConfig *cfg)
+Wav::Wav(const char *fname, WavConfig *cfg)
     : m_file(NULL),
       m_conf(cfg)
 {
@@ -77,12 +77,12 @@ bool Wav::open(const char *perms)
         write_hdr(); // use defaults
     } else {
         // use from config
-        write_hdr(m_conf->getAttribute(RecConfig::SAMPLES_PER_FRAME),
-                  m_conf->getAttribute(RecConfig::BITS_PER_SEC),
+        write_hdr(m_conf->getAttribute(WavConfig::SAMPLES_PER_FRAME),
+                  m_conf->getAttribute(WavConfig::BITS_PER_SEC),
                   0,
-                  m_conf->getAttribute(RecConfig::RIFF_LEN),
-                  m_conf->getAttribute(RecConfig::AUD_FORMAT),
-                  m_conf->getAttribute(RecConfig::CHANNELS));
+                  m_conf->getAttribute(WavConfig::RIFF_LEN),
+                  m_conf->getAttribute(WavConfig::AUD_FORMAT),
+                  m_conf->getAttribute(WavConfig::CHANNELS));
     }
     return true;
 }

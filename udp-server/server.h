@@ -53,7 +53,7 @@ private:
     QHostAddress m_senderHost;
     quint16      m_senderPort;
     Wav*   m_wavs[32]; // channels
-    static RecConfig* s_conf;
+    static WavConfig* s_conf;
 
 };
 

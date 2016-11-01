@@ -29,13 +29,13 @@ struct udp_data
 };
 
 
-RecConfig* Server::s_conf = new RecConfig("recorder.cfg");
+WavConfig* Server::s_conf = new WavConfig("recorder.cfg");
 
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket({nullptr}),
       m_hearSocket(nullptr),
-      m_logger("recorder.log"),
+      m_logger(QString("%1-recorder.log").arg(getTimeString())),
       m_senderHost("127.0.0.1"), // default
       m_senderPort(1234)
 {

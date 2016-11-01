@@ -9,7 +9,7 @@ namespace iz {
 // simple cfg file reader for now
 // no xml walkers and complex stuff,
 // for fast editing a simple .cfg file
-class RecConfig
+class WavConfig
 {
     //int spf, int bps, int rifflen, int fmtlen, short audfmt, short chans
 public:
@@ -22,8 +22,8 @@ public:
         SIZE
     };
 
-    explicit RecConfig(const QString& fname);
-    virtual ~RecConfig();
+    explicit WavConfig(const QString& fname);
+    virtual ~WavConfig();
     int getAttribute(Params atrib);
 
 private:

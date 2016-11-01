@@ -8,10 +8,10 @@ namespace iz {
 
 /// generate a config file if not present
 /// or open an existing one
-/// \brief RecConfig::RecConfig
+/// \brief WavConfig::WavConfig
 /// \param fname
 ///
-RecConfig::RecConfig(const QString &fname)
+WavConfig::WavConfig(const QString &fname)
     : m_file{{fname},{fname}} // C++11 only!!!
 {
     m_file.file.setFileName(m_file.name);
@@ -83,17 +83,17 @@ RecConfig::RecConfig(const QString &fname)
     }
 }
 
-RecConfig::~RecConfig()
+WavConfig::~WavConfig()
 {
 }
 
 /// get mapped attribute from the
 /// configuration
-/// \brief RecConfig::getAttribute
+/// \brief WavConfig::getAttribute
 /// \param atrib - attrib number
 /// \return  - value
 ///
-int RecConfig::getAttribute(RecConfig::Params atrib)
+int WavConfig::getAttribute(WavConfig::Params atrib)
 {
     if (atrib < 0 || atrib > Params::SIZE) {
         return -1;

@@ -37,7 +37,7 @@ class Wav
 
 public:
     Wav(const char* fname);
-    Wav(const char *fname, RecConfig* cfg);
+    Wav(const char *fname, WavConfig* cfg);
     virtual ~Wav();
     // in case we migrate to other file api we made these virtual
     // but provide some defailt implementation
@@ -62,7 +62,7 @@ protected:
 
 private:
     FILE*   m_file;
-    RecConfig* m_conf;
+    WavConfig* m_conf;
     char m_filename[64];
 };
 
