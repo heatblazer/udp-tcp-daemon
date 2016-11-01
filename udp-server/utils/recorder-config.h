@@ -26,7 +26,7 @@ private:
     static RecorderConfig* s_inst;
     QString m_filename;
     // tag name, attributes
-    QHash<QString, QList< MPair<QString, QString> > > m_tags;
+    QHash<QString, QList<MPair<QString, QString> > > m_tags;
 };
 
 }  // iz
