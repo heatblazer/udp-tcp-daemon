@@ -16,21 +16,21 @@ SOURCES += main.cpp \
     writer.cpp \
     wav-writer.cpp \
     sapplication.cpp \
-    daemon.cpp \
     config.cpp \
     utils/recorder-config.cpp \
-    recorder.cpp
+    recorder.cpp \
+    unix/daemon.cpp
 
 HEADERS += \
     server.h \
     writer.h \
     wav-writer.h \
     sapplication.h \
-    daemon.h \
     config.h \
     utils/recorder-config.h \
     types.h \
-    recorder.h
+    recorder.h \
+    unix/daemon.h
 
 
 QMAKE_CFLAGS += \
