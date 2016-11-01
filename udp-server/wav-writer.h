@@ -52,6 +52,7 @@ public:
     // but provide some defailt implementation
     virtual bool open(const char* perms);
     virtual void close();
+    virtual bool isOpened() const ;
     virtual int write(short int data[], int len);
     virtual void setupWave(int samples_per_sec=8000, int bits_per_sec=16, int riff_len=0,
                             int fmt_len=16, short audio_fmt=1,  short chann_cnt=1);
@@ -79,6 +80,7 @@ private:
     // to be deprecated
     int m_attribs[Params::SIZE];
     bool m_isSetup;
+    bool m_isOpened;
 };
 
 

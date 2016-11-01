@@ -45,14 +45,17 @@ static int16_t flip16(int16_t input)
 Wav::Wav(const char *fname)
     : m_file(NULL),
       m_conf(NULL),
-      m_isSetup(false)
+      m_isSetup(false),
+      m_isOpened(false)
 {
     strcpy(m_filename, fname);
 }
 
 Wav::Wav(const char *fname, WavConfig *cfg)
     : m_file(NULL),
-      m_conf(cfg)
+      m_conf(cfg),
+      m_isSetup(true),
+      m_isOpened(false)
 {
     strcpy(m_filename, fname);
 }
@@ -92,6 +95,7 @@ bool Wav::open(const char *perms)
         fwrite(&m_header, sizeof(m_header), 1, m_file);
         fflush(m_file);
     }
+    m_isOpened = true;
     return true;
 }
 
@@ -116,7 +120,12 @@ void Wav::close()
     fseek(m_file, 4, SEEK_SET);
     fwrite(&riff_len, sizeof(riff_len), 1, m_file);
     fclose(m_file);
+    m_isOpened = false;
+}
 
+bool Wav::isOpened() const
+{
+    return m_isOpened;
 }
 
 /// write data to wav file
