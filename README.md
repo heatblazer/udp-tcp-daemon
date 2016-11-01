@@ -1,7 +1,7 @@
-udp-server
-==========
+Recorder
+========
 
-A wav recorder over udp.
+A wav recorder over udp streams.
 
 
 ## Build
@@ -16,6 +16,8 @@ A wav recorder over udp.
     1. I have to remove the udp-client project when I am done with tests.
     2. I have to encrypt or add a check sum to the samples.
     3. I have to provide install options and "install howto" in build section.
+    4. Crypto project and lib for hashing or crypting is still a stub.
+    5. GUI for the recorder is stub yet.
 
 ## NOTES
     31.10.2016: now correctly records the samples from the incomming device.
