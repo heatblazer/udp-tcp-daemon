@@ -31,6 +31,9 @@ public:
     virtual ~Server();
     void init(bool udp=true, quint16 port=1234);
 
+signals:
+    void dataReady(const QByteArray& data);
+
 private slots:
     void readyReadUdp();
     void readyReadTcp();

@@ -3,6 +3,7 @@
 
 #include "server.h"
 #include "wav-writer.h"
+#include "types.h"
 
 
 static inline char* getTimeString()
@@ -20,14 +21,6 @@ static inline char* getTimeString()
 
 
 namespace iz {
-
-struct udp_data
-{
-    uint32_t    counter;
-    uint8_t     null_bytes[32];
-    uint16_t    data[80];
-};
-
 
 WavConfig* Server::s_conf = new WavConfig("recorder.cfg");
 
@@ -132,9 +125,16 @@ void Server::readyReadUdp()
         qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                &m_senderHost, &m_senderPort);
 
+        if (read > 0) {
+            // recorder - record
+        } else {
+            // do a better message
+            m_logger.write("Missed an UDP\n");
+        }
 
         // the udp structure from the device
-        udp_data* udp = (udp_data*) buff.data();
+#if 0
+        udp_data_t* udp = (udp_data*) buff.data();
 
         if (read > 0) {
             // packet loss logic below
@@ -164,11 +164,12 @@ void Server::readyReadUdp()
             // organize bytes and write them to the files
             // TODO:
             m_wavs[0]->write((short*)udp->data, 80);
-
          } else {
             printf("Missed an UDP\n");
             m_logger.write("Missed an UDP\n");
         }
+#endif // will use a new logic
+
     }
 }
 
