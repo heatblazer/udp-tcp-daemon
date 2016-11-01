@@ -18,6 +18,7 @@ class RecorderConfig : public QObject
 public:
     static RecorderConfig& Instance();
     bool loadFile(const QString& fname);
+    void fastLoadFile(const QString& fname);
     PairList& getTagPairs(const QString& tag);
 private:
     explicit RecorderConfig(QObject* parent=nullptr);

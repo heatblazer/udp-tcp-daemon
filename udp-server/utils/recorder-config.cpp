@@ -77,6 +77,13 @@ bool RecorderConfig::loadFile(const QString &fname)
                                                 (attribs.at(i).name().toString(),
                                                        attribs.at(i).value().toString()));
                     }
+                } else if (reader.name() == "Heartbeat") {
+                    QXmlStreamAttributes attribs = reader.attributes();
+                    for(int i=0; i < attribs.count(); ++i) {
+                        m_tags["Heartbeat"].append(MPair<QString, QString>
+                                                (attribs.at(i).name().toString(),
+                                                       attribs.at(i).value().toString()));
+                    }
                 } else {
                     // dummy else for now
                     // later will support
@@ -87,6 +94,35 @@ bool RecorderConfig::loadFile(const QString &fname)
     }
     // safety check later !!!
     return true;
+}
+
+/// this is fast, non precision, no checking
+/// function to just load all tags and attribs
+/// do not use in release, jsut in tests
+/// \brief RecorderConfig::fastLoadFile
+/// \param fname
+///
+void RecorderConfig::fastLoadFile(const QString &fname)
+{
+    QFile file(fname);
+    if (file.open(QIODevice::ReadOnly)) {
+        QXmlStreamReader reader(file.readAll());
+        file.close();
+        while(!reader.atEnd()) {
+            reader.readNext();
+            if (reader.isStartElement()) {
+                QXmlStreamAttributes attribs = reader.attributes();
+                for(int i=0; i < attribs.count(); ++i) {
+                    std::cout << attribs.at(i).name().toString().toStdString() << std::endl;
+                    std::cout << attribs.at(i).value().toString().toStdString() << std::endl;
+                    m_tags[reader.name().toString()]
+                            .append(MPair<QString, QString>
+                                              (attribs.at(i).name().toString(),
+                                               attribs.at(i).value().toString()));
+                }
+            }
+        }
+    }
 }
 
 /// no check for now
