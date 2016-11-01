@@ -1,7 +1,19 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdint.h>
+
 namespace iz {
+
+// udp packet from the client device
+struct udp_data_t
+{
+    uint32_t    counter;
+    uint8_t     null_bytes[32];
+    uint16_t    data[80];
+};
+
+
 
 /// simple pair template
 /// to access key by value
