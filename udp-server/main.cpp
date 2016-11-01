@@ -1,7 +1,7 @@
 #include "sapplication.h"
 #include "daemon.h"
 #include "crypto.h"
-
+#include "utils/recorder-config.h"
 
 #ifdef WAV_TEST
 int main(int argc, char *argv[])
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     (void) argc;
     (void) argv;
     // configure is buggy parameters
-    iz::RecConfig conf("recorder.cfg");
+    iz::WavConfig conf("recorder.cfg");
     iz::Wav w("test.wav", &conf);
     w.open("wb");
     char garbage[64*1024]; // not initialzed on purpose
@@ -27,6 +27,16 @@ int main(int argc, char *argv[])
     (void) argv;
     Crypto c;
     c.dummy();
+    return 0;
+}
+#elif defined (XML_TEST)
+int main(int argc, char *argv[])
+{
+    (void) argc;
+    (void) argv;
+    iz::RecorderConfig cfg;
+    // assume we have argv
+    cfg.loadFile(QString(argv[1]));
     return 0;
 }
 #else
