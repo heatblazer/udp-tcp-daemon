@@ -71,7 +71,16 @@ protected:
 
 private:
     FILE*   m_file;
+#ifndef OLDVER
     WavConfig* m_conf;
+#else
+    int m_samplesPerSec;
+    int m_bitsPerSec;
+    int m_riffLen;
+    int m_fmtLen;
+    short m_audioFmt;
+    short m_chanCount;
+#endif
     char m_filename[64];
     int m_attribs[Params::SIZE];
 };
