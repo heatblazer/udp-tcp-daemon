@@ -11,7 +11,7 @@
 <Channels count="32" />
 
 <!-- setup for the wav header -->
-<!-- endiness: if require endian swap of the data -->
+<!-- endiness: (unused) if require endian swap of the data -->
 <!-- checksum -->
 <Wave samplesPerFrame="8000" 
      bitsPerSec="16"
