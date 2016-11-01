@@ -1,4 +1,5 @@
 QT += core
+QT += xml
 QT += network
 QT -= gui
 
@@ -16,7 +17,8 @@ SOURCES += main.cpp \
     wav-writer.cpp \
     sapplication.cpp \
     daemon.cpp \
-    config.cpp
+    config.cpp \
+    utils/recorder-config.cpp
 
 HEADERS += \
     server.h \
@@ -24,7 +26,8 @@ HEADERS += \
     wav-writer.h \
     sapplication.h \
     daemon.h \
-    config.h
+    config.h \
+    utils/recorder-config.h
 
 
 QMAKE_CFLAGS += \
@@ -42,7 +45,8 @@ QMAKE_CFLAGS += \
 
 # custom macrodefs for the tests
 QMAKE_CXXFLAGS += -DTEST \
-                    -DCRYPTO_TEST
+                  -DXML_TEST
+                   #-DCRYPTO_TEST
 
 
 # redefine a Makefile INSTALL_PROGRAM variable. We want to instal wit SUID bit
