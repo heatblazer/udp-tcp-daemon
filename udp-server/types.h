@@ -14,7 +14,7 @@ struct udp_data_t
 };
 
 
-
+/// maybe inherit QPair
 /// simple pair template
 /// to access key by value
 template <typename T1, typename T2> struct MPair
