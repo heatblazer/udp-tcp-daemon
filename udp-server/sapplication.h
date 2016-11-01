@@ -11,6 +11,9 @@
 
 namespace iz {
 
+// application will connect
+// server and recorder via
+// signals and slots
 class SApplication : public QCoreApplication
 {
 public:
