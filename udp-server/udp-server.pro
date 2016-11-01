@@ -14,23 +14,23 @@ TEMPLATE = app
 SOURCES += main.cpp \
     server.cpp \
     writer.cpp \
-    wav-writer.cpp \
     sapplication.cpp \
     config.cpp \
     utils/recorder-config.cpp \
     recorder.cpp \
-    unix/daemon.cpp
+    unix/daemon.cpp \
+    utils/wav-writer.cpp
 
 HEADERS += \
     server.h \
     writer.h \
-    wav-writer.h \
     sapplication.h \
     config.h \
     utils/recorder-config.h \
     types.h \
     recorder.h \
-    unix/daemon.h
+    unix/daemon.h \
+    utils/wav-writer.h
 
 
 QMAKE_CFLAGS += \
