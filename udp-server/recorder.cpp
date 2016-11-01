@@ -1,7 +1,7 @@
 #include "recorder.h"
 
 // wav library //
-#include "wav-writer.h"
+#include "utils/wav-writer.h"
 
 namespace iz {
 

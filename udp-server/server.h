@@ -11,7 +11,7 @@
 // custom //
 #include "types.h"
 #include "writer.h"
-#include "wav-writer.h"
+#include "utils/wav-writer.h"
 
 namespace iz {
 

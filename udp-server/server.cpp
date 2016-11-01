@@ -1,9 +1,9 @@
 // unix time //
 #include <time.h> // for time stamping
 
-#include "server.h"
-#include "wav-writer.h"
 #include "types.h"
+#include "server.h"
+#include "utils/wav-writer.h"
 
 
 static inline char* getTimeString()
