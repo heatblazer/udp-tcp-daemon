@@ -27,7 +27,8 @@ HEADERS += \
     sapplication.h \
     daemon.h \
     config.h \
-    utils/recorder-config.h
+    utils/recorder-config.h \
+    types.h
 
 
 QMAKE_CFLAGS += \
