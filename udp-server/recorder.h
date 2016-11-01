@@ -18,6 +18,7 @@ public:
     explicit Recorder(QObject* parent=nullptr);
     virtual ~Recorder(); // we may inherit it too
     bool init(void);
+    bool setupWavFiles();
 
 signals:
     void recordedBytes(uint32_t bytes);
@@ -29,7 +30,6 @@ private:
     // 32 chans for now
     // but will be configured outside
     Wav* m_wavs[32];
-    RecorderConfig m_config;
 };
 
 } // iz
