@@ -29,12 +29,13 @@ template <typename T1, typename T2> struct MPair
         m_type2 = ref.m_type2;
     }
 
-    T2* operator[] (const T1& t1)
+    T2& operator[] (const T1& t1)
     {
-        if (t1 == m_type1) {
-            return &m_type2;
+        if(t1 == m_type1) {
+            return m_type2;
         } else {
-            return nullptr;
+            static T2 none;
+            return none;
         }
     }
 
