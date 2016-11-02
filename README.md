@@ -19,6 +19,7 @@ A wav recorder over udp streams.
     4. Crypto project and lib for hashing or crypting is still a stub.
     5. GUI for the recorder is stub yet.
     6. I have to add Build/Install instructions and options to the BUILD section.
+    7. Daemon logging must support sys/log functionality. Not done yet.
 
 ## NOTES
     31.10.2016: now correctly records the samples from the incomming device.
