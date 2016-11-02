@@ -74,7 +74,7 @@ bool Wav::open(const char *perms)
 {
     m_file = fopen(m_filename, perms);
     if (m_file == NULL) {
-        return false;
+        return m_isOpened;
     }
 
     // we have not called setup! Load some defaults !
@@ -96,7 +96,7 @@ bool Wav::open(const char *perms)
         fflush(m_file);
     }
     m_isOpened = true;
-    return true;
+    return m_isOpened;
 }
 
 /// close the file and write
@@ -106,21 +106,24 @@ bool Wav::open(const char *perms)
 ///
 void Wav::close()
 {
-    int file_len = ftell(m_file);
+    if (m_isOpened) {
+        int file_len = ftell(m_file);
 
-    // get the len from the offset
-    int data_len = file_len - sizeof(struct wav_hdr_t);
+        // get the len from the offset
+        int data_len = file_len - sizeof(struct wav_hdr_t);
 
-    // move the fp to that position of the data len
-    fseek(m_file, sizeof(struct wav_hdr_t) - sizeof(int), SEEK_SET);
-    fwrite(&data_len, sizeof(data_len), 1, m_file);
-    // this writes riff len to the position in
-    // the header
-    int riff_len = file_len - 8;
-    fseek(m_file, 4, SEEK_SET);
-    fwrite(&riff_len, sizeof(riff_len), 1, m_file);
-    fclose(m_file);
-    m_isOpened = false;
+        // move the fp to that position of the data len
+        fseek(m_file, sizeof(struct wav_hdr_t) - sizeof(int), SEEK_SET);
+        fwrite(&data_len, sizeof(data_len), 1, m_file);
+        // this writes riff len to the position in
+        // the header
+        int riff_len = file_len - 8;
+        fseek(m_file, 4, SEEK_SET);
+        fwrite(&riff_len, sizeof(riff_len), 1, m_file);
+        fclose(m_file);
+        m_isOpened = false;
+    }
+    // else it`s not opened, nothing  to be done
 }
 
 bool Wav::isOpened() const
@@ -140,6 +143,16 @@ int Wav::write(short data[], int len)
     return (int)written;
 }
 
+///  new concept for setup a wav file before writing to it
+///  better
+/// \brief Wav::setupWave
+/// \param samples_per_sec
+/// \param bits_per_sec
+/// \param riff_len
+/// \param fmt_len
+/// \param audio_fmt
+/// \param chann_cnt
+///
 void Wav::setupWave(int samples_per_sec, int bits_per_sec, int riff_len,
                     int fmt_len, short audio_fmt, short chann_cnt)
 {
@@ -185,7 +198,7 @@ void Wav::setupWave(int samples_per_sec, int bits_per_sec, int riff_len,
 /// \param fmtlen
 /// \param audfmt
 /// \param chans
-///
+/// Old concept
 void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, short chans)
 {
     struct wav_hdr_t hdr;
