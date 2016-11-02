@@ -13,18 +13,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     server.cpp \
-    writer.cpp \
     sapplication.cpp \
     config.cpp \
     utils/recorder-config.cpp \
     recorder.cpp \
     unix/daemon.cpp \
     utils/wav-writer.cpp \
-    utils/qwave-writer.cpp
+    utils/qwave-writer.cpp \
+    utils/writer.cpp
 
 HEADERS += \
     server.h \
-    writer.h \
     sapplication.h \
     config.h \
     utils/recorder-config.h \
@@ -32,7 +31,8 @@ HEADERS += \
     recorder.h \
     unix/daemon.h \
     utils/wav-writer.h \
-    utils/qwave-writer.h
+    utils/qwave-writer.h \
+    utils/writer.h
 
 
 QMAKE_CFLAGS += \
