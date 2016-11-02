@@ -23,6 +23,7 @@ public:
     explicit SApplication(int& argc, char** argv);
     virtual ~SApplication();
     int init();
+    void deinit();
 
 private:
     Server m_server;
