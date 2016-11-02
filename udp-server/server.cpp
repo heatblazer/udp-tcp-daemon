@@ -11,7 +11,6 @@
 ///
 static inline char* getTimeString()
 {
-    (void) getTimeString;
     time_t current_time;
     struct tm * time_info;
     static char timeString[9];  // space for "HH:MM:SS\0"
@@ -40,9 +39,9 @@ Server::Server(QObject *parent)
 
     m_heartbeat.setInterval(1000);
     // now I have a pretty sine wave
-    m_recTime.setInterval(10000); // 10 seconds for test recording
-                                    // closes program - crashes for test
-
+    // 10 seconds for test recording
+    // closes program - crashes for test
+    m_recTime.setInterval(10000);
     connect(&m_heartbeat, SIGNAL(timeout()),
             this, SLOT(sendHeartbeat()));
 }
