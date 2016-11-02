@@ -23,13 +23,13 @@ SApplication::SApplication(int &argc, char **argv)
                   << std::endl;
         m_setup = false;
     } else {
+        // get opts from args and find the xml file
         for(int i=0; i < argc; ++i) {
             if (argv[i] == QLatin1String("-c") ||
                     argv[i] == QLatin1String("--config")) {
                 if (argv[i+1] != nullptr) {
                     // init config file
-                    m_setup = true;
-                    RecorderConfig::Instance().loadFile(QString(argv[i+1]));
+                    m_setup = RecorderConfig::Instance().loadFile(QString(argv[i+1]));
                 } else {
                     std::cout << "ERROR! Please provide a config file after ("
                               << argv[i] << ") argument! Terminating..."
@@ -46,6 +46,7 @@ SApplication::SApplication(int &argc, char **argv)
     // refer to a concrete stuff and can`t be casted to what
     // we need.
     iz::registerAppData(this);
+
 }
 
 SApplication::~SApplication()
@@ -54,7 +55,7 @@ SApplication::~SApplication()
 
 /// init all modules that we`ll need here
 /// \brief SApplication::init
-/// \return
+/// \return -1 if something is not OK in the initialization
 ///
 int SApplication::init()
 {
@@ -64,17 +65,17 @@ int SApplication::init()
 
         bool udp = false;
         quint16 port = 0;
-        const MPair<QString, QString>& pair_dup =
+        const MPair<QString, QString>& udp_attr =
                 RecorderConfig::Instance().getAttribPairFromTag("Network", "udp");
-        const MPair<QString, QString>& pair_port = RecorderConfig::Instance()
+        const MPair<QString, QString>& port_attr = RecorderConfig::Instance()
                 .getAttribPairFromTag("Network", "port");
         bool parese_res = false;
-        port = pair_port.m_type2.toInt(&parese_res);
+        port = port_attr.m_type2.toInt(&parese_res);
         if (!parese_res) {
             port = 1234U;
         }
 
-        if (pair_dup.m_type1 == "") {
+        if (udp_attr.m_type1 == "") {
             udp = false;
         } else {
             udp = true;
