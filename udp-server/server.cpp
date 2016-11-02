@@ -5,7 +5,10 @@
 #include "server.h"
 #include "utils/wav-writer.h"
 
-
+/// timestring
+/// \brief getTimeString
+/// \return
+///
 static inline char* getTimeString()
 {
     (void) getTimeString;
@@ -19,13 +22,13 @@ static inline char* getTimeString()
     return timeString;
 }
 
-
 namespace iz {
 
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket({nullptr}),
       m_hearSocket(nullptr),
+      // to be configured!
       m_logger(QString("%1-recorder.log").arg(getTimeString())),
       m_senderHost("127.0.0.1"), // default
       m_senderPort(1234)
