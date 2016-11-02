@@ -63,4 +63,10 @@ int SApplication::init()
     return 0;
 }
 
+/// stop all stuff
+void SApplication::deinit()
+{
+
+}
+
 } // iz

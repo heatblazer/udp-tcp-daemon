@@ -14,14 +14,7 @@ Recorder::Recorder(QObject *parent)
 // handle with care the opened files
 Recorder::~Recorder()
 {
-    // cleanup()
-    for(int i=0; i < 32; ++i) {
-        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            m_wavs[i]->close();
-            delete m_wavs[i];
-            m_wavs[i] = nullptr;
-        }
-    }
+
 }
 
 /// TODO: config file
@@ -38,6 +31,17 @@ bool Recorder::init()
     }
 
     return res;
+}
+
+void Recorder::deinit()
+{
+    for(int i=0; i < 32; ++i) {
+        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
+            m_wavs[i]->close();
+            delete m_wavs[i];
+            m_wavs[i] = nullptr;
+        }
+    }
 }
 
 /// setup all wav files for writing
