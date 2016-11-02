@@ -9,7 +9,6 @@ Writer::Writer(const QString &fname, QThread *parent)
       m_isRunning(false)
 {
     m_buffer.reserve(100);
-
     if (!m_file.isOpen()) {
         m_file.setFileName(fname);
         m_file.open(QIODevice::Append|QIODevice::ReadWrite);
