@@ -194,7 +194,7 @@ void Server::route(States state)
 ///
 void Server::sendHeartbeat()
 {
-#ifndef TEST
+#ifdef TEST
 #else
     m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
 #endif
