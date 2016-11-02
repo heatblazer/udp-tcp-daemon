@@ -133,7 +133,8 @@ void Recorder::record(const udp_data_t &data, uint32_t slot)
     // more precautions
     if (slot > 31 || m_wavs[slot] == nullptr ||
             !m_wavs[slot]->isOpened()) {
-        return; // out of max chan index
+        // out of max chan index or no instance or not opened
+        return;
     }
 
     // just calculate the data size based on the known
