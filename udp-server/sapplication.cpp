@@ -5,8 +5,8 @@
 
 namespace iz {
 
-
-/// TODO: add arguments to the program
+/// the inheritee of QApplication is
+/// responsible for initing all stuff
 /// \brief SApplication::SApplication
 /// \param argc
 /// \param argv
