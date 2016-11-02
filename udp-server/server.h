@@ -42,6 +42,8 @@ private slots:
 
     void route(States state);
     void sendHeartbeat();
+
+    // these two methods are to be removed later
     void writeToChannel(short data[], int len, int chan);
     void stopRecording();
 
