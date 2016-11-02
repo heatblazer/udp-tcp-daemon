@@ -1,5 +1,8 @@
 #include "recorder.h"
 
+// remove later
+#include <iostream>
+
 // wav library //
 #include "utils/wav-writer.h"
 
@@ -21,7 +24,7 @@ Recorder::~Recorder()
 /// will apply timestapm from the config later
 /// \brief Recorder::init
 /// \return true by default , false for future if something happens
-bool Recorder::init()
+bool Recorder::init(int hot_swap)
 {
     bool res = true;
     char buff[16]={0};
@@ -36,9 +39,13 @@ bool Recorder::init()
         res &= m_wavs[i]->open("wb");
     }
 
+    m_hotswap.setInterval(hot_swap);
+    connect(&m_hotswap, SIGNAL(timeout()),
+            this, SLOT(hotSwapFiles()));
+    m_hotswap.start();
     // remove after tests
     if (res) {
-        deinit(); // deleteme
+        //deinit(); // deleteme
     }
     return res;
 }
@@ -52,6 +59,7 @@ void Recorder::deinit()
             m_wavs[i] = nullptr;
         }
     }
+    m_hotswap.stop();
 }
 
 /// setup all wav files for writing
@@ -145,6 +153,15 @@ void Recorder::record(const udp_data_t &data, uint32_t slot)
             );
 
     m_wavs[slot]->write((short*)data.data, data_size);
+}
+
+/// stub
+/// \brief Recorder::hotSwapFiles
+/// hotswaps wave files with new ones when
+/// a given recorder time elapses
+void Recorder::hotSwapFiles()
+{
+    std::cout << "hotSwapFiles: stub!" << std::endl;
 }
 
 } // iz
