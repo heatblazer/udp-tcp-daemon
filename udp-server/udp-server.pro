@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     utils/recorder-config.cpp \
     recorder.cpp \
     unix/daemon.cpp \
-    utils/wav-writer.cpp
+    utils/wav-writer.cpp \
+    utils/qwave-writer.cpp
 
 HEADERS += \
     server.h \
@@ -30,7 +31,8 @@ HEADERS += \
     types.h \
     recorder.h \
     unix/daemon.h \
-    utils/wav-writer.h
+    utils/wav-writer.h \
+    utils/qwave-writer.h
 
 
 QMAKE_CFLAGS += \
