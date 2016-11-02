@@ -21,76 +21,83 @@ RecorderConfig::~RecorderConfig()
 
 bool RecorderConfig::loadFile(const QString &fname)
 {
+    bool res = false;
     QFile file(fname);
     if (file.open(QIODevice::ReadOnly)) {
         QXmlStreamReader reader(file.readAll());
         file.close();
-        while(!reader.atEnd()) {
-            reader.readNext();
-            if (reader.isStartElement()) {
-                // rework the logic here
-                if (reader.name() == "HotSwap") {
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["HotSwap"].append(MPair<QString, QString>(
-                                                     attribs.at(i).name().toString(),
-                                                      attribs.at(i).value().toString()));
-                    }
-                } else if (reader.name() == "Channels") {
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["Channels"].append(MPair<QString, QString>
+
+        if (reader.hasError()) {
+            res = false;
+        } else {
+            res = true;
+            while(!reader.atEnd()) {
+                reader.readNext();
+                if (reader.isStartElement()) {
+                    // rework the logic here
+                    if (reader.name() == "HotSwap") {
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["HotSwap"].append(MPair<QString, QString>(
+                                                         attribs.at(i).name().toString(),
+                                                          attribs.at(i).value().toString()));
+                        }
+                    } else if (reader.name() == "Channels") {
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["Channels"].append(MPair<QString, QString>
+                                                      (attribs.at(i).name().toString(),
+                                                           attribs.at(i).value().toString()));
+                        }
+
+                    } else if (reader.name() == "Wave") {
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["Wave"].append(MPair<QString, QString>
                                                   (attribs.at(i).name().toString(),
-                                                       attribs.at(i).value().toString()));
-                    }
+                                                           attribs.at(i).value().toString()));
 
-                } else if (reader.name() == "Wave") {
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["Wave"].append(MPair<QString, QString>
-                                              (attribs.at(i).name().toString(),
-                                                       attribs.at(i).value().toString()));
+                        }
 
+                    } else if (reader.name() == "Record"){
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["Record"].append(MPair<QString, QString>
+                                                    (attribs.at(i).name().toString(),
+                                                           attribs.at(i).value().toString()));
+                        }
+                    } else if (reader.name() == "Network"){
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["Network"].append(MPair<QString, QString>
+                                                    (attribs.at(i).name().toString(),
+                                                           attribs.at(i).value().toString()));
+                        }
+                    } else if (reader.name() == "Log") {
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["Log"].append(MPair<QString, QString>
+                                                    (attribs.at(i).name().toString(),
+                                                           attribs.at(i).value().toString()));
+                        }
+                    } else if (reader.name() == "Heartbeat") {
+                        QXmlStreamAttributes attribs = reader.attributes();
+                        for(int i=0; i < attribs.count(); ++i) {
+                            m_tags["Heartbeat"].append(MPair<QString, QString>
+                                                    (attribs.at(i).name().toString(),
+                                                           attribs.at(i).value().toString()));
+                        }
+                    } else {
+                        // dummy else for now
+                        // later will support
+                        // default config
                     }
-
-                } else if (reader.name() == "Record"){
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["Record"].append(MPair<QString, QString>
-                                                (attribs.at(i).name().toString(),
-                                                       attribs.at(i).value().toString()));
-                    }
-                } else if (reader.name() == "Network"){
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["Network"].append(MPair<QString, QString>
-                                                (attribs.at(i).name().toString(),
-                                                       attribs.at(i).value().toString()));
-                    }
-                } else if (reader.name() == "Log") {
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["Log"].append(MPair<QString, QString>
-                                                (attribs.at(i).name().toString(),
-                                                       attribs.at(i).value().toString()));
-                    }
-                } else if (reader.name() == "Heartbeat") {
-                    QXmlStreamAttributes attribs = reader.attributes();
-                    for(int i=0; i < attribs.count(); ++i) {
-                        m_tags["Heartbeat"].append(MPair<QString, QString>
-                                                (attribs.at(i).name().toString(),
-                                                       attribs.at(i).value().toString()));
-                    }
-                } else {
-                    // dummy else for now
-                    // later will support
-                    // default config
                 }
             }
         }
     }
     // safety check later !!!
-    return true;
+    return res;
 }
 
 /// this is fast, non precision, no checking
