@@ -1,20 +1,42 @@
 #include "daemon.h"
 #include "sapplication.h"
 
-// ansi C //
+// K&R //
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h> // exit() and atoi()
+#include <stdbool.h> // true/false
 
-// posix //
+// unix //
+#include <sys/stat.h> // chmod
+#include <sys/mount.h> // mout fs
+#include <sys/resource.h>
+#include <unistd.h> // cwd
 #include <fcntl.h>
+#include <errno.h>
 
 static FILE*  s_log = NULL;
 
 // all linux signals goes here
 static struct sigaction s_signals[32];
 
+/// this is to be reworked not to open it each time
+/// because it clobbers me to write messages that way
+/// but otherwise it does not works properly,
+/// I`ll find out why soon.
+/// \brief log_message
+/// \param msg
+///
 static void log_message(const char* msg)
 {
+    static bool one_time_flush = false;
+    if (!one_time_flush) {
+        s_log = fopen("daemon.log", "a+");
+        if (s_log != NULL) {
+            unlink("daemon.log");
+            one_time_flush = true;
+        }
+    }
     s_log = fopen("daemon.log", "a+");
     if (s_log == NULL) {
         return ;

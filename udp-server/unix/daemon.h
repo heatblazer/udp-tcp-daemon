@@ -1,22 +1,12 @@
 #ifndef DAEMON_H
 #define DAEMON_H
 
-// K&R //
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h> // exit() and atoi()
-#include <stdbool.h> // true/false
-
-// unix //
-#include <sys/stat.h> // chmod
-#include <sys/mount.h> // mout fs
-#include <sys/resource.h>
+// unix signals //
 #include <signal.h>
-#include <unistd.h> // cwd
-#include <fcntl.h>
-#include <errno.h>
 
 namespace iz {
+
+// need a forward decl to pass to the register app foo()
 class SApplication;
 
 typedef void (*sigHndl)(int, siginfo_t *,void*);
