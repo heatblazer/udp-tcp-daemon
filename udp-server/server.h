@@ -31,6 +31,7 @@ public:
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
     void init(bool udp=true, quint16 port=1234);
+    void deinit();
 
 signals:
     void dataReady(const udp_data_t& data, uint32_t slot);
@@ -43,10 +44,6 @@ private slots:
     void route(States state);
     void sendHeartbeat();
 
-    // these two methods are to be removed later
-    void writeToChannel(short data[], int len, int chan);
-    void stopRecording();
-
 private:
     union {
         QUdpSocket* udp;
@@ -58,8 +55,6 @@ private:
     QTimer      m_recTime;
     QHostAddress m_senderHost;
     quint16      m_senderPort;
-    Wav*   m_wavs[32]; // channels
-    static WavConfig* s_conf;
 
 };
 

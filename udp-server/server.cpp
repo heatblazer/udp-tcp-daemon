@@ -22,8 +22,6 @@ static inline char* getTimeString()
 
 namespace iz {
 
-WavConfig* Server::s_conf = new WavConfig("recorder.cfg");
-
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket({nullptr}),
@@ -32,10 +30,6 @@ Server::Server(QObject *parent)
       m_senderHost("127.0.0.1"), // default
       m_senderPort(1234)
 {
-    // explicitly null all
-    for(int i=0; i < 32; ++i) {
-        m_wavs[i] = nullptr;
-    }
 
     // pass the class to the static signal handlers
     m_logger.setObjectName("logger thread");
@@ -65,13 +59,6 @@ Server::~Server()
 ///
 void Server::init(bool udp, quint16 port)
 {
-
-    for(int i=0; i < 32; ++i) {
-        char fname[16]={0};
-        sprintf(fname, "%d.wav", i+1);
-        m_wavs[i] = new Wav(fname, s_conf);
-        m_wavs[i]->open("wb");
-    }
     if (udp) {
         m_socket.udp = new QUdpSocket(this);
         m_hearSocket = new QUdpSocket(this);
@@ -220,27 +207,9 @@ void Server::sendHeartbeat()
 #endif
 }
 
-void Server::writeToChannel(short data[], int len, int chan)
+void Server::deinit()
 {
-    if (chan < 0 || chan > 31) {
-        return ;
-    }
-    m_wavs[chan]->write(data, len);
-}
-
-/// handle the timeout by stop
-/// recording
-/// \brief Server::stopRecording
-///
-void Server::stopRecording()
-{
-    for (int i=0; i < 32; ++i) {
-        m_wavs[i]->close();
-    }
-
-#ifdef TEST
-    exit(0);
-#endif
+    // nothing for now
 }
 
 } // namespce iz
