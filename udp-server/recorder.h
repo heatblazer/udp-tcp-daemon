@@ -18,6 +18,7 @@ public:
     explicit Recorder(QObject* parent=nullptr);
     virtual ~Recorder(); // we may inherit it too
     bool init(void);
+    void deinit();
     bool setupWavFiles();
 
 signals:
