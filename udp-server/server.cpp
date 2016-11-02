@@ -200,6 +200,11 @@ void Server::sendHeartbeat()
     m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
 }
 
+/// deinitialze the server, maybe some unfinished
+/// task to be finalized here, or to be registered in
+/// the daemon, will left it a TODO
+/// \brief Server::deinit
+///
 void Server::deinit()
 {
     // nothing for now

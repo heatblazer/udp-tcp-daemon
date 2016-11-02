@@ -46,6 +46,8 @@ SApplication::SApplication(int &argc, char **argv)
 
 SApplication::~SApplication()
 {
+    // if something bad happens, the dtor won`t be called
+    // in daemon logic we have a handler to do the deinit procedure
 }
 
 /// init all modules that we`ll need here
@@ -75,7 +77,7 @@ int SApplication::init()
         } else {
             udp = true;
         }
-
+        // they need not to depend each other
         m_recorder.init();
         m_server.init(udp, port);
         // connect rec to server
