@@ -4,16 +4,14 @@
         xsi:noNamespaceSchemaLocation="../schema/recorder-config.xsd"
         version="1.0" >
         <!--the root element-->
-<!-- interval to save wav files and to start 
-     the new ones -->
+
+<!-- done: setups the hotswap interval from here -->
 <HotSwap interval="10000" />  
 
 <!-- unused for now -->
 <Channels count="32" />
 
-<!-- setup for the wav header -->
-<!-- endiness: (unused) if require endian swap of the data -->
-<!-- checksum -->
+<!-- done: setups wav headers from here -->
 <Wave samplesPerFrame="8000" 
      bitsPerSec="16"
      fmtLength="16"
@@ -28,15 +26,18 @@
     hasNumericConvention="true"
     />
 
+<!-- done: setups transport from here -->
 <Network transport="udp"
          port="1234" 
          />
+
 <!-- name of file, path and timestamp appended -->
 <Log
     name="recorder.log"
     path="/logs/"
     time="enabled"
 />
+
 <!-- if we want to report to a host a hearbeat -->
 <Heartbeat
     timeout="2000"
