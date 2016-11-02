@@ -30,7 +30,7 @@ public:
 
     explicit Server(QObject* parent=nullptr);
     virtual ~Server();
-    void init(bool udp=true, quint16 port=1234);
+    void init(bool udp=true, quint16 port=1234, bool send_heart=false);
     void deinit();
 
 signals:
@@ -55,6 +55,7 @@ private:
     QTimer      m_recTime;
     QHostAddress m_senderHost;
     quint16      m_senderPort;
+    bool        m_sendHeart; // inspired by...
 
 };
 

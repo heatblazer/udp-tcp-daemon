@@ -27,10 +27,11 @@ Server::Server(QObject *parent)
     : QObject(parent),
       m_socket({nullptr}),
       m_hearSocket(nullptr),
-      // to be configured!
+      // to be configured
       m_logger(QString("%1-recorder.log").arg(getTimeString())),
       m_senderHost("127.0.0.1"), // default
-      m_senderPort(1234)
+      m_senderPort(1234),
+      m_sendHeart(false)
 {
 
     // pass the class to the static signal handlers
@@ -57,8 +58,9 @@ Server::~Server()
 /// \param udp maybe and tcp later
 /// \param port
 ///
-void Server::init(bool udp, quint16 port)
+void Server::init(bool udp, quint16 port, bool send_heart)
 {
+    m_sendHeart = send_heart;
     if (udp) {
         m_socket.udp = new QUdpSocket(this);
         m_hearSocket = new QUdpSocket(this);
@@ -79,7 +81,9 @@ void Server::init(bool udp, quint16 port)
             m_logger.write(msg);
             m_logger.write(msg2);
             // start timers
-            m_heartbeat.start();
+            if (m_sendHeart) {
+                m_heartbeat.start();
+            }
             m_recTime.start();
 
         } else {
@@ -193,10 +197,7 @@ void Server::route(States state)
 ///
 void Server::sendHeartbeat()
 {
-#ifdef TEST
-#else
     m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
-#endif
 }
 
 void Server::deinit()
