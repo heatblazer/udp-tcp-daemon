@@ -130,7 +130,7 @@ void RecorderConfig::fastLoadFile(const QString &fname)
 /// \param tag - tag name
 /// \return  list of attributes
 ///
-QList<MPair<QString, QString> > &RecorderConfig::getTagPairs(const QString &tag)
+PairList &RecorderConfig::getTagPairs(const QString &tag)
 {
     return m_tags[tag];
 }
