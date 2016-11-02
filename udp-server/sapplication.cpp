@@ -16,36 +16,31 @@ SApplication::SApplication(int &argc, char **argv)
       m_setup(false)
 {
     // TODO: use other logic to specify xml file from argc/argv
-    if (argc <= 1) {
-        std::cout << "ERROR!\n"
-                  << "program -c <configfile>\n"
-                  << "program -d"
-                  << std::endl;
-        m_setup = false;
-    } else {
         // get opts from args and find the xml file
-        for(int i=0; i < argc; ++i) {
-            if (argv[i] == QLatin1String("-c") ||
-                    argv[i] == QLatin1String("--config")) {
-                if (argv[i+1] != nullptr) {
-                    // init config file
-                    m_setup = RecorderConfig::Instance().loadFile(QString(argv[i+1]));
-                } else {
-                    std::cout << "ERROR! Please provide a config file after ("
-                              << argv[i] << ") argument! Terminating..."
-                              << std::endl;
-                    m_setup = false;
-                }
+    for(int i=0; i < argc; ++i) {
+        if (argv[i] == QLatin1String("-c") ||
+                argv[i] == QLatin1String("--config")) {
+            if (argv[i+1] != nullptr) {
+                // init config file
+                m_setup = RecorderConfig::Instance().loadFile(QString(argv[i+1]));
+            } else {
+                std::cout << "ERROR! Please provide a config file after ("
+                          << argv[i] << ") argument! Terminating..."
+                          << std::endl;
+                m_setup = false;
             }
         }
     }
+
     // daemon registration of this app to be used in the
     // future signal handlers and do some stuff there
     // I`ve writen a note why a static global instance is needed
     // for this, since sigactions calbback`s user data does not
     // refer to a concrete stuff and can`t be casted to what
     // we need.
-    iz::registerAppData(this);
+    if (m_setup) {
+        iz::registerAppData(this);
+    }
 
 }
 

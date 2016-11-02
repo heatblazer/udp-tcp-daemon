@@ -45,6 +45,12 @@ int main(int argc, char *argv[])
                break;
            }
         }
+    } else {
+        std::cout << "ERROR!\n"
+                  << "program -c <path to conf file>\n"
+                  << "program --config <path to conf file>\n"
+                  << std::endl;
+        exit(4);
     }
 
     iz::SApplication app(argc, argv);
