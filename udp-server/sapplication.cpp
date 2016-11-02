@@ -39,6 +39,12 @@ SApplication::SApplication(int &argc, char **argv)
             }
         }
     }
+    // daemon registration of this app to be used in the
+    // future signal handlers and do some stuff there
+    // I`ve writen a note why a static global instance is needed
+    // for this, since sigactions calbback`s user data does not
+    // refer to a concrete stuff and can`t be casted to what
+    // we need.
     iz::registerAppData(this);
 }
 
