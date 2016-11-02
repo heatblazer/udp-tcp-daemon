@@ -69,28 +69,28 @@ bool Recorder::setupWavFiles()
         bool parse_result = false; // careful when converting to int
         MPair<QString, QString> it = attribs.at(i);
         if (it.m_type1 == "samplesPerFrame") {
-            samples_per_sec = it[it.m_type1]->toInt(&parse_result);
+            samples_per_sec = it[it.m_type1].toInt(&parse_result);
             // failsafe
             if (!parse_result) {
                 samples_per_sec = 8000;
             }
         } else if (it.m_type1 == "bitsPerSec") {
-            bits_per_sec = it[it.m_type1]->toInt(&parse_result);
+            bits_per_sec = it[it.m_type1].toInt(&parse_result);
             if (!parse_result) {
                 bits_per_sec = 16;
             }
         } else if (it.m_type1 == "fmtLength") {
-            fmt_len = it[it.m_type1]->toInt(&parse_result);
+            fmt_len = it[it.m_type1].toInt(&parse_result);
             if (!parse_result) {
                 fmt_len = 16;
             }
         } else if (it.m_type1 == "audioFormat") {
-            audio_fmt = it[it.m_type1]->toShort(&parse_result);
+            audio_fmt = it[it.m_type1].toShort(&parse_result);
             if (!parse_result) {
                 audio_fmt = 1;
             }
         } else if (it.m_type1 == "channels") {
-            chann_cnt = it[it.m_type1]->toShort(&parse_result);
+            chann_cnt = it[it.m_type1].toShort(&parse_result);
             if (!parse_result) {
                 chann_cnt = 1;
             }

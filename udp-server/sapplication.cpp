@@ -55,6 +55,7 @@ int SApplication::init()
     if (!m_setup) {
         return -1;
     } else {
+
         bool udp = false;
         quint16 port = 0;
         const MPair<QString, QString>& pair_dup =
