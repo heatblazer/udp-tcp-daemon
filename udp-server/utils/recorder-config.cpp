@@ -135,6 +135,20 @@ PairList &RecorderConfig::getTagPairs(const QString &tag)
     return m_tags[tag];
 }
 
+const MPair<QString, QString>
+&RecorderConfig::getAttribPairFromTag(const QString &tag, const QString& attrib)
+{
+    PairList& l = getTagPairs(tag);
+    for(int i=0; i < l.count(); ++i) {
+        if (l.at(i).m_type1.compare(attrib)) {
+            return l.at(i);
+        }
+    }
+    // return some error static object
+    static MPair<QString, QString> none("", "");
+    return none;
+}
+
 RecorderConfig &RecorderConfig::Instance()
 {
     if (s_inst == nullptr) {
