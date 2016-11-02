@@ -94,8 +94,10 @@ int main(int argc, char *argv[])
     }
 
     iz::SApplication app(argc, argv);
-    iz::registerAppData(&app);
-    app.init();
+    int res = app.init();
+    if (res != 0) {
+        exit(4);
+    }
     return app.exec();
 }
 #endif
