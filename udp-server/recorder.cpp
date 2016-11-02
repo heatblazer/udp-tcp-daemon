@@ -29,6 +29,8 @@ bool Recorder::init()
         sprintf(buff, "%d.wav", i+1);
         m_wavs[i] = new Wav(buff);
     }
+    // open files when everything is ok and setup
+
 
     return res;
 }
@@ -94,8 +96,10 @@ bool Recorder::setupWavFiles()
             if (!parse_result) {
                 chann_cnt = 1;
             }
+        } else if (it.m_type1 == "endiness"){
+            // if we require endian swap for the data
         } else {
-            // nothing
+            // misra else - unused
         }
     }
 
