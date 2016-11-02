@@ -1,10 +1,28 @@
 #include "daemon.h"
 #include "sapplication.h"
-#include <fstream>
 
-static std::ofstream    s_logFile("daemon.log", std::ofstream::out);
+// ansi C //
+#include <stdio.h>
+#include <string.h>
+
+// posix //
+#include <fcntl.h>
+
+static FILE*  s_log = NULL;
+
 // all linux signals goes here
 static struct sigaction s_signals[32];
+
+static void log_message(const char* msg)
+{
+    s_log = fopen("daemon.log", "a+");
+    if (s_log == NULL) {
+        return ;
+    }
+    fwrite(msg, strlen(msg), 1, s_log);
+    fflush(s_log);
+    fclose(s_log);
+}
 
 namespace iz {
 
@@ -18,10 +36,14 @@ static SApplication* g_application = nullptr;
 ///
 static void testSig(int a, siginfo_t *info ,void* usr_data)
 {
+    (void) a;
     (void) usr_data;
     (void) info;
-    s_logFile << "args: " << a << std::endl;
-    s_logFile.close();
+    if (g_application != NULL) {
+        log_message("Deinit SApplication... \n");
+        g_application->deinit();
+    }
+
     exit(10); // test exit
 }
 
@@ -29,6 +51,7 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 
 void daemonize()
 {
+
     umask(0);
     struct rlimit rl;
     pid_t pid;
@@ -77,18 +100,14 @@ void daemonize()
     // get current dir
     getcwd(pwd, sizeof(pwd)/sizeof(pwd[0]));
     // set to current dir
-
+    char msg[64]={0};
     if (chdir(pwd) < 0) {
-        s_logFile << "Could not set: ("
-                  << pwd
-                  << " )as cwd!\n" << std::endl;
+        sprintf(msg, "Could not set: (%s) as cwd!\n", pwd);
         exit(3);
     } else {
-        s_logFile << "Set ("
-                  << pwd
-                   <<  ") as cwd!" << std::endl;
-
+        sprintf(msg, "Setup (%s) as cwd!\n", pwd);
     }
+    log_message(msg);
 
     if (rl.rlim_max == RLIM_INFINITY) {
         rl.rlim_max = 1024;
@@ -129,6 +148,9 @@ void attachSignalHandler(sigHndl hnd, int slot)
             exit(3);
         } else {
             sigaction(slot, &s_signals[slot], NULL);
+            char msg[64]={0};
+            sprintf(msg, "Registered SIG: (%d) to be handled!\n", slot);
+            log_message(msg);
         }
     }
 }
@@ -146,6 +168,7 @@ void registerAppData(SApplication *data)
 {
     if(data != nullptr) {
         g_application = data;
+        log_message("Registered SApplication to the signal manager!\n");
     }
 }
 
