@@ -42,8 +42,6 @@ Server::Server(QObject *parent)
 
     connect(&m_heartbeat, SIGNAL(timeout()),
             this, SLOT(sendHeartbeat()));
-    connect(&m_recTime, SIGNAL(timeout()),
-            this, SLOT(stopRecording()));
 }
 
 Server::~Server()
@@ -136,15 +134,7 @@ void Server::readyReadUdp()
                 m_logger.write(QByteArray(msg));
                 pktcnt = udp->counter; // synch back
             }
-// just move the writing logic to the recorder
-// delete the ifdef
-#if 0
-            // we can now write data to channels ...
-            // write data in this section
-            // organize bytes and write them to the files
-            // TODO:
-            m_wavs[0]->write((short*)udp->data, 80);
-#endif
+
             // will use a new logic emit the udp struct
             // to the recorder, so now we don`t need
             // to depend each other
