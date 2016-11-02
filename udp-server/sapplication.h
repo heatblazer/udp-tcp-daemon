@@ -28,6 +28,7 @@ private:
     Server m_server;
     Recorder m_recorder;
     QString m_recConf;
+    bool m_setup;
 };
 
 } // iz
