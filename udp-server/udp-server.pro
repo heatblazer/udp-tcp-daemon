@@ -49,7 +49,7 @@ QMAKE_CFLAGS += \
     -std=gnu11
 
 # custom macrodefs for the tests
-QMAKE_CXXFLAGS += -DTEST
+# QMAKE_CXXFLAGS += -DTEST
                   #-DXML_TEST
                    #-DCRYPTO_TEST
 
