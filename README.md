@@ -5,7 +5,6 @@ A wav recorder over udp streams.
 
 
 ## Build
-   TODO: I have to create a build/install options.
    Added the dummy project for the gui interface of the recorder.
 
 ## Usage
@@ -19,6 +18,7 @@ A wav recorder over udp streams.
     3. I have to provide install options and "install howto" in build section.
     4. Crypto project and lib for hashing or crypting is still a stub.
     5. GUI for the recorder is stub yet.
+    6. I have to add Build/Install instructions and options to the BUILD section.
 
 ## NOTES
     31.10.2016: now correctly records the samples from the incomming device.
