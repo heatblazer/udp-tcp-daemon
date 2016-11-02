@@ -5,7 +5,7 @@ A wav recorder over udp streams.
 
 
 ## Build
-   TODO: I have to create a build/install options
+   TODO: I have to create a build/install options.
    Added the dummy project for the gui interface of the recorder.
 
 ## Usage
