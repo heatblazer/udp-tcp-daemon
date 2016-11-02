@@ -30,8 +30,16 @@ bool Recorder::init()
         m_wavs[i] = new Wav(buff);
     }
     // open files when everything is ok and setup
+    res &= setupWavFiles();
 
+    for(int i=0; i < 32; ++i) {
+        res &= m_wavs[i]->open("wb");
+    }
 
+    // remove after tests
+    if (res) {
+        deinit(); // deleteme
+    }
     return res;
 }
 
