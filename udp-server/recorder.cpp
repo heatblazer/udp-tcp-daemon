@@ -42,10 +42,8 @@ bool Recorder::init(int hot_swap)
     m_hotswap.setInterval(hot_swap);
     connect(&m_hotswap, SIGNAL(timeout()),
             this, SLOT(hotSwapFiles()));
-    m_hotswap.start();
-    // remove after tests
     if (res) {
-        //deinit(); // deleteme
+        m_hotswap.start();
     }
     return res;
 }

@@ -10,7 +10,7 @@
 
 // custom //
 #include "types.h"
-#include "writer.h"
+#include "utils/writer.h"
 #include "utils/wav-writer.h"
 
 namespace iz {
