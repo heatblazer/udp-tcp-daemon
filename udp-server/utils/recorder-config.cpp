@@ -28,7 +28,6 @@ bool RecorderConfig::loadFile(const QString &fname)
         while(!reader.atEnd()) {
             reader.readNext();
             if (reader.isStartElement()) {
-                std::cout << reader.name().toString().toStdString() << std::endl;
                 // rework the logic here
                 if (reader.name() == "HotSwap") {
                     QXmlStreamAttributes attribs = reader.attributes();
@@ -40,8 +39,6 @@ bool RecorderConfig::loadFile(const QString &fname)
                 } else if (reader.name() == "Channels") {
                     QXmlStreamAttributes attribs = reader.attributes();
                     for(int i=0; i < attribs.count(); ++i) {
-                        std::cout << attribs.at(i).name().toString().toStdString() << std::endl;
-                        std::cout << attribs.at(i).value().toString().toStdString() << std::endl;
                         m_tags["Channels"].append(MPair<QString, QString>
                                                   (attribs.at(i).name().toString(),
                                                        attribs.at(i).value().toString()));
@@ -113,8 +110,6 @@ void RecorderConfig::fastLoadFile(const QString &fname)
             if (reader.isStartElement()) {
                 QXmlStreamAttributes attribs = reader.attributes();
                 for(int i=0; i < attribs.count(); ++i) {
-                    std::cout << attribs.at(i).name().toString().toStdString() << std::endl;
-                    std::cout << attribs.at(i).value().toString().toStdString() << std::endl;
                     m_tags[reader.name().toString()]
                             .append(MPair<QString, QString>
                                               (attribs.at(i).name().toString(),
