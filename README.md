@@ -9,8 +9,10 @@ A wav recorder over udp streams.
 
 ## Usage
 
-    $ ./udp-server -d # as daemon
-    $ ./udp-server    # as normal app
+    $ ./udp-server -d -c <path-to-conf-file>        # as daemon
+    $ ./udp-server -c <path-to-conf-file>           # as normal app
+    $ ./udp-server --config <path-to-conf-file>     # as normal app
+
 
 ## TODO
     1. I have to remove the udp-client project when I am done with tests.
