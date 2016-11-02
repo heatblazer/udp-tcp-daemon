@@ -49,6 +49,7 @@ private:
         QUdpSocket* udp;
         QTcpSocket* tcp;
     } m_socket;
+
     QUdpSocket* m_hearSocket;
     Writer      m_logger;
     QTimer      m_heartbeat;
@@ -56,6 +57,11 @@ private:
     QHostAddress m_senderHost;
     quint16      m_senderPort;
     bool        m_sendHeart; // inspired by...
+
+    // for the hotswap I may need an auxilary buffer
+    // to store the udp packets while closing and creating
+    // the new wav files, so nothing will be lost, I`ll do
+    // that logic later.
 
 };
 
