@@ -49,11 +49,18 @@ void Client::init()
 
 void Client::transmit()
 {
-    uint16_t* buff = (uint16_t*) sine_gen(PACK_SIZE);
+    static uint32_t counter = 0;
+    uint16_t* buff = (uint16_t*) sine_gen(32);
     if (buff) {
         std::cout << "Transmiting...\n";
-        memcpy(m_packet.data, buff, PACK_SIZE);
-        p_socket->write(m_packet.data, PACK_SIZE);
+        for(int i=0; i < 4; ++i) {
+            memcpy(m_packet.packet.data[i], buff, 32);
+        }
+        memset(m_packet.packet.null_bytes, 0, sizeof(m_packet.packet.null_bytes)
+                                                / sizeof(m_packet.packet.null_bytes[0]));
+
+        m_packet.packet.counter = ++counter;
+        p_socket->write(m_packet.data, sizeof(udp_data_t));
         free(buff);
     } else {
         std::cout << "No data.. \n";
