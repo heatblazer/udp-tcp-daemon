@@ -24,7 +24,8 @@ namespace iz {
 
 Client::Client(QObject *parent)
     : QObject(parent),
-      m_addres("192.168.32.94")
+      m_addres("127.0.0.1")
+//      m_addres("192.168.32.94")
 {
     m_timer.setInterval(500);
     connect(&m_timer, SIGNAL(timeout()),
@@ -48,8 +49,15 @@ void Client::init()
 
 void Client::transmit()
 {
-    std::cout << "Transmiting...\n";
-    p_socket->write(m_packet.data, sizeof(m_packet.data)/sizeof(m_packet.data[0]));
+    uint16_t* buff = (uint16_t*) sine_gen(PACK_SIZE);
+    if (buff) {
+        std::cout << "Transmiting...\n";
+        memcpy(m_packet.data, buff, PACK_SIZE);
+        p_socket->write(m_packet.data, PACK_SIZE);
+        free(buff);
+    } else {
+        std::cout << "No data.. \n";
+    }
 }
 
 

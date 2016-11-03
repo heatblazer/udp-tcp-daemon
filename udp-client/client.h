@@ -7,13 +7,13 @@
 #include <QUdpSocket>
 
 #include <stdint.h>
-
+#define PACK_SIZE 32 * 4
 namespace iz {
 struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
-    uint16_t    data[80];
+    uint16_t    data[PACK_SIZE];
 };
 class Client : public QObject
 {
