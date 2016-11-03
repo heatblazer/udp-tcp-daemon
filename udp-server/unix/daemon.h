@@ -1,7 +1,7 @@
 #ifndef DAEMON_H
 #define DAEMON_H
 
-// unix signals //
+// Daemon signals //
 #include <signal.h>
 
 namespace iz {
@@ -10,11 +10,18 @@ namespace iz {
 class SApplication;
 
 typedef void (*sigHndl)(int, siginfo_t *,void*);
+class Daemon {
+public:
 
-extern void daemonize();
-extern void attachSignalHandler(sigHndl hnd, int slot);
-extern void registerAppData(SApplication* data);
+    static void daemonize();
+    static void attachSignalHandler(sigHndl hnd, int slot);
+    static void registerAppData(void* data);
 
+private:
+    Daemon();
+    ~Daemon();
+
+};
 } // iz
 
 #endif // DAEMON_H

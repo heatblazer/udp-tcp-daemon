@@ -9,6 +9,11 @@ namespace iz {
 int SApplication::m_fdHUP = -1;
 int SApplication::m_fdTERM = -1;
 
+void SApplication::writeToSocket(const char *data)
+{
+    (void) data;
+}
+
 /// the inheritee of QApplication is
 /// responsible for initing all stuff
 /// \brief SApplication::SApplication
@@ -36,14 +41,18 @@ SApplication::SApplication(int &argc, char **argv)
         }
     }
 
+    // old version:
     // daemon registration of this app to be used in the
     // future signal handlers and do some stuff there
     // I`ve writen a note why a static global instance is needed
     // for this, since sigactions calbback`s user data does not
     // refer to a concrete stuff and can`t be casted to what
     // we need.
+    // new version:
+    // will use socket pair to connect damon to the sapplication
+    // and interprocess comunicate between it
     if (m_setup) {
-        iz::registerAppData(this);
+        Daemon::registerAppData(this);
     }
 
 }
@@ -81,12 +90,14 @@ int SApplication::init()
         } else {
             udp = true;
         }
+
         // they need not to depend each other
         m_recorder.init();
         m_server.init(udp, port);
         // connect rec to server
         connect(&m_server, SIGNAL(dataReady(udp_data_t, uint32_t)),
                 &m_recorder, SLOT(record(udp_data_t,uint32_t)));
+
     }
     return 0;
 }

@@ -1,4 +1,4 @@
-// unix time //
+// Daemon time //
 #include <time.h> // for time stamping
 
 #include "types.h"

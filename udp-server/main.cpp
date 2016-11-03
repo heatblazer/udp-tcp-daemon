@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
            opts = getOpts(argv[i]);
            switch(opts) {
            case 1: // and only for now
-               iz::daemonize();
+               iz::Daemon::daemonize();
                break;
            case 0:
            default:

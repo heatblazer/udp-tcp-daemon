@@ -58,7 +58,7 @@ public:
                             int fmt_len=16, short audio_fmt=1,  short chann_cnt=1);
 
 public:
-    /// using UNIX fwrite
+    /// using Daemon fwrite
     /// \brief write_hdr
     /// writes a proper wav header, has
     /// set default parameters

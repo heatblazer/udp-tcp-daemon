@@ -7,7 +7,7 @@
 #include <stdlib.h> // exit() and atoi()
 #include <stdbool.h> // true/false
 
-// unix //
+// Daemon //
 #include <sys/stat.h> // chmod
 #include <sys/mount.h> // mout fs
 #include <sys/resource.h>
@@ -71,7 +71,7 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 
 
 
-void daemonize()
+void Daemon::daemonize()
 {
 
     umask(0);
@@ -157,7 +157,7 @@ void daemonize()
 /// \param hnd
 /// \param slot
 ///
-void attachSignalHandler(sigHndl hnd, int slot)
+void Daemon::attachSignalHandler(sigHndl hnd, int slot)
 {
     if (slot < 1 || slot > 31) {
         // out of index signal mapping
@@ -186,10 +186,10 @@ void attachSignalHandler(sigHndl hnd, int slot)
 /// \brief registerAppData
 /// \param data
 ///
-void registerAppData(SApplication *data)
+void Daemon::registerAppData(void *data)
 {
     if(data != nullptr) {
-        g_application = data;
+        g_application = (SApplication*)data;
         log_message("Registered SApplication to the signal manager!\n");
     }
 }
