@@ -2,6 +2,7 @@
 #define RECORDER_H
 
 // qt - paretn //
+#include <QFileSystemWatcher> // monitor wav files for size for the hotswap
 #include <QObject>
 #include <QTimer> // hotswap interval
 
@@ -21,6 +22,9 @@ public:
     // will use later the num_channels when concept is more clear
     bool init(int hot_swap=10000 /*,int num_chans=32*/);
     void deinit();
+
+
+private:
     bool setupWavFiles();
 
 signals:
