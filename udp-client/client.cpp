@@ -50,10 +50,10 @@ void Client::init()
 void Client::transmit()
 {
     static uint32_t counter = 0;
-    uint16_t* buff = (uint16_t*) sine_gen(32);
+    uint16_t* buff = (uint16_t*) sine_gen(128);
     if (buff) {
         std::cout << "Transmiting...\n";
-        memcpy(m_packet.packet.data, buff, 32 * 4);
+        memcpy(m_packet.packet.data, buff, 128);
         memset(m_packet.packet.null_bytes, 0, sizeof(m_packet.packet.null_bytes)
                                                 / sizeof(m_packet.packet.null_bytes[0]));
 
