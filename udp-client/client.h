@@ -29,7 +29,11 @@ public slots:
 private:
     QTimer m_timer;
     QUdpSocket* p_socket;
-    udp_data_t m_packet;
+    QHostAddress m_addres;
+    union {
+        udp_data_t packet;
+        char data[sizeof(udp_data_t)];
+    } m_packet;
 };
 
 }
