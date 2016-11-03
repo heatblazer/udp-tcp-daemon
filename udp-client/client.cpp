@@ -53,9 +53,7 @@ void Client::transmit()
     uint16_t* buff = (uint16_t*) sine_gen(32);
     if (buff) {
         std::cout << "Transmiting...\n";
-        for(int i=0; i < 4; ++i) {
-            memcpy(m_packet.packet.data[i], buff, 32);
-        }
+        memcpy(m_packet.packet.data, buff, 32 * 4);
         memset(m_packet.packet.null_bytes, 0, sizeof(m_packet.packet.null_bytes)
                                                 / sizeof(m_packet.packet.null_bytes[0]));
 
