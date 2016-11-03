@@ -32,6 +32,8 @@ A wav recorder over udp streams.
     02.11.2016: improved configure of the application.
     02.11.2016: added QWav class based on QFile for writing WAV, unimplemented.
     02.11.2016: fixed a bug with the daemon recorder. But still more to be done.
+    03.11.2016: added 24 hour test to the server, with custom client.
+    03.11.2016: passed an 1 hour record test with packet sent at 1000 msec.
 
 ***
 <ilianzapryanov@abv.bg>
