@@ -146,11 +146,12 @@ void Recorder::record(const udp_data_t &data, uint32_t slot)
     // just calculate the data size based on the known
     // for now udp header, for future we may change the size
     // but if the udp header remains, the above calc will be ok
-    uint32_t data_size = (sizeof(data) -
-            (sizeof(data.counter) + (sizeof(data.null_bytes)/sizeof(data.null_bytes[0])))
-            );
+   for(int i=0; i < 32; ++i) {
+        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
+            m_wavs[i]->write((short*)data.data, 32 * 4);
+        }
+    }
 
-    m_wavs[slot]->write((short*)data.data, data_size);
 }
 
 /// stub
