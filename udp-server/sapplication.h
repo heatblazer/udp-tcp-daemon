@@ -24,6 +24,10 @@ public:
     virtual ~SApplication();
     int init();
     void deinit();
+public:
+    // the socket concpet for the signal handlers
+    static int m_fdHUP;
+    static int m_fdTERM;
 
 private:
     Server m_server;

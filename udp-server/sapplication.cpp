@@ -5,6 +5,10 @@
 
 namespace iz {
 
+
+int SApplication::m_fdHUP = -1;
+int SApplication::m_fdTERM = -1;
+
 /// the inheritee of QApplication is
 /// responsible for initing all stuff
 /// \brief SApplication::SApplication
