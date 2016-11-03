@@ -6,8 +6,15 @@
 #include <QObject>
 #include <QUdpSocket>
 
-namespace iz {
+#include <stdint.h>
 
+namespace iz {
+struct udp_data_t
+{
+    uint32_t    counter;
+    uint8_t     null_bytes[32];
+    uint16_t    data[80];
+};
 class Client : public QObject
 {
     Q_OBJECT
@@ -22,7 +29,7 @@ public slots:
 private:
     QTimer m_timer;
     QUdpSocket* p_socket;
-    char    m_data[196];
+    udp_data_t m_packet;
 };
 
 }

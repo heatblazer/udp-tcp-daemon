@@ -6,7 +6,8 @@ DISTFILES += assets/1.wav \
         packet_parser.c \ # hint to capture utilities
         server_udp.c  \  # hint for unix sockerts
         recorder-config.xml \# the config file
-        rfc2104.txt
+        rfc2104.txt \
+        valgrind.png
 
 SUBDIRS += \
     udp-server \

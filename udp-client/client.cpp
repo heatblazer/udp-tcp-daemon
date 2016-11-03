@@ -10,9 +10,10 @@ namespace iz {
 Client::Client(QObject *parent)
     : QObject(parent)
 {
-    m_timer.setInterval(2000);
+    m_timer.setInterval(500);
     connect(&m_timer, SIGNAL(timeout()),
             this, SLOT(transmit()));
+    m_addres("192.168.32.94");
 }
 
 Client::~Client()
@@ -22,38 +23,18 @@ Client::~Client()
 void Client::init()
 {
     p_socket = new QUdpSocket(this);
-#ifdef LOCAL_TEST
-
-#else
-    p_socket->connectToHost(QHostAddress("192.168.32.154"),
+    p_socket->connectToHost(m_addres,
                             1234, QIODevice::WriteOnly);
-#endif
-
-
-    FILE* fp = fopen("assets/1.wav", "rb");
-    if (!fp) {
-        std::cout << "Error opening wav file!" << std::endl;
-    } else {
-        memset(m_data, 0, sizeof(m_data));
-        char hdr[256]={0};
-        fseek(fp, 0U, SEEK_SET);
-        fread(hdr, sizeof(hdr), 1,fp);
-        char* c = &hdr[44];
-        for(int i=0; i < 196; ++i) {
-            m_data[i] = c[i];
-        }
-
+    if (p_socket->state() == QUdpSocket::ConnectedState) {
+        m_timer.start();
     }
-    fclose(fp);
-    m_timer.start();
 
 }
 
 void Client::transmit()
 {
     std::cout << "Transmiting...\n";
-    p_socket->writeDatagram(m_data, QHostAddress::LocalHost, 1234);
-
+    p_socket->write(m_packet.data, sizeof(m_packet.data)/sizeof(m_packet[0]));
 }
 
 
