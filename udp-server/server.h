@@ -63,6 +63,11 @@ private:
     // the new wav files, so nothing will be lost, I`ll do
     // that logic later.
 
+    // may be the client will send me backup packets
+    // let`s say 5 so I must store a 5 elements array
+    // and to append the  firs occurency I meet, then
+    // move to antoher buffer, new concept, unimplemented
+
 };
 
 } // namespace iz

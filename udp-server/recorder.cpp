@@ -151,7 +151,6 @@ void Recorder::record(const udp_data_t &data, uint32_t slot)
             m_wavs[i]->write((short*)data.data, 32 * 4);
         }
     }
-
 }
 
 /// stub
