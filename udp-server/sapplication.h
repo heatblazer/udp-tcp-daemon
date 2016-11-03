@@ -5,7 +5,6 @@
 #include <QCoreApplication>
 
 // application stuff //
-#include "config.h"
 #include "server.h"
 #include "utils/wav-writer.h"
 #include "utils/recorder-config.h"

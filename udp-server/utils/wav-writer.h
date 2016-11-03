@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "config.h"
 
 /// the default wav header
 /// \brief The wav_hdr_t struct
@@ -46,7 +45,6 @@ public:
 
 public:
     Wav(const char* fname);
-    Wav(const char *fname, WavConfig* cfg);
     virtual ~Wav();
     // in case we migrate to other file api we made these virtual
     // but provide some defailt implementation
@@ -74,7 +72,6 @@ public:
 
 protected:
     FILE*   m_file;
-    WavConfig* m_conf;
     wav_hdr_t m_header;
     char m_filename[64];
     // to be deprecated

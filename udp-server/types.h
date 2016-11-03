@@ -10,7 +10,7 @@ struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
-    uint16_t    data[32*4];
+    uint16_t    data[128];
 };
 
 

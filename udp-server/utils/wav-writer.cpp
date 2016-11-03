@@ -44,17 +44,7 @@ static int16_t flip16(int16_t input)
 
 Wav::Wav(const char *fname)
     : m_file(NULL),
-      m_conf(NULL),
       m_isSetup(false),
-      m_isOpened(false)
-{
-    strcpy(m_filename, fname);
-}
-
-Wav::Wav(const char *fname, WavConfig *cfg)
-    : m_file(NULL),
-      m_conf(cfg),
-      m_isSetup(true),
       m_isOpened(false)
 {
     strcpy(m_filename, fname);
@@ -79,22 +69,13 @@ bool Wav::open(const char *perms)
 
     // we have not called setup! Load some defaults !
     if (!m_isSetup) {
-
-        if (m_conf == NULL) {
-            write_hdr(); // use defaults
-        } else {
-            // use from config
-            write_hdr(m_conf->getAttribute(WavConfig::SAMPLES_PER_FRAME),
-                      m_conf->getAttribute(WavConfig::BITS_PER_SEC),
-                      0,
-                      m_conf->getAttribute(WavConfig::RIFF_LEN),
-                      m_conf->getAttribute(WavConfig::AUD_FORMAT),
-                      m_conf->getAttribute(WavConfig::CHANNELS));
-        }
-    } else {
-        fwrite(&m_header, sizeof(m_header), 1, m_file);
-        fflush(m_file);
+        // write default header
+        setupWave();
     }
+
+    fwrite(&m_header, sizeof(m_header), 1, m_file);
+    fflush(m_file);
+
     m_isOpened = true;
     return m_isOpened;
 }

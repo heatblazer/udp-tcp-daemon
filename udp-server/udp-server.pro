@@ -14,7 +14,6 @@ TEMPLATE = app
 SOURCES += main.cpp \
     server.cpp \
     sapplication.cpp \
-    config.cpp \
     utils/recorder-config.cpp \
     recorder.cpp \
     unix/daemon.cpp \
@@ -25,7 +24,6 @@ SOURCES += main.cpp \
 HEADERS += \
     server.h \
     sapplication.h \
-    config.h \
     utils/recorder-config.h \
     types.h \
     recorder.h \
