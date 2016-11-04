@@ -70,6 +70,8 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 }
 
 
+int Daemon::m_pid = -1;
+
 Daemon::Daemon()
 {
 
@@ -85,7 +87,6 @@ void Daemon::daemonize()
 
     umask(0);
     struct rlimit rl;
-    pid_t pid;
 
     if (getrlimit(RLIMIT_NOFILE, &rl) < 0) {
         fprintf(stderr, "Error: (%d) : (%s)\n", errno,
@@ -97,12 +98,12 @@ void Daemon::daemonize()
         // already deamon
         return;
     }
-    pid = fork();
-    if (pid < 0) {
+    m_pid = fork();
+    if (m_pid < 0) {
         fprintf(stderr, "Fork failed: (%d) : (%s)\n", errno,
                 strerror(errno));
         exit(1);
-    } else if (pid > 0) {
+    } else if (m_pid > 0) {
         fprintf(stdout, "Parent exists: (%d) : (%s)\n", errno,
                 strerror(errno));
         exit(0);
@@ -121,9 +122,9 @@ void Daemon::daemonize()
         s_signals[i].sa_flags = 0;
     }
 
-    if ((pid = fork()) < 0) {
+    if ((m_pid = fork()) < 0) {
         exit(3);
-    } else if (pid > 0) {
+    } else if (m_pid > 0) {
         exit(0);
     }
 
@@ -202,6 +203,11 @@ void Daemon::registerAppData(void *data)
         g_application = (SApplication*)data;
         log_message("Registered SApplication to the signal manager!\n");
     }
+}
+
+void Daemon::sendSignal(pid_t process, int signal)
+{
+    kill(process, signal);
 }
 
 } // iz

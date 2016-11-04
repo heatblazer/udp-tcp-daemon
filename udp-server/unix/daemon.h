@@ -18,10 +18,15 @@ public:
     static void attachSignalHandler(sigHndl hnd, int slot);
     // old concept, but will save it for any case
     static void registerAppData(void* data);
+    static void sendSignal(pid_t process, int signal);
+
+public:
+    static int m_pid;
 
 private:
     Daemon();
     ~Daemon();
+
 
 };
 } // iz
