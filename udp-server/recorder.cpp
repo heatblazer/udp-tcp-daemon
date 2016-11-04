@@ -27,6 +27,8 @@ Recorder::~Recorder()
 bool Recorder::init(int hot_swap)
 {
     bool res = true;
+
+
     char buff[16]={0};
     for(int i=0; i < 32; ++i) {
         sprintf(buff, "%d.wav", i+1);
@@ -37,7 +39,12 @@ bool Recorder::init(int hot_swap)
 
     for(int i=0; i < 32; ++i) {
         res &= m_wavs[i]->open("wb");
+        if (res) {
+            m_filewatcher.addPath(m_wavs[i]->getFileName());
+        }
     }
+    connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
+            this, SLOT(testFileWatcher(QString)));
 
     m_hotswap.setInterval(hot_swap);
     connect(&m_hotswap, SIGNAL(timeout()),
@@ -160,6 +167,14 @@ void Recorder::record(const udp_data_t &data, uint32_t slot)
 void Recorder::hotSwapFiles()
 {
     std::cout << "hotSwapFiles: stub!" << std::endl;
+}
+
+void Recorder::testFileWatcher(const QString &file)
+{
+    std::cout << "file (<< "
+              << file.toStdString()
+              <<") changed!"
+              << std::endl;
 }
 
 } // iz

@@ -36,12 +36,15 @@ public slots:
 private slots:
     // unimplemented yest
     void hotSwapFiles();
+    // remove after  test
+    void testFileWatcher(const QString& file);
 
 private:
     // 32 chans for now
     // but will be configured outside
     Wav* m_wavs[32];
     QTimer m_hotswap;
+    QFileSystemWatcher m_filewatcher;
 };
 
 } // iz
