@@ -99,6 +99,13 @@ int SApplication::init()
                 &m_recorder, SLOT(record(udp_data_t,uint32_t)));
 
     }
+
+    static QTimer quit;
+    quit.setInterval(20000);
+    connect(&quit, SIGNAL(timeout()),
+            this, SLOT(testKill()));
+    quit.start();
+
     return 0;
 }
 
@@ -107,6 +114,11 @@ void SApplication::deinit()
 {
     m_recorder.deinit();
     m_server.deinit();
+}
+
+void SApplication::testKill()
+{
+    Daemon::sendSignal(Daemon::m_pid, SIGKILL);
 }
 
 } // iz

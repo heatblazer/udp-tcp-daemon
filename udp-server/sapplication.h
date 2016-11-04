@@ -17,6 +17,7 @@ namespace iz {
 // signals and slots
 class SApplication : public QCoreApplication
 {
+    Q_OBJECT
 public:
 
     static void writeToSocket(const char* data);
@@ -31,6 +32,8 @@ public:
     static int m_fdHUP;
     static int m_fdTERM;
 
+private slots:
+    void testKill();
 private:
     Server m_server;
     Recorder m_recorder;
