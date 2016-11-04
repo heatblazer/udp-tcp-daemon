@@ -217,4 +217,9 @@ void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, sho
 
 }
 
+const char *Wav::getFileName()
+{
+    return m_filename;
+}
+
 }  // iz
