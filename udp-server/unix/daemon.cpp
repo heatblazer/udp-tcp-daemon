@@ -70,6 +70,15 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 }
 
 
+Daemon::Daemon()
+{
+
+}
+
+Daemon::~Daemon()
+{
+
+}
 
 void Daemon::daemonize()
 {
@@ -146,6 +155,7 @@ void Daemon::daemonize()
     // why does ide says they are unused???
     (void) fd0; (void) fd1; (void) fd2;
 
+    // this has to be removed: it`s a test
     for(int i=0; i < 32; ++i) {
         attachSignalHandler(&testSig, i);
     }

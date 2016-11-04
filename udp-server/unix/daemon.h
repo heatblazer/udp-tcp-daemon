@@ -10,11 +10,13 @@ namespace iz {
 class SApplication;
 
 typedef void (*sigHndl)(int, siginfo_t *,void*);
-class Daemon {
-public:
 
+class Daemon {
+
+public:
     static void daemonize();
     static void attachSignalHandler(sigHndl hnd, int slot);
+    // old concept, but will save it for any case
     static void registerAppData(void* data);
 
 private:

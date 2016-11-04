@@ -18,12 +18,14 @@ namespace iz {
 class SApplication : public QCoreApplication
 {
 public:
+
     static void writeToSocket(const char* data);
 
     explicit SApplication(int& argc, char** argv);
     virtual ~SApplication();
     int init();
     void deinit();
+
 public:
     // the socket concpet for the signal handlers
     static int m_fdHUP;

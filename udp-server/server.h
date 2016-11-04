@@ -19,7 +19,9 @@ class Server : public QObject
 {
     Q_OBJECT
 public:
-    enum States {UNKNOWN=0,
+    // for future uses
+    enum States {
+                UNKNOWN=0,
                 DISCONNECTED = 1,
                 CONNECTED = 2,
                 LOST_CONNECTION = 3,
