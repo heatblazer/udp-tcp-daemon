@@ -75,17 +75,17 @@ int SApplication::init()
 
         bool udp = false;
         quint16 port = 0;
-        const MPair<QString, QString>& udp_attr =
-                RecorderConfig::Instance().getAttribPairFromTag("Network", "udp");
+        const MPair<QString, QString>& trans_attr =
+                RecorderConfig::Instance().getAttribPairFromTag("Network", "transport");
         const MPair<QString, QString>& port_attr = RecorderConfig::Instance()
                 .getAttribPairFromTag("Network", "port");
         bool parese_res = false;
-        port = port_attr.m_type2.toInt(&parese_res);
+        port = trans_attr.m_type2.toInt(&parese_res);
         if (!parese_res) {
             port = 1234U;
         }
 
-        if (udp_attr.m_type2 == "udp") {
+        if (port_attr.m_type2 == "udp") {
             udp = true;
         } else {
             udp = false;
