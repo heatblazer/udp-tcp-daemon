@@ -37,7 +37,7 @@ public:
     void deinit();
 
 signals:
-    void dataReady(const udp_data_t& data, uint32_t slot);
+    void dataReady(const udp_data_t& data);
     void dataReady(const tcp_data_t& data);
 
 private slots:

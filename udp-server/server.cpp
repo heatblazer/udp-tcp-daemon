@@ -153,7 +153,7 @@ void Server::readyReadUdp()
             // will use a new logic emit the udp struct
             // to the recorder, so now we don`t need
             // to depend each other
-            emit dataReady(*udp, /*desired slot*/ 0);
+            emit dataReady(*udp);
 
          } else {
             printf("Missed an UDP\n");

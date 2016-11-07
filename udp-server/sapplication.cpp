@@ -94,17 +94,22 @@ int SApplication::init()
         m_recorder.init();
         m_server.init(udp, port);
         // connect rec to server
-        connect(&m_server, SIGNAL(dataReady(udp_data_t, uint32_t)),
-                &m_recorder, SLOT(record(udp_data_t,uint32_t)));
+        if (udp) {
+            connect(&m_server, SIGNAL(dataReady(udp_data_t)),
+                &m_recorder, SLOT(record(udp_data_t)));
+        } else {
+            connect(&m_server, SIGNAL(dataReady(tcp_data_t)),
+                    &m_recorder, SLOT(record(tcp_data_t)));
+        }
     }
-    return 0;
 
+#if 0
     static QTimer quit;
     quit.setInterval(20000);
     connect(&quit, SIGNAL(timeout()),
             this, SLOT(testKill()));
     quit.start();
-
+#endif
     return 0;
 }
 
