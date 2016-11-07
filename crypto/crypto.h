@@ -10,6 +10,12 @@ public:
     explicit Crypto();
     virtual ~Crypto();
     void dummy();
+
+private:
+    struct {
+        char* salt;
+        int saltLen;
+    } m_salt;
 };
 
 #endif // CRYPTO_H

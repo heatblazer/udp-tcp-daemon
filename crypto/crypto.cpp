@@ -55,9 +55,18 @@ static uint16_t gen16bitCheckSum(char* data, int len=16)
     return key;
 }
 
+static uint16_t gen16Salt(const char* data, int len=16)
+{
+    uint16_t salt = 0;
+    for(int i=0; i < len; ++i) {
+        salt += ((data[i] & 0x1) << i);
+    }
+    return salt;
+}
 
 
 Crypto::Crypto()
+    : m_salt({nullptr, 0})
 {
 }
 
@@ -67,6 +76,9 @@ Crypto::~Crypto()
 
 void Crypto::dummy()
 {
-    std::cout << "Crypto()!" << std::endl;
-
+    m_salt.salt = new char[32];
+    for(int i=0; i < 32; ++i) {
+        m_salt.salt[i] = (unsigned char)(i+24);
+        m_salt.saltLen++;
+    }
 }

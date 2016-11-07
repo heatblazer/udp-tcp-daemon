@@ -8,11 +8,12 @@
 QT       += core
 
 TARGET = crypto
-TEMPLATE = lib
+TEMPLATE = app
 
 DEFINES += CRYPTO_LIBRARY
 
-SOURCES += crypto.cpp
+SOURCES += crypto.cpp \
+    main.cpp
 
 HEADERS += crypto.h\
         crypto_global.h
