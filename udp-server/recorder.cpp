@@ -141,14 +141,8 @@ bool Recorder::setupWavFiles()
 /// \brief Recorder::record
 /// \param data - samples
 /// \param slot of the wav file
-void Recorder::record(const udp_data_t &data, uint32_t slot)
+void Recorder::record(const udp_data_t &data)
 {
-    // more precautions
-    if (slot > 31 || m_wavs[slot] == nullptr ||
-            !m_wavs[slot]->isOpened()) {
-        // out of max chan index or no instance or not opened
-        return;
-    }
 
     // just calculate the data size based on the known
     // for now udp header, for future we may change the size
@@ -156,6 +150,19 @@ void Recorder::record(const udp_data_t &data, uint32_t slot)
    for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             m_wavs[i]->write((short*)data.data, 32 * 4);
+        }
+   }
+}
+
+void Recorder::record(const tcp_data_t &data)
+{
+    std::cout << "Record TCP!" << std::endl;
+
+    const int16_t* it = &data.samples[0];
+    for(int i=0; i < 32; ++i) {
+        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
+            m_wavs[i]->write((short*)it, 1);
+            it++;
         }
     }
 }

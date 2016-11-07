@@ -31,7 +31,8 @@ signals:
     void recordedBytes(uint32_t bytes);
 
 public slots:
-    void record(const udp_data_t& data, uint32_t slot);
+    void record(const udp_data_t& data);
+    void record(const tcp_data_t& data);
 
 private slots:
     // unimplemented yest
