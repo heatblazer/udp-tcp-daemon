@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QTcpSocket>
+#include <QTcpServer>
 #include <QUdpSocket>
 
 // custom //
@@ -37,10 +38,10 @@ public:
 
 signals:
     void dataReady(const udp_data_t& data, uint32_t slot);
+    void dataReady(const tcp_data_t& data);
 
 private slots:
     void readyReadUdp();
-    void readyReadTcp();
     void handleConnection();
 
     void route(States state);
@@ -49,8 +50,9 @@ private slots:
 private:
     union {
         QUdpSocket* udp;
-        QTcpSocket* tcp;
+        QTcpServer* server;
     } m_socket;
+
 
     QUdpSocket* m_hearSocket;
     Writer      m_logger;

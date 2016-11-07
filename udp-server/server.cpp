@@ -1,3 +1,6 @@
+// std //
+#include <iostream> // for test purpose only!
+
 // Daemon time //
 #include <time.h> // for time stamping
 
@@ -93,10 +96,16 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             m_logger.write(msg);
         }
     } else {
-        m_socket.tcp = new QTcpSocket(this);
-        m_socket.tcp->connectToHost(QHostAddress::LocalHost, port);
-        connect(m_socket.tcp, SIGNAL(connected()),
+        m_socket.server = new QTcpServer(this);
+        if (m_socket.server != nullptr)
+        connect(m_socket.server, SIGNAL(newConnection()),
                 this, SLOT(handleConnection()));
+
+        if (!m_socket.server->listen(QHostAddress::Any, port)) {
+            route(Server::DISCONNECTED);
+        } else {
+            route(Server::CONNECTED);
+        }
     }
     // starrt  logging writer //
 }
@@ -153,23 +162,17 @@ void Server::readyReadUdp()
     }
 }
 
-/// handle incomming TCP connections
-/// \brief Server::readyReadTcp
-///
-void Server::readyReadTcp()
-{
-}
-
 /// Connect and read TCP packets
 /// \brief Server::handleConnection
 ///
 void Server::handleConnection()
 {
-    if (m_socket.tcp->canReadLine()) {
-        while (m_socket.tcp->canReadLine()) {
-            QByteArray data = m_socket.tcp->readLine();
-            (void) data;
-        }
+    QTcpSocket* tcp = m_socket.server->nextPendingConnection();
+    QByteArray bytes;
+    if (tcp->canReadLine()) {
+        bytes = tcp->readAll();
+        tcp_data_t* data = (tcp_data_t*) bytes.data();
+        emit dataReady(*data);
     }
 }
 
@@ -179,9 +182,14 @@ void Server::handleConnection()
 void Server::route(States state)
 {
     // handle state in this routing function
+    // handle state in this routing function
     switch (state) {
     case DISCONNECTED:
+        std::cout << "Not connected!" << std::endl;
+        break;  // try to reconnect
     case CONNECTED:
+        std::cout << "Connected!" << std::endl;
+        break;
     case LOST_CONNECTION:
     case GOT_CONNECTION:
     case GOT_DATAGRAM:
