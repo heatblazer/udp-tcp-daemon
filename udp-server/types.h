@@ -13,6 +13,11 @@ struct udp_data_t
     uint16_t    data[128];
 };
 
+struct tcp_data_t
+{
+    int16_t samples[32];
+};
+
 
 /// maybe inherit QPair
 /// simple pair template
