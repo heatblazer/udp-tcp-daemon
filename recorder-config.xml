@@ -6,7 +6,10 @@
         <!--the root element-->
 
 <!-- done: setups the hotswap interval from here -->
-<HotSwap interval="10000" />  
+<!-- new: swap by max size criteria -->
+<HotSwap
+    maxSize="100M"
+    interval="10000" />
 
 <!-- unused for now -->
 <Channels count="32" />
