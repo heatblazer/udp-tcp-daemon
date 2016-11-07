@@ -85,20 +85,19 @@ int SApplication::init()
             port = 1234U;
         }
 
-        if (udp_attr.m_type1 == "") {
-            udp = false;
-        } else {
+        if (udp_attr.m_type2 == "udp") {
             udp = true;
+        } else {
+            udp = false;
         }
-
         // they need not to depend each other
         m_recorder.init();
         m_server.init(udp, port);
         // connect rec to server
         connect(&m_server, SIGNAL(dataReady(udp_data_t, uint32_t)),
                 &m_recorder, SLOT(record(udp_data_t,uint32_t)));
-
     }
+    return 0;
 
     static QTimer quit;
     quit.setInterval(20000);
