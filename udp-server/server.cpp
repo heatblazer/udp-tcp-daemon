@@ -205,7 +205,9 @@ void Server::route(States state)
 ///
 void Server::sendHeartbeat()
 {
+#if 0
     m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
+#endif
 }
 
 /// deinitialze the server, maybe some unfinished
