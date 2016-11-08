@@ -37,6 +37,7 @@ A wav recorder over udp streams.
     08.11.2016: passed 24 and 72 h tests from my client program.
     08.11.2016: passed sine wave test from the device.
     08.11.2016: have a packet loss per random second or two.
+    08.11.2016: added new concept for swapping files when size or time reach limit.
 
 ***
 <ilianzapryanov@abv.bg>
