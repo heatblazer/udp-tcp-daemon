@@ -30,7 +30,8 @@ HEADERS += \
     unix/daemon.h \
     utils/wav-writer.h \
     utils/qwave-writer.h \
-    utils/writer.h
+    utils/writer.h \
+    utils/wav-writer-iface.h
 
 
 QMAKE_CFLAGS += \
