@@ -155,7 +155,8 @@ void Server::readyReadUdp()
             emit dataReady(*udp);
 
          } else {
-            m_logger.write("Missed an UDP\n");
+            static const char* err_msg = "Missed an UDP\n";
+            m_logger.write(QByteArray(err_msg));
         }
     }
 }
