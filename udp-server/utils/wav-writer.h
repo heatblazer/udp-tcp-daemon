@@ -72,6 +72,8 @@ public:
     virtual void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
     const char* getFileName();
     size_t getFileSize() const;
+    bool open(const char* perms, int slot);
+    int getSlot() const;
 
 protected:
     FILE*   m_file;
@@ -82,6 +84,7 @@ protected:
     bool m_isSetup;
     bool m_isOpened;
     size_t m_maxSize;
+    int m_slot; // slot to the file
 };
 
 

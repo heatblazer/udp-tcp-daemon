@@ -46,7 +46,8 @@ Wav::Wav(const char *fname)
     : m_file(NULL),
       m_isSetup(false),
       m_isOpened(false),
-      m_maxSize(0)
+      m_maxSize(0),
+      m_slot(-1)
 {
     strcpy(m_filename, fname);
 }
@@ -80,6 +81,19 @@ bool Wav::open(const char *perms)
     m_maxSize += 44;
     m_isOpened = true;
     return m_isOpened;
+}
+
+bool Wav::open(const char *perms, int slot)
+{
+    bool res = false;
+    m_slot = slot;
+    res = open(perms);
+    return res;
+}
+
+int Wav::getSlot() const
+{
+    return m_slot;
 }
 
 /// close the file and write
