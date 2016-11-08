@@ -34,6 +34,9 @@ A wav recorder over udp streams.
     02.11.2016: fixed a bug with the daemon recorder. But still more to be done.
     03.11.2016: added 24 hour test to the server, with custom client.
     03.11.2016: passed an 1 hour record test with packet sent at 1000 msec.
+    08.11.2016: passed 24 and 72 h tests from my client program.
+    08.11.2016: passed sine wave test from the device.
+    08.11.2016: have a packet loss per random second or two.
 
 ***
 <ilianzapryanov@abv.bg>
