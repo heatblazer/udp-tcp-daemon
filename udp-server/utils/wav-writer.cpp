@@ -143,6 +143,11 @@ int Wav::write(short data[], int len)
     return (int)written;
 }
 
+void *Wav::read()
+{
+    return nullptr;
+}
+
 ///  new concept for setup a wav file before writing to it
 ///  better
 /// \brief Wav::setupWave

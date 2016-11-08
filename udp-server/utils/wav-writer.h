@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include "wav-writer-iface.h"
 
 /// the default wav header
 /// \brief The wav_hdr_t struct
@@ -31,7 +32,7 @@ namespace iz {
 /// a minimal and portable
 /// wav file writer C library
 /// \brief The Wav class
-class Wav
+class Wav : public WavIface
 {
 public:
     // deprecated
@@ -53,6 +54,7 @@ public:
     virtual void close();
     virtual bool isOpened() const ;
     virtual int write(short int data[], int len);
+    virtual void* read();
     virtual void setupWave(int samples_per_sec=8000, int bits_per_sec=16, int riff_len=0,
                             int fmt_len=16, short audio_fmt=1,  short chann_cnt=1);
 

@@ -4,19 +4,12 @@
 // qt stuff //
 #include <QFile>
 
-#include "wav-writer.h"
+#include "wav-writer-iface.h"
 
 namespace iz {
 /// newer concept for wave writer using QT
 /// \brief The QWave class
 ///
-class QWave : public Wav
-{
-
-private:
-    QFile m_file;
-};
-
 
 } // iz
 
