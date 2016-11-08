@@ -143,6 +143,10 @@ int Wav::write(short data[], int len)
     return (int)written;
 }
 
+/// unimplemented
+/// \brief Wav::read
+/// \return
+///
 void *Wav::read()
 {
     return nullptr;

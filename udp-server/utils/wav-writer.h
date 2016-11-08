@@ -42,21 +42,10 @@ public:
     virtual void* read();
     virtual void setupWave(int samples_per_sec=8000, int bits_per_sec=16, int riff_len=0,
                             int fmt_len=16, short audio_fmt=1,  short chann_cnt=1);
+    virtual void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
+
 
 public:
-    /// using Daemon fwrite
-    /// \brief write_hdr
-    /// writes a proper wav header, has
-    /// set default parameters
-    /// it`s virtual because you may
-    /// want to override the write function
-    /// \param spf - samples per frm
-    /// \param bps - bits per second
-    /// \param rifflen - riff length
-    /// \param fmtlen - format length
-    /// \param audfmt - audo format
-    /// \param chans - channels count
-    virtual void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
     const char* getFileName();
     size_t getFileSize() const;
     bool open(const char* perms, int slot);
