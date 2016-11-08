@@ -58,6 +58,15 @@ void QWav::setupWave(int samples_per_sec,
 
 }
 
+/// each write appends bytes to the size var
+/// so when I need to check size I won`t call
+/// ftell or QFile::size() and that way I am
+/// faster, since I don`t perform file seeks
+/// \brief QWav::write
+/// \param data
+/// \param len
+/// \return current file size
+///
 int QWav::write(short data[], int len)
 {
     m_size += m_wav.write((char*) data, len);
