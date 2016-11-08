@@ -1,9 +1,24 @@
+#ifdef QWAVE
+#include "utils/qwave-writer.h"
+
+
+int main(int argc, char** argv)
+{
+    iz::QWav wav("test.wav");
+    wav.setupWave();
+    wav.open("unused");
+    char bullsit[128 * 1024];
+    wav.write((short*) bullsit, 128 * 1024);
+    wav.close();
+
+    return 0;
+}
+
+#else
 #include "sapplication.h"
 #include "unix/daemon.h"
-//#include "crypto.h"
 #include "utils/recorder-config.h"
 #include "types.h"
-
 #include <iostream>
 
 // the standart server test - passed for now
@@ -61,3 +76,4 @@ int main(int argc, char *argv[])
     }
     return app.exec();
 }
+#endif
