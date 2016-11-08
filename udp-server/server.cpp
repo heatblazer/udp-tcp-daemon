@@ -8,6 +8,7 @@
 #include "server.h"
 #include "utils/wav-writer.h"
 
+
 /// timestring
 /// \brief getTimeString
 /// \return
@@ -25,6 +26,19 @@ static inline char* getTimeString()
 }
 
 namespace iz {
+
+struct udp_data_t
+{
+    uint32_t    counter;
+    uint8_t     null_bytes[32];
+    int16_t    data[32][16];
+};
+
+struct tcp_data_t
+{
+    int16_t data[128];
+};
+
 
 Server::Server(QObject *parent)
     : QObject(parent),

@@ -4,18 +4,10 @@
 #include <stdint.h>
 
 namespace iz {
-// udp packet from the client device
-struct udp_data_t
-{
-    uint32_t    counter;
-    uint8_t     null_bytes[32];
-    int16_t    data[32][16];
-};
 
-struct tcp_data_t
-{
-    int16_t samples[32];
-};
+// opaque pointers
+struct udp_data_t;
+struct tcp_data_t;
 
 
 /// maybe inherit QPair

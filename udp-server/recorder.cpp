@@ -26,6 +26,19 @@ static inline char* getTimeString()
 
 namespace iz {
 
+struct udp_data_t
+{
+    uint32_t    counter;
+    uint8_t     null_bytes[32];
+    int16_t    data[32][16];
+};
+
+struct tcp_data_t
+{
+    int16_t data[128];
+};
+
+
 Recorder::Recorder(QObject *parent)
     : QObject(parent),
       m_maxFileSize(0)
@@ -210,14 +223,10 @@ void Recorder::hotSwapFiles()
     std::cout << "hotSwapFiles: stub!" << std::endl;
 }
 
-// TODO: implement the swap logic
+// this is a test but working for now
+// to be deprecated in the future
 void Recorder::testFileWatcher(const QString &file)
 {
-    Wav* w = getWavByName(file);
-    if (w) {
-        // file is OK, change it
-        std::cout << "File is OK ... change it!" << std::endl;
-    }
     (void) file;
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
