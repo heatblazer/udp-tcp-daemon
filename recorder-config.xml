@@ -9,7 +9,7 @@
 <!-- new: swap by max size criteria -->
 <!-- format M - mbytes, G - gbytes, K - kbytes -->
 <HotSwap
-    maxSize="100M"
+    maxSize="100"
     interval="10000" />
 
 <!-- unused for now -->
