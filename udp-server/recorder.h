@@ -20,8 +20,9 @@ public:
     explicit Recorder(QObject* parent=nullptr);
     virtual ~Recorder(); // we may inherit it too
     // will use later the num_channels when concept is more clear
-    bool init(int hot_swap=10000 /*,int num_chans=32*/);
+    bool init();
     void deinit();
+    Wav *getWavByName(const QString& fname);
 
 
 private:
@@ -39,6 +40,7 @@ private slots:
     void hotSwapFiles();
     // remove after  test
     void testFileWatcher(const QString& file);
+    void performHotSwap(const QString& file);
 
 private:
     // 32 chans for now

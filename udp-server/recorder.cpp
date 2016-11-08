@@ -41,7 +41,7 @@ Recorder::~Recorder()
 /// will apply timestapm from the config later
 /// \brief Recorder::init
 /// \return true by default , false for future if something happens
-bool Recorder::init(int hot_swap)
+bool Recorder::init()
 {
     bool res = true;
 
@@ -55,7 +55,7 @@ bool Recorder::init(int hot_swap)
     res &= setupWavFiles();
 
     for(int i=0; i < 32; ++i) {
-        res &= m_wavs[i]->open("wb");
+        res &= m_wavs[i]->open("wb", i);
         if (res) {
             m_filewatcher.addPath(m_wavs[i]->getFileName());
         }
@@ -63,12 +63,6 @@ bool Recorder::init(int hot_swap)
     connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
             this, SLOT(testFileWatcher(QString)));
 
-    m_hotswap.setInterval(hot_swap);
-    connect(&m_hotswap, SIGNAL(timeout()),
-            this, SLOT(hotSwapFiles()));
-    if (res) {
-        m_hotswap.start();
-    }
     return res;
 }
 
@@ -81,7 +75,16 @@ void Recorder::deinit()
             m_wavs[i] = nullptr;
         }
     }
-    m_hotswap.stop();
+}
+
+Wav* Recorder::getWavByName(const QString &fname)
+{
+    for(int i=0; i < 32; ++i) {
+        if (fname.compare(QString(m_wavs[i]->getFileName()))) {
+            return m_wavs[i];
+        }
+    }
+    return nullptr;
 }
 
 /// setup all wav files for writing
@@ -210,12 +213,17 @@ void Recorder::hotSwapFiles()
 // TODO: implement the swap logic
 void Recorder::testFileWatcher(const QString &file)
 {
+    Wav* w = getWavByName(file);
+    if (w) {
+        // file is OK, change it
+        std::cout << "File is OK ... change it!" << std::endl;
+    }
     (void) file;
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             if (m_wavs[i]->getFileSize() > m_maxFileSize) {
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
-                char buff[64]={0};
+                char buff[64] = {0};
                 sprintf(buff, "%d-%s.wav",
                         i, getTimeString());
                 m_wavs[i]->close();
@@ -228,9 +236,37 @@ void Recorder::testFileWatcher(const QString &file)
                                      m_wavParams.fmt_len,
                                      m_wavParams.audio_fmt,
                                      m_wavParams.chann_cnt);
-                m_wavs[i]->open("wb");
+                m_wavs[i]->open("wb", i);
                 m_filewatcher.addPath(m_wavs[i]->getFileName());
             }
+        }
+    }
+}
+
+void Recorder::performHotSwap(const QString &file)
+{
+    Wav* w = getWavByName(file);
+    if (w != nullptr) {
+        if (w->getFileSize() > m_maxFileSize) {
+            const char* name = w->getFileName();
+            m_filewatcher.removePath(name);
+            int slot = w->getSlot();
+            m_wavs[slot]->close();
+            delete m_wavs[slot];
+            m_wavs[slot] = nullptr;
+            char buff[64] = {0};
+            sprintf(buff, "%d-%s.wav",
+                    slot, getTimeString());
+
+            m_wavs[slot] = new Wav(buff);
+            m_wavs[slot]->setupWave(m_wavParams.samples_per_sec,
+                                    m_wavParams.bits_per_sec,
+                                    m_wavParams.riff_len,
+                                    m_wavParams.fmt_len,
+                                    m_wavParams.audio_fmt,
+                                    m_wavParams.chann_cnt);
+            m_wavs[slot]->open("wb");
+            m_filewatcher.addPath(buff);
         }
     }
 }
