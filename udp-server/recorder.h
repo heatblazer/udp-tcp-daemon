@@ -47,6 +47,14 @@ private:
     QTimer m_hotswap;
     QFileSystemWatcher m_filewatcher;
     uint32_t    m_maxFileSize;
+    struct {
+        int samples_per_sec;
+        int bits_per_sec;
+        int riff_len;
+        int fmt_len;
+        short audio_fmt;
+        short chann_cnt;
+    } m_wavParams;
 };
 
 } // iz

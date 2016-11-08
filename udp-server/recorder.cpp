@@ -166,6 +166,12 @@ bool Recorder::setupWavFiles()
         m_wavs[i]->setupWave(samples_per_sec, bits_per_sec, riff_len,
                              fmt_len, audio_fmt, chann_cnt);
     }
+    m_wavParams.samples_per_sec = samples_per_sec;
+    m_wavParams.bits_per_sec = bits_per_sec;
+    m_wavParams.riff_len = riff_len;
+    m_wavParams.fmt_len = fmt_len;
+    m_wavParams.audio_fmt = audio_fmt;
+    m_wavParams.chann_cnt = chann_cnt;
 
     return res;
 }
@@ -208,6 +214,7 @@ void Recorder::testFileWatcher(const QString &file)
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             if (m_wavs[i]->getFileSize() > m_maxFileSize) {
+                m_filewatcher.removePath(m_wavs[i]->getFileName());
                 char buff[64]={0};
                 sprintf(buff, "%d-%s.wav",
                         i, getTimeString());
@@ -215,6 +222,14 @@ void Recorder::testFileWatcher(const QString &file)
                 delete m_wavs[i];
                 m_wavs[i] = nullptr;
                 m_wavs[i] = new Wav(buff);
+                m_wavs[i]->setupWave(m_wavParams.samples_per_sec,
+                                     m_wavParams.bits_per_sec,
+                                     m_wavParams.riff_len,
+                                     m_wavParams.fmt_len,
+                                     m_wavParams.audio_fmt,
+                                     m_wavParams.chann_cnt);
+                m_wavs[i]->open("wb");
+                m_filewatcher.addPath(m_wavs[i]->getFileName());
             }
         }
     }
