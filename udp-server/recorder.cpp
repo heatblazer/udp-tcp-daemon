@@ -153,6 +153,7 @@ void Recorder::record(const udp_data_t &data)
 // unused for now
 void Recorder::record(const tcp_data_t &data)
 {
+    (void) data;
     std::cout << "Stub: Record TCP!" << std::endl;
 }
 
@@ -165,12 +166,17 @@ void Recorder::hotSwapFiles()
     std::cout << "hotSwapFiles: stub!" << std::endl;
 }
 
+// TODO: implement the swap logic
 void Recorder::testFileWatcher(const QString &file)
 {
-    std::cout << "file (<< "
-              << file.toStdString()
-              <<") changed!"
-              << std::endl;
+    (void) file;
+    for(int i=0; i < 32; ++i) {
+        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
+            if (m_wavs[i]->getFileSize() > 1 /* desired swap size*/) {
+                // do hotswap
+            }
+        }
+    }
 }
 
 } // iz
