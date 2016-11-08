@@ -46,6 +46,7 @@ private:
     Wav* m_wavs[32];
     QTimer m_hotswap;
     QFileSystemWatcher m_filewatcher;
+    uint32_t    m_maxFileSize;
 };
 
 } // iz

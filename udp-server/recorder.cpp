@@ -6,18 +6,35 @@
 // wav library //
 #include "utils/wav-writer.h"
 
+
+/// timestring
+/// \brief getTimeString
+/// \return
+///
+static inline char* getTimeString()
+{
+    time_t current_time;
+    struct tm * time_info;
+    static char timeString[9];  // space for "HH:MM:SS\0"
+
+    time(&current_time);
+    time_info = localtime(&current_time);
+    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+    return timeString;
+}
+
+
 namespace iz {
 
 Recorder::Recorder(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_maxFileSize(0)
 {
-
 }
 
 // handle with care the opened files
 Recorder::~Recorder()
 {
-
 }
 
 /// TODO: config file
@@ -28,10 +45,10 @@ bool Recorder::init(int hot_swap)
 {
     bool res = true;
 
-
-    char buff[16]={0};
+    char buff[64]={0};
     for(int i=0; i < 32; ++i) {
-        sprintf(buff, "%d.wav", i+1);
+        sprintf(buff, "%d-%s.wav", i,
+                getTimeString());
         m_wavs[i] = new Wav(buff);
     }
     // open files when everything is ok and setup
@@ -124,6 +141,24 @@ bool Recorder::setupWavFiles()
         }
     }
 
+    PairList& max_fsize_attr = RecorderConfig::Instance().getTagPairs("HotSwap");
+    for(int i=0; i < max_fsize_attr.count(); ++i) {
+        bool parse_result = false; // careful when converting to int
+        MPair<QString, QString> it = max_fsize_attr.at(i);
+        if (it.m_type1 == "maxSize") {
+            m_maxFileSize = it[it.m_type1].toInt(&parse_result);
+            if (!parse_result) {
+                m_maxFileSize = 250000000;
+            }
+        } else if (it.m_type1 == "interval") {
+            if (!parse_result) {
+                // omit for now
+            }
+        } else {
+            // misra else
+        }
+    }
+
     // one time setup all waves at a time
     // don`t open them yet... do this later, after server
     // init and binding
@@ -172,8 +207,14 @@ void Recorder::testFileWatcher(const QString &file)
     (void) file;
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            if (m_wavs[i]->getFileSize() > 1 /* desired swap size*/) {
-                // do hotswap
+            if (m_wavs[i]->getFileSize() > m_maxFileSize) {
+                char buff[64]={0};
+                sprintf(buff, "%d-%s.wav",
+                        i, getTimeString());
+                m_wavs[i]->close();
+                delete m_wavs[i];
+                m_wavs[i] = nullptr;
+                m_wavs[i] = new Wav(buff);
             }
         }
     }
