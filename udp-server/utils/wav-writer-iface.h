@@ -12,6 +12,8 @@ public:
     virtual void setupWave(int samples_per_sec, int bits_per_sec, int riff_len,
                             int fmt_len, short audio_fmt,  short chann_cnt) = 0;
     virtual void* read() = 0;
+    virtual bool isOpened() const = 0;
+
 };
 
 }
