@@ -143,28 +143,17 @@ bool Recorder::setupWavFiles()
 /// \param slot of the wav file
 void Recorder::record(const udp_data_t &data)
 {
-
-    // just calculate the data size based on the known
-    // for now udp header, for future we may change the size
-    // but if the udp header remains, the above calc will be ok
-   for(int i=0; i < 32; ++i) {
-        if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            m_wavs[i]->write((short*)data.data, 32 * 4);
-        }
-   }
-}
-
-void Recorder::record(const tcp_data_t &data)
-{
-    std::cout << "Record TCP!" << std::endl;
-
-    const int16_t* it = &data.samples[0];
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            m_wavs[i]->write((short*)it, 1);
-            it++;
+            m_wavs[i]->write((short*) data.data[i], 16);
         }
     }
+}
+
+// unused for now
+void Recorder::record(const tcp_data_t &data)
+{
+    std::cout << "Stub: Record TCP!" << std::endl;
 }
 
 /// stub

@@ -143,20 +143,18 @@ void Server::readyReadUdp()
                 strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
 
                 char msg[64]={0};
-                sprintf(msg, "Packet lost:(%d) at: [%s]\n",
-                        udp->counter, timeString);
+                sprintf(msg, "Packet lost:(%d) at: [%s]\t\n",
+                        udp->counter, timeString );
 
                 m_logger.write(QByteArray(msg));
                 pktcnt = udp->counter; // synch back
             }
-
             // will use a new logic emit the udp struct
             // to the recorder, so now we don`t need
             // to depend each other
             emit dataReady(*udp);
 
          } else {
-            printf("Missed an UDP\n");
             m_logger.write("Missed an UDP\n");
         }
     }
