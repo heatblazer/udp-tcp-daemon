@@ -16,18 +16,25 @@ class QWav : public WavIface
 public:
     explicit QWav(const QString& fname);
     virtual ~QWav();
-    virtual bool open(const char* perms) = 0;
-    virtual void close() = 0;
-    virtual int write(short int data[], int len) = 0;
-    virtual void setupWave(int samples_per_sec, int bits_per_sec, int riff_len,
-                            int fmt_len, short audio_fmt,  short chann_cnt) = 0;
-    virtual void* read() = 0;
-    virtual bool isOpened() const = 0;
+    virtual bool open(const char* perms);
+    virtual void close();
+    virtual int write(short int data[], int len);
+    virtual void setupWave(int samples_per_sec=8000, int bits_per_sec=16, int riff_len=0,
+                           int fmt_len=16, short audio_fmt=1,  short chann_cnt=1);
+    virtual void* read();
+    virtual bool isOpened() const;
+
+    const QString&  getFileName();
+    size_t  getFileSize() const;
+    bool open(const char* perms, int slot);
+    int getSlot() const;
+
 private:
     QString m_name;
     QFile m_wav;
     int   m_slot;
     bool  m_setup;
+    size_t m_size;
     wav_hdr_t m_header;
 
 };
