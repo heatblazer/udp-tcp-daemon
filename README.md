@@ -39,6 +39,7 @@ A wav recorder over udp streams.
     08.11.2016: have a packet loss per random second or two.
     08.11.2016: added new concept for swapping files when size or time reach limit.
     08.11.2016: refractory and good coding practices added.
+    08.11.2016: started implementation of QWav based on Qt and QFile
 
 ***
 <ilianzapryanov@abv.bg>
