@@ -1,14 +1,34 @@
 #ifdef QWAVE
+#include <time.h>
+#include <math.h>
 #include "utils/qwave-writer.h"
 
+static double* sine_gen(int len)
+{
+    srand((unsigned)time(NULL));
+    double* buff = (double*) malloc(len * (sizeof(double)));
+    if (buff) {
+        for(int i=0; i < len; ++i) {
+            buff[i] = sin(2000 * (2 * M_PI) * i / 6000) + sqrt(0.01) * rand();
+        }
+        return buff;
+    } else {
+        return NULL;
+    }
+}
 
 int main(int argc, char** argv)
 {
+    (void) argc;
+    (void) argv;
     iz::QWav wav("test.wav");
     wav.setupWave();
-    wav.open("unused");
-    char bullsit[128 * 1024];
-    wav.write((short*) bullsit, 128 * 1024);
+    wav.open(iz::QWav::WriteOnly, 10);
+    double* sine = sine_gen(64333);
+
+    for (int i=0; i < 10; ++i) {
+        wav.write((short*) sine, 64333);
+    }
     wav.close();
 
     return 0;

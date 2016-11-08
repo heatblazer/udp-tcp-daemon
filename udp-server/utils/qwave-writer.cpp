@@ -66,29 +66,33 @@ int QWav::write(short data[], int len)
 
 void QWav::close()
 {
+    if (m_wav.isOpen()) {
 
+        qint64 file_len = m_wav.size();
+        // get the len from the offset
+        int data_len = file_len - sizeof(struct wav_hdr_t);
+
+        // move the fp to that position of the data len
+        m_wav.seek(sizeof(struct wav_hdr_t) - sizeof(int));
+        m_wav.write((char*)&data_len);
+        // this writes riff len to the position in
+        // the header
+        int riff_len = file_len - 8;
+        m_wav.seek(4);
+        m_wav.write((char*)&riff_len);
+        m_wav.close();
+    }
 }
 
+/// unused for the QWav
+/// \brief QWav::open
+/// \param perms - unused see open(QIODevice perms, int slot);
+/// \return always false
+///
 bool QWav::open(const char *perms)
 {
     (void) perms;
-
-    if (m_wav.exists()) {
-        return false;
-    }
-    m_wav.setFileName(m_name);
-    if (!m_wav.isOpen()) {
-        m_wav.open(QIODevice::WriteOnly);
-    }
-    // we have not called setup! Load some defaults !
-    if (!m_setup) {
-        // write default header
-        setupWave();
-    }
-    m_wav.write((char*)&m_header, sizeof(m_header));
-    m_wav.flush();
-    m_size += 44;
-    return m_wav.isOpen();
+    return false;
 }
 
 QWav::QWav(const QString &fname)
@@ -113,6 +117,35 @@ const QString &QWav::getFileName()
 size_t QWav::getFileSize() const
 {
     return m_size;
+}
+
+/// the actual function to use
+/// never use the interface open
+/// \brief QWav::open
+/// \param perms
+/// \param slot
+/// \return
+///
+bool QWav::open(OpenMode perms, int slot)
+{
+    if (m_wav.exists()) {
+        return false;
+    }
+    m_wav.setFileName(m_name);
+    if (!m_wav.isOpen()) {
+        m_wav.open((QIODevice::OpenModeFlag)perms);
+    }
+    // we have not called setup! Load some defaults !
+    if (!m_setup) {
+        // write default header
+        setupWave();
+    }
+    m_wav.write((char*)&m_header, sizeof(m_header));
+    m_wav.flush();
+    m_size += 44;
+    m_slot = slot;
+    return m_wav.isOpen();
+
 }
 
 int QWav::getSlot() const
