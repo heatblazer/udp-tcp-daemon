@@ -34,6 +34,7 @@ namespace iz {
 class Wav
 {
 public:
+    // deprecated
     enum Params {
         SAMPLES_PER_FRAME,
         BITS_PER_SEC,
@@ -70,6 +71,7 @@ public:
     /// \param chans - channels count
     virtual void write_hdr(int spf=44100, int bps=16, int rifflen=0, int fmtlen=16, short audfmt=1, short chans=1);
     const char* getFileName();
+    size_t getFileSize() const;
 
 protected:
     FILE*   m_file;
@@ -79,6 +81,7 @@ protected:
     int m_attribs[Params::SIZE];
     bool m_isSetup;
     bool m_isOpened;
+    size_t m_maxSize;
 };
 
 

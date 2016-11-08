@@ -45,7 +45,8 @@ static int16_t flip16(int16_t input)
 Wav::Wav(const char *fname)
     : m_file(NULL),
       m_isSetup(false),
-      m_isOpened(false)
+      m_isOpened(false),
+      m_maxSize(0)
 {
     strcpy(m_filename, fname);
 }
@@ -75,7 +76,8 @@ bool Wav::open(const char *perms)
 
     fwrite(&m_header, sizeof(m_header), 1, m_file);
     fflush(m_file);
-
+    // include header even though it`s agruably
+    m_maxSize += 44;
     m_isOpened = true;
     return m_isOpened;
 }
@@ -121,6 +123,9 @@ bool Wav::isOpened() const
 int Wav::write(short data[], int len)
 {
     size_t written = fwrite(data, sizeof(short), len, m_file);
+    // this will avoid checking the file size each time in
+    // the system watcher
+    m_maxSize += written;
     return (int)written;
 }
 
@@ -220,6 +225,11 @@ void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, sho
 const char *Wav::getFileName()
 {
     return m_filename;
+}
+
+size_t Wav::getFileSize() const
+{
+    return m_maxSize;
 }
 
 }  // iz
