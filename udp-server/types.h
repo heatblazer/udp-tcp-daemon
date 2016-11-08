@@ -4,13 +4,12 @@
 #include <stdint.h>
 
 namespace iz {
-
 // udp packet from the client device
 struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
-    uint16_t    data[128];
+    int16_t    data[32][16];
 };
 
 struct tcp_data_t
