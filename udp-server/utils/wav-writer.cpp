@@ -136,11 +136,12 @@ bool Wav::isOpened() const
 ///
 int Wav::write(short data[], int len)
 {
-    size_t written = fwrite(data, sizeof(short), len, m_file);
+    // probably fixed a bug with the size growth...
+    fwrite(data, sizeof(short), len, m_file);
     // this will avoid checking the file size each time in
     // the system watcher
-    m_maxSize += written;
-    return (int)written;
+    m_maxSize += (len * sizeof(short));
+    return m_maxSize;
 }
 
 /// unimplemented
