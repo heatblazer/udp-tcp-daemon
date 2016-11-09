@@ -279,7 +279,7 @@ void Recorder::performHotSwap(const QString &file)
                                     m_wavParams.fmt_len,
                                     m_wavParams.audio_fmt,
                                     m_wavParams.chann_cnt);
-            m_wavs[slot]->open("wb");
+            m_wavs[slot]->open("wb", slot);
             m_filewatcher.addPath(buff);
         }
     }
