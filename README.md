@@ -13,13 +13,6 @@ A wav recorder over udp streams.
     $ ./udp-server -c <path-to-conf-file>           # as normal app
     $ ./udp-server --config <path-to-conf-file>     # as normal app
 
-# fast fourier library by:
-# KFR - Fast, modern C++ DSP framework
-
-[![Build Status](https://img.shields.io/travis/kfrlib/kfr/master.svg?maxAge=2592000&style=flat-square)](https://travis-ci.org/kfrlib/kfr) [![Gitter](https://img.shields.io/gitter/room/kfrlib/kfr.svg?maxAge=2592000&style=flat-square)](https://gitter.im/kfrlib/kfr)
-
-https://www.kfrlib.com
-
 ## TODO
     1. I have to remove the udp-client project when I am done with tests.
     2. I have to encrypt or add a check sum to the samples.
