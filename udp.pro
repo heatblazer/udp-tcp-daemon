@@ -13,4 +13,5 @@ SUBDIRS += \
     udp-server \
     udp-client \
     recorder-gui \
-    crypto
+    crypto \
+    kfr
