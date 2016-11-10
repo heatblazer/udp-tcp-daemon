@@ -79,7 +79,6 @@ Server::~Server()
 ///
 void Server::init(bool udp, quint16 port, bool send_heart)
 {
-    udp_data_t* t = &err_udp;
 
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
