@@ -30,7 +30,8 @@ struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
-    int16_t    data[16][32];
+    int16_t    data[32][16];
+    //int16_t    data[16][32];
 };
 
 struct tcp_data_t
@@ -206,6 +207,7 @@ bool Recorder::setupWavFiles()
 void Recorder::record(const udp_data_t &data)
 {
     // flip the data
+#if OK_PASSED_TEST
     int16_t flip_data[32][16] = {0};
 
     for(int i=0; i < 16; ++i) {
@@ -213,11 +215,13 @@ void Recorder::record(const udp_data_t &data)
             flip_data[j][i] = data.data[i][j];
         }
     }
+#endif
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             // TODO: test!
+#ifdef OK_PASSED_TEST
             m_wavs[i]->write((short*) flip_data[i], 16);
-#if OK_PASSED_TEST
+#else
             m_wavs[i]->write((short*) data.data[i], 16);
 #endif
         }
