@@ -8,7 +8,6 @@
 #include "server.h"
 #include "utils/wav-writer.h"
 
-
 /// timestring
 /// \brief getTimeString
 /// \return
@@ -31,7 +30,8 @@ struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
-    int16_t    data[16][32];
+    int16_t    data[32][16];
+    //int16_t    data[16][32];
 };
 
 struct tcp_data_t
@@ -121,7 +121,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             route(Server::CONNECTED);
         }
     }
-    // starrt  logging writer //
+    // starrt  logging writer //    
 }
 
 /// ready read datagrams
@@ -129,6 +129,15 @@ void Server::init(bool udp, quint16 port, bool send_heart)
 ///
 void Server::readyReadUdp()
 {
+    // write error udp to prevent wav size
+    // fragmenation, if missed an udp,
+    // I`ll write a 16 samples with max valuse
+    static udp_data_t err_udp = {0, 0, 0};
+    for(int i=0; i < 32; ++i) {
+        for(int j=0; j < 16; ++j) {
+            err_udp.data[i][j] = 0xFFFF;
+        }
+    }
     while (m_socket.udp->hasPendingDatagrams()) {
 
         QByteArray buff;
@@ -162,12 +171,13 @@ void Server::readyReadUdp()
 
                 m_logger.write(QByteArray(msg));
                 pktcnt = udp->counter; // synch back
-            }
+                emit dataReady(err_udp);
+            } else {
             // will use a new logic emit the udp struct
             // to the recorder, so now we don`t need
             // to depend each other
-            emit dataReady(*udp);
-
+                emit dataReady(*udp);
+            }
          } else {
             static const char* err_msg = "Missed an UDP\n";
             m_logger.write(QByteArray(err_msg));
