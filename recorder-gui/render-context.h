@@ -37,7 +37,7 @@ public slots:
 private:
     QTimer m_globalTick;
     QGraphicsScene* p_scene;
-
+    QGraphicsLineItem* p_line;
     friend class GuiView;
 };
 
