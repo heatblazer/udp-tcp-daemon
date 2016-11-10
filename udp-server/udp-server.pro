@@ -5,7 +5,7 @@ QT -= gui
 
 CONFIG += c++11
 
-TARGET = udp-server
+TARGET = recd2
 CONFIG += console
 CONFIG -= app_bundle
 
