@@ -46,7 +46,7 @@ void RenderScene::init()
             this, SLOT(renderScene()));
     m_globalTick.start();
 
-    line->setPos(22, 44);
+//    line->setPos(22, 44);
 }
 
 void RenderScene::renderScene()

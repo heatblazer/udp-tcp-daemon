@@ -40,6 +40,8 @@ struct tcp_data_t
 };
 
 
+static struct udp_data_t err_udp = {0, 0, 0};
+
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket({nullptr}),
@@ -77,6 +79,14 @@ Server::~Server()
 ///
 void Server::init(bool udp, quint16 port, bool send_heart)
 {
+    udp_data_t* t = &err_udp;
+
+    for(int i=0; i < 32; ++i) {
+        for(int j=0; j < 16; ++j) {
+            err_udp.data[i][j] = 0xFFFF >> 1;
+        }
+    }
+
     m_sendHeart = send_heart;
     if (udp) {
         m_socket.udp = new QUdpSocket(this);
@@ -132,12 +142,7 @@ void Server::readyReadUdp()
     // write error udp to prevent wav size
     // fragmenation, if missed an udp,
     // I`ll write a 16 samples with max valuse
-    static udp_data_t err_udp = {0, 0, 0};
-    for(int i=0; i < 32; ++i) {
-        for(int j=0; j < 16; ++j) {
-            err_udp.data[i][j] = 0xFFFF;
-        }
-    }
+
     while (m_socket.udp->hasPendingDatagrams()) {
 
         QByteArray buff;
