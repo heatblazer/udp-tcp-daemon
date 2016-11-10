@@ -31,7 +31,7 @@ struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
-    int16_t    data[32][16];
+    int16_t    data[16][32];
 };
 
 struct tcp_data_t
