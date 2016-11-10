@@ -1,6 +1,7 @@
 #include "render-context.h"
 #include <QGraphicsView>
 #include <QGraphicsLineItem>
+#include <QPainter>
 
 namespace iz {
 
@@ -38,7 +39,18 @@ RenderScene::~RenderScene()
 void RenderScene::init()
 {
     p_scene = new QGraphicsScene;
-    p_scene->addLine(10 , 10 , 100, 10);
+    p_scene->setSceneRect(QRect(0, 0, 320, 240));
+    QGraphicsLineItem* line = p_scene->addLine(0 , 240/2 , p_scene->width(), 240/2);
+    m_globalTick.setInterval(30);
+    connect(&m_globalTick, SIGNAL(timeout()),
+            this, SLOT(renderScene()));
+    m_globalTick.start();
+
+    line->setPos(22, 44);
+}
+
+void RenderScene::renderScene()
+{
 }
 
 

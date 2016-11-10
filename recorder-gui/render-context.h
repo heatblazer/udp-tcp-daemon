@@ -4,6 +4,7 @@
 // qt stuff //
 #include <QGraphicsScene>
 #include <QTimer>
+#include <QObject>
 
 // experimental drawing api for the player
 namespace iz {
@@ -23,14 +24,16 @@ private:
     QGraphicsView* m_ctx;
 };
 
-class RenderScene
+class RenderScene : public QObject
 {
+    Q_OBJECT
 public:
 
     RenderScene();
     ~RenderScene();
     void init();
-
+public slots:
+    void renderScene();
 private:
     QTimer m_globalTick;
     QGraphicsScene* p_scene;
