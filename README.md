@@ -9,9 +9,9 @@ A wav recorder over udp streams.
 
 ## Usage
 
-    $ ./udp-server -d -c <path-to-conf-file>        # as daemon
-    $ ./udp-server -c <path-to-conf-file>           # as normal app
-    $ ./udp-server --config <path-to-conf-file>     # as normal app
+    $ ./recd2 -d -c <path-to-conf-file>        # as daemon
+    $ ./recd2 -c <path-to-conf-file>           # as normal app
+    $ ./recd2 --config <path-to-conf-file>     # as normal app
 
 ## TODO
     1. I have to remove the udp-client project when I am done with tests.
@@ -21,6 +21,8 @@ A wav recorder over udp streams.
     5. GUI for the recorder is stub yet.
     6. I have to add Build/Install instructions and options to the BUILD section.
     7. Daemon logging must support sys/log functionality. Not done yet.
+    8. GUI must perform Goertzl algorithm for DTM and filtering the sample data.
+
 
 ## NOTES
     31.10.2016: now correctly records the samples from the incomming device.
@@ -41,6 +43,11 @@ A wav recorder over udp streams.
     08.11.2016: started implementation of QWav based on Qt and QFile
     08.11.2016: implemented and tested QWav. Will use it in the future.
     10.11.2016: fixed a small bug for the size of files read from XML file
+    11.11.2016: added udp error packet with samples filled to max
+    11.11.2016: started implementing the gui context for displaying wav samples.
+    11.11.2016: animation frame of the pointerof the data.
+    11.11.2016: simple concepts for gui`s context.
+    11.11.2016: changed the name of the executable binary.
 
 ***
 <ilianzapryanov@abv.bg>
