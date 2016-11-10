@@ -14,6 +14,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp
+        widget.cpp \
+    render-context.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    render-context.h

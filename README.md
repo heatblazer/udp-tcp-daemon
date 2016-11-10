@@ -40,6 +40,7 @@ A wav recorder over udp streams.
     08.11.2016: refractory and good coding practices added.
     08.11.2016: started implementation of QWav based on Qt and QFile
     08.11.2016: implemented and tested QWav. Will use it in the future.
+    10.11.2016: fixed a small bug for the size of files read from XML file
 
 ***
 <ilianzapryanov@abv.bg>
