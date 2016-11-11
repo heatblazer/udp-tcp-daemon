@@ -1,6 +1,8 @@
 #include "plugin-manager.h"
 
 #include <iostream>
+#include <dlfcn.h>
+#include <stdlib.h>
 
 namespace iz {
 
@@ -13,6 +15,13 @@ QHash<QString, RecIface> RecPluginMngr::m_plugins;
 
 bool RecPluginMngr::loadLibrary(const QString &src)
 {
+
+    void* handle = dlopen(src.toStdString().data(), RTLD_LAZY);
+    if (handle == nullptr) {
+        return false;
+    }
+    std::cout << "OK! Load lib!\n";
+#if 0
     bool res = false;
     static QLibrary plugin(src);
     res = plugin.load();
@@ -46,6 +55,8 @@ bool RecPluginMngr::loadLibrary(const QString &src)
     // map them all
     m_plugins[src] = iface;
     return load_all_res;
+#endif
+
 }
 
 RecIface* RecPluginMngr::getInterface(const QString &iface)
