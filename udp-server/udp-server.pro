@@ -53,10 +53,11 @@ QMAKE_CFLAGS += \
     -std=gnu11
 
 # custom macrodefs for the tests
-# QMAKE_CXXFLAGS += -DPLUGIN_TEST
-                   #-DTEST
-                  #-DXML_TEST
-                   #-DCRYPTO_TEST
+QMAKE_CXXFLAGS += -DUNSAFE_CONFIG
+                   #-DPLUGIN_TEST \
+                   #-DTEST     \
+                  #-DXML_TEST  \
+                   #-DCRYPTO_TEST \
 
 
 # redefine a Makefile INSTALL_PROGRAM variable. We want to instal wit SUID bit
