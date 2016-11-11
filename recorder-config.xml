@@ -49,5 +49,11 @@
     host="127.0.0.1"
     enabled="false"
     />
+<Plugin
+    name="test1"
+    enabled="true"
+    path="../../../libtest.so"
+/>
+
 
 </Config>
