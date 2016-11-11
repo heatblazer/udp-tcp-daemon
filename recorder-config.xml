@@ -49,8 +49,16 @@
     host="127.0.0.1"
     enabled="false"
     />
+
+<!-- Plugin
+     name: of the plugin that will be refered in the manager
+     order: of the execution of multiple plugins are applied
+     enabled: or disabled: do we have to use the plugin
+     path: absolute path or the one in LD_PATH
+-->
 <Plugin
-    name="test1"
+    name="TestPlugin"
+    order="1"
     enabled="true"
     path="../../../libtest.so"
 />
