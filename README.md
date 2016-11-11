@@ -55,6 +55,7 @@ A wav playback with waveform for listening the records.
     11.11.2016: changed the name of the executable binary.
     11.11.2016: added test plugin architecture.
     11.11.2016: added UID to file: <channel-UID-timestamp.wav>
+    11.11.2016: plugin manager test: must pass the full path to .so
 
 ***
 <ilianzapryanov@abv.bg>
