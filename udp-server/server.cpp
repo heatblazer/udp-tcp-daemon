@@ -193,6 +193,7 @@ void Server::readyReadUdp()
         static const char* err_msg = "We can read, but there is no pending datagram!\n";
         m_logger.write(QByteArray(err_msg));
     }
+
 }
 
 /// Connect and read TCP packets

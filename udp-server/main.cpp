@@ -33,6 +33,31 @@ int main(int argc, char** argv)
 
     return 0;
 }
+#elif PLUGIN_TEST
+
+#include "plugin-manager.h"
+
+
+int main(int argc, char** argv)
+{
+    if (argc < 2) {
+        return 1;
+    }
+
+    bool res = iz::RecPluginMngr::loadLibrary(QString(argv[1]));
+    if (res) {
+        iz::RecIface *dummy =
+                iz::RecPluginMngr::getInterface(QString(argv[1]));
+        if (dummy) {
+            dummy->init();
+            dummy->get_data();
+            dummy->put_data(0);
+            dummy->put_ndata(0, 0);
+        }
+    }
+
+    return 0;
+}
 
 #else
 #include "sapplication.h"

@@ -53,6 +53,7 @@ A wav playback with waveform for listening the records.
     11.11.2016: animation frame of the pointerof the data.
     11.11.2016: simple concepts for gui`s context.
     11.11.2016: changed the name of the executable binary.
+    11.11.2016: added test plugin architecture.
 
 ***
 <ilianzapryanov@abv.bg>

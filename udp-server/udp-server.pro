@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     unix/daemon.cpp \
     utils/wav-writer.cpp \
     utils/qwave-writer.cpp \
-    utils/writer.cpp
+    utils/writer.cpp \
+    plugin-manager.cpp
 
 HEADERS += \
     server.h \
@@ -31,7 +32,8 @@ HEADERS += \
     utils/wav-writer.h \
     utils/qwave-writer.h \
     utils/writer.h \
-    utils/wav-writer-iface.h
+    utils/wav-writer-iface.h \
+    plugin-manager.h
 
 
 QMAKE_CFLAGS += \
@@ -48,7 +50,8 @@ QMAKE_CFLAGS += \
     -std=gnu11
 
 # custom macrodefs for the tests
-# QMAKE_CXXFLAGS += -DTEST
+ QMAKE_CXXFLAGS += -DPLUGIN_TEST
+                   #-DTEST
                   #-DXML_TEST
                    #-DCRYPTO_TEST
 
