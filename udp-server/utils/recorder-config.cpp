@@ -106,8 +106,9 @@ bool RecorderConfig::loadFile(const QString &fname)
 /// \brief RecorderConfig::fastLoadFile
 /// \param fname
 ///
-void RecorderConfig::fastLoadFile(const QString &fname)
+bool RecorderConfig::fastLoadFile(const QString &fname)
 {
+    bool res = true;
     QFile file(fname);
     if (file.open(QIODevice::ReadOnly)) {
         QXmlStreamReader reader(file.readAll());
@@ -125,6 +126,7 @@ void RecorderConfig::fastLoadFile(const QString &fname)
             }
         }
     }
+    return res;
 }
 
 /// no check for now
