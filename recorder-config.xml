@@ -57,8 +57,26 @@
      path: absolute path or the one in LD_PATH
 -->
 <Plugin
-    name="TestPlugin"
+    name="TestPlugin1"
     order="1"
+    enabled="true"
+    path="../../../libtest.so"
+/>
+<Plugin
+    name="TestPlugin2"
+    order="2"
+    enabled="true"
+    path="../../../libtest.so"
+/>
+<Plugin
+    name="TestPlugin3"
+    order="3"
+    enabled="true"
+    path="../../../libtest.so"
+/>
+<Plugin
+    name="TestPlugin4"
+    order="4"
     enabled="true"
     path="../../../libtest.so"
 />
