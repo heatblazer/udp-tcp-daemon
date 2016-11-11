@@ -13,6 +13,12 @@ typedef void* (*get_data)(void);
 
 QHash<QString, RecIface> RecPluginMngr::m_plugins;
 
+/// TODO: this has to be changed to match
+/// the correct name of the plugins
+/// \brief RecPluginMngr::loadLibrary
+/// \param src - must be a config file attribs
+/// \return OK if loaded, fale else
+///
 bool RecPluginMngr::loadLibrary(const QString &src)
 {
     bool res = false;
@@ -55,6 +61,13 @@ bool RecPluginMngr::loadLibrary(const QString &src)
 
 }
 
+/// get a pointer to the iterface from the
+/// map, by a given name:
+/// ex. getInterface("Test!")->init();
+/// \brief RecPluginMngr::getInterface
+/// \param name of loaded plugin
+/// \return
+///
 RecIface* RecPluginMngr::getInterface(const QString &iface)
 {
 
