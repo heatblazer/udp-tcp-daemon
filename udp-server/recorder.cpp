@@ -208,7 +208,7 @@ bool Recorder::setupWavFiles()
 /// and write the sample data to a specific slot
 /// \brief Recorder::record
 /// \param data - samples
-/// \param slot of the wav file
+///
 void Recorder::record(const udp_data_t &data)
 {
     // flip the data
@@ -280,6 +280,10 @@ void Recorder::testFileWatcher(const QString &file)
     }
 }
 
+/// PENDING BUGFIX! DONT USE!!!
+/// \brief Recorder::performHotSwap
+/// \param file - name of file
+///
 void Recorder::performHotSwap(const QString &file)
 {
     Wav* w = getWavByName(file);
