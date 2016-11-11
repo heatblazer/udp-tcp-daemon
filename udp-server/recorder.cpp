@@ -240,7 +240,7 @@ void Recorder::record(const tcp_data_t &data)
     std::cout << "Stub: Record TCP!" << std::endl;
 }
 
-/// stub
+/// stub: timer based - unimplemented!
 /// \brief Recorder::hotSwapFiles
 /// hotswaps wave files with new ones when
 /// a given recorder time elapses
@@ -259,7 +259,7 @@ void Recorder::testFileWatcher(const QString &file)
             if (m_wavs[i]->getFileSize() > m_maxFileSize) {
                 s_UID++;
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
-                char buff[64] = {0};
+                char buff[128] = {0};
                 sprintf(buff, "%d-%d-%s.wav",
                         s_UID,
                         i, getTimeString());
@@ -295,9 +295,10 @@ void Recorder::performHotSwap(const QString &file)
             m_wavs[slot]->close();
             delete m_wavs[slot];
             m_wavs[slot] = nullptr;
-            char buff[64] = {0};
-            sprintf(buff, "%d-%s.wav",
-                    slot, getTimeString());
+            char buff[128] = {0};
+            s_UID++;
+            sprintf(buff, "%d-%d-%s.wav", slot,
+                    s_UID, getTimeString());
 
             m_wavs[slot] = new Wav(buff);
             m_wavs[slot]->setupWave(m_wavParams.samples_per_sec,
