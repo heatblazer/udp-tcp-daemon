@@ -31,7 +31,18 @@ SApplication::SApplication(int &argc, char **argv)
                 argv[i] == QLatin1String("--config")) {
             if (argv[i+1] != nullptr) {
                 // init config file
+
+              // I will test the fast loading of XML file here
+#ifndef UNSAFE_CONFIG
+                // this will be safe check element by element and attribs
+                // and will return true or false
                 m_setup = RecorderConfig::Instance().loadFile(QString(argv[i+1]));
+#else
+                // this is lab tested xml parsing assuming
+                // config is OK, no checks and always return TRUE
+                // which is dangerous in release
+                m_setup = RecorderConfig::Instance().fastLoadFile(QString(argv[i+1]));
+#endif
             } else {
                 std::cout << "ERROR! Please provide a config file after ("
                           << argv[i] << ") argument! Terminating..."
@@ -54,7 +65,6 @@ SApplication::SApplication(int &argc, char **argv)
     if (m_setup) {
         Daemon::registerAppData(this);
     }
-
 }
 
 SApplication::~SApplication()
