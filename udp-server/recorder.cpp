@@ -40,6 +40,8 @@ struct tcp_data_t
 };
 
 
+uint32_t Recorder::s_UID = 0;
+
 Recorder::Recorder(QObject *parent)
     : QObject(parent),
       m_maxFileSize(0)
@@ -59,9 +61,11 @@ bool Recorder::init()
 {
     bool res = true;
 
-    char buff[64]={0};
+    char buff[128]={0};
     for(int i=0; i < 32; ++i) {
-        sprintf(buff, "%d-%s.wav", i,
+        s_UID++;
+        sprintf(buff, "%d-%d-%s.wav", i,
+                s_UID,
                 getTimeString());
         m_wavs[i] = new Wav(buff);
     }
@@ -252,9 +256,11 @@ void Recorder::testFileWatcher(const QString &file)
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             if (m_wavs[i]->getFileSize() > m_maxFileSize) {
+                s_UID++;
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
                 char buff[64] = {0};
-                sprintf(buff, "%d-%s.wav",
+                sprintf(buff, "%d-%d-%s.wav",
+                        s_UID,
                         i, getTimeString());
                 m_wavs[i]->close();
                 delete m_wavs[i];

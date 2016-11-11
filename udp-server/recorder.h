@@ -49,6 +49,7 @@ private:
     QTimer m_hotswap;
     QFileSystemWatcher m_filewatcher;
     uint32_t    m_maxFileSize;
+    static uint32_t s_UID;
     struct {
         int samples_per_sec;
         int bits_per_sec;
