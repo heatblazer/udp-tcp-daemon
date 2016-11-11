@@ -3,6 +3,11 @@ Recorder
 
 A wav recorder over udp streams.
 
+Player
+======
+
+A wav playback with waveform for listening the records.
+
 
 ## Build
    Added the dummy project for the gui interface of the recorder.
