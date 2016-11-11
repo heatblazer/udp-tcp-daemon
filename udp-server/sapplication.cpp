@@ -116,6 +116,7 @@ int SApplication::init()
 /// stop all stuff
 void SApplication::deinit()
 {
+    Daemon::log("SApplication::deinit()!\n");
     m_recorder.deinit();
     m_server.deinit();
 }

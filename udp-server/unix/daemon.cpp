@@ -62,7 +62,6 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
     (void) usr_data;
     (void) info;
     if (g_application != NULL) {
-        log_message("Deinit SApplication... \n");
         g_application->deinit();
     }
 
@@ -208,6 +207,15 @@ void Daemon::registerAppData(void *data)
 void Daemon::sendSignal(pid_t process, int signal)
 {
     kill(process, signal);
+}
+
+/// proxy to the local function test purposes
+/// \brief Daemon::log
+/// \param msg pass the msg to the daremon private method
+///
+void Daemon::log(const char *msg)
+{
+    log_message(msg);
 }
 
 } // iz
