@@ -116,7 +116,6 @@ int main(int argc, char *argv[])
     iz::SApplication app(argc, argv);
     int res = app.init();
     if (res < 0) {
-        app.deinit();
         exit(4);
     }
     return app.exec();

@@ -91,6 +91,7 @@ bool Recorder::init()
 
 void Recorder::deinit()
 {
+
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             m_wavs[i]->close();
