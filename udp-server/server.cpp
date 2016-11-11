@@ -96,6 +96,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
         connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp())/*, Qt::DirectConnection*/);
 
+
         char msg[64]={0};
         if (bres) {
             char msg2[64] ={0};
@@ -142,50 +143,55 @@ void Server::readyReadUdp()
     // fragmenation, if missed an udp,
     // I`ll write a 16 samples with max valuse
 
-    while (m_socket.udp->hasPendingDatagrams()) {
+    if (m_socket.udp->hasPendingDatagrams()) {
+        while (m_socket.udp->hasPendingDatagrams()) {
 
-        QByteArray buff;
+            QByteArray buff;
 
-        buff.resize(m_socket.udp->pendingDatagramSize());
+            buff.resize(m_socket.udp->pendingDatagramSize());
 
-        qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
-                               &m_senderHost, &m_senderPort);
+            qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
+                                   &m_senderHost, &m_senderPort);
 
 
-        // the udp structure from the device
-        udp_data_t* udp = (udp_data_t*) buff.data();
+            // the udp structure from the device
+            udp_data_t* udp = (udp_data_t*) buff.data();
 
-        if (read > 0) {
-            // packet loss logic below
-            static uint32_t pktcnt = udp->counter;
-            // one frame lost for synching with my counter
-            if (udp->counter != ++pktcnt) {
-                time_t current_time;
-                struct tm * time_info;
-                char timeString[9];  // space for "HH:MM:SS\0"
+            if (read > 0) {
+                // packet loss logic below
+                static uint32_t pktcnt = udp->counter;
+                // one frame lost for synching with my counter
+                if (udp->counter != ++pktcnt) {
+                    time_t current_time;
+                    struct tm * time_info;
+                    char timeString[9];  // space for "HH:MM:SS\0"
 
-                time(&current_time);
-                time_info = localtime(&current_time);
+                    time(&current_time);
+                    time_info = localtime(&current_time);
 
-                strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+                    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
 
-                char msg[64]={0};
-                sprintf(msg, "Packet lost:(%d) at: [%s]\t\n",
-                        udp->counter, timeString );
+                    char msg[64]={0};
+                    sprintf(msg, "Packet lost:(%d) at: [%s]\t\n",
+                            udp->counter, timeString );
 
-                m_logger.write(QByteArray(msg));
-                pktcnt = udp->counter; // synch back
-                emit dataReady(err_udp);
-            } else {
-            // will use a new logic emit the udp struct
-            // to the recorder, so now we don`t need
-            // to depend each other
-                emit dataReady(*udp);
+                    m_logger.write(QByteArray(msg));
+                    pktcnt = udp->counter; // synch back
+                    emit dataReady(err_udp);
+                } else {
+                // will use a new logic emit the udp struct
+                // to the recorder, so now we don`t need
+                // to depend each other
+                    emit dataReady(*udp);
+                }
+             } else {
+                static const char* err_msg = "Missed an UDP\n";
+                m_logger.write(QByteArray(err_msg));
             }
-         } else {
-            static const char* err_msg = "Missed an UDP\n";
-            m_logger.write(QByteArray(err_msg));
         }
+    } else {
+        static const char* err_msg = "We can read, but there is no pending datagram!\n";
+        m_logger.write(QByteArray(err_msg));
     }
 }
 
