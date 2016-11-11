@@ -11,6 +11,9 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
+
+LIBS += -ldl
+
 SOURCES += main.cpp \
     server.cpp \
     sapplication.cpp \
