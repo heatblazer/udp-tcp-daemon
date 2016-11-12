@@ -87,6 +87,9 @@ bool RecorderConfig::loadFile(const QString &fname)
                                                     (attribs.at(i).name().toString(),
                                                            attribs.at(i).value().toString()));
                         }
+                    } else if (reader.name() == "Plugin") {
+
+
                     } else {
                         // dummy else for now
                         // later will support
