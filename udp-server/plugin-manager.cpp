@@ -11,6 +11,7 @@ typedef void (*init)(void);
 typedef int (*put_ndata)(void*, int);
 typedef int (*put_data)(void*);
 typedef void* (*get_data)(void);
+typedef void (*deinit)(void);
 
 QHash<QString, RecIface> RecPluginMngr::m_plugins;
 
@@ -53,6 +54,11 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
 
     iface.put_ndata = (put_ndata) plugin.resolve("put_ndata");
     if (iface.put_ndata == nullptr) {
+        load_all_res &= false;
+    }
+
+    iface.deinit = (deinit) plugin.resolve("deinit");
+    if (iface.deinit == nullptr) {
         load_all_res &= false;
     }
     // map them all
