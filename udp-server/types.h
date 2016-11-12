@@ -15,6 +15,7 @@ struct RecIface
     int (*put_ndata)(void*, int);
     int (*put_data)(void*);
     void* (*get_data)(void);
+    void (*deinit)(void);
 };
 
 
