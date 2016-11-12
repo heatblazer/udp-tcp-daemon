@@ -116,21 +116,21 @@ int SApplication::init()
     // plugin setup section
     // this is a bit toug logic for now
     PairList list = RecorderConfig::Instance().getTagPairs("Plugin");
-     for(int i=0; i < list.count(); ++i) {
-        if (list.at(i).m_type1 == "name") {
+    for(int i=0; i < list.count(); ++i) {
+       if (list.at(i).m_type1 == "name") {
             // perform the parsina and plugin setup here
             // the array is ordered and we assume name is
             // in the front
-            RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
-            RecIface iface =
+           RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
+           RecIface iface =
                     *RecPluginMngr::getInterface(list.at(i).m_type2);
             // based on order we emulate a priority queqe here
-            if (list.at(i+1).m_type2.toInt() > 1) {
+           if (list.at(i+1).m_type2.toInt() > 1) {
                 m_plugins.push_back(iface);
-            } else {
+           } else {
                 m_plugins.push_front(iface);
-            }
-        }
+           }
+       }
     }
 
      // test loaded plugins
@@ -144,6 +144,10 @@ void SApplication::deinit()
     Daemon::log("SApplication::deinit()!\n");
     m_recorder.deinit();
     m_server.deinit();
+    for(int i=0; i < m_plugins.count(); ++i) {
+        // deinit in priority order
+        m_plugins.at(i).deinit();
+    }
 }
 
 void SApplication::testLoadedPlugins()
