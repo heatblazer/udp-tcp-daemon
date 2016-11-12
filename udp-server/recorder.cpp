@@ -78,13 +78,14 @@ bool Recorder::init()
             m_filewatcher.addPath(m_wavs[i]->getFileName());
         }
     }
-#if 0
     connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
             this, SLOT(testFileWatcher(QString)));
-#endif
-    // test the new concept for hotswapping !
+#if 0 // pending fixing bug...
+
     connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
             this, SLOT(performHotSwap(QString)));
+#endif
+    // test the new concept for hotswapping !
 
     return res;
 }
