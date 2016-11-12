@@ -6,6 +6,7 @@
 
 namespace iz {
 
+// these are used for typecasting
 typedef void (*init)(void);
 typedef int (*put_ndata)(void*, int);
 typedef int (*put_data)(void*);
@@ -19,7 +20,7 @@ QHash<QString, RecIface> RecPluginMngr::m_plugins;
 /// \param src - must be a config file attribs
 /// \return OK if loaded, fale else
 ///
-bool RecPluginMngr::loadLibrary(const QString &src)
+bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
 {
     bool res = false;
     QLibrary plugin(src);
@@ -55,7 +56,7 @@ bool RecPluginMngr::loadLibrary(const QString &src)
         load_all_res &= false;
     }
     // map them all
-    m_plugins[src] = iface;
+    m_plugins[name] = iface;
     return load_all_res;
 
 

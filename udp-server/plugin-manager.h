@@ -15,7 +15,7 @@ namespace iz {
 class RecPluginMngr
 {
 public:
-    static bool loadLibrary(const QString& src);
+    static bool loadLibrary(const QString& src, const QString& name);
     static RecIface* getInterface(const QString& iface);
 
 private:
