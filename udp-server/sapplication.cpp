@@ -154,10 +154,19 @@ void SApplication::testLoadedPlugins()
 {
     std::cout << "Testing loaded plugins!" << std::endl;
     for(int i=0; i < m_plugins.count(); ++i) {
-        m_plugins.at(i).init();
-        m_plugins.at(i).get_data();
-        m_plugins.at(i).put_data(0);
-        m_plugins.at(i).put_ndata(0, 0);
+        // prevend segfaults
+        if (m_plugins.at(i).init) {
+            m_plugins.at(i).init();
+        }
+        if (m_plugins.at(i).get_data()) {
+            m_plugins.at(i).get_data();
+        }
+        if (m_plugins.at(i).put_data) {
+            m_plugins.at(i).put_data(0);
+        }
+        if (m_plugins.at(i).put_ndata) {
+            m_plugins.at(i).put_ndata(0, 0);
+        }
     }
 }
 
