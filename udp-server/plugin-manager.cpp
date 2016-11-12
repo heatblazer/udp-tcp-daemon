@@ -45,53 +45,35 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
         return res;
     }
 
-    bool load_all_res = true;
+    bool load_all_res = false;
     RecIface iface;
     get_interface lib_ifaceCb = (get_interface) plugin.resolve("get_interface");
 
     if (lib_ifaceCb != nullptr) {
         struct interface_t* lib_symbols = lib_ifaceCb();
-        iface.init = lib_symbols->init;
-        iface.deinit = lib_symbols->deinit;
-        iface.get_data = lib_symbols->get_data;
-        iface.put_data = lib_symbols->put_data;
-        iface.put_ndata = lib_symbols->put_ndata;
+        if (lib_symbols->deinit == nullptr || lib_symbols->init == nullptr
+                || lib_symbols->get_data == nullptr || lib_symbols->put_data == nullptr
+                || lib_symbols->put_ndata == nullptr
+              )
+        {
+            load_all_res = false;
 
+        } else {
+            iface.init = lib_symbols->init;
+            iface.deinit = lib_symbols->deinit;
+            iface.get_data = lib_symbols->get_data;
+            iface.put_data = lib_symbols->put_data;
+            iface.put_ndata = lib_symbols->put_ndata;
+            load_all_res = true;
+        }
         // old concept
-#if 0
-        iface.init = (init) plugin.resolve("init");
-    // todo: err messages !!!
-
-        if (iface.init == nullptr) {
-            load_all_res &= false;
-        }
-
-        iface.get_data = (get_data) plugin.resolve("get_data");
-        if (iface.get_data == nullptr) {
-            load_all_res &= false;
-        }
-
-        iface.put_data = (put_data) plugin.resolve("put_data");
-        if (iface.put_data == nullptr) {
-            load_all_res &= false;
-        }
-
-        iface.put_ndata = (put_ndata) plugin.resolve("put_ndata");
-        if (iface.put_ndata == nullptr) {
-            load_all_res &= false;
-        }
-
-        iface.deinit = (deinit) plugin.resolve("deinit");
-        if (iface.deinit == nullptr) {
-            load_all_res &= false;
-        }
-#endif
         m_plugins[name] = iface;
-        return true;
+        return load_all_res;
+
     } else {
         std::cout << plugin.errorString().toStdString()
                   << std::endl;
-        return false;
+        return load_all_res;
     }
 }
 
