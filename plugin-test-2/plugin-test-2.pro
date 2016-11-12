@@ -3,8 +3,8 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += \
-    plugin-interface.cpp
-
 HEADERS += \
-    plugin-interface.h
+    plugin-iface.h
+
+SOURCES += \
+    plugin-iface.cpp

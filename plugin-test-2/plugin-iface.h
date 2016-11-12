@@ -1,7 +1,6 @@
-#ifndef PLUGININTERFACE_H
-#define PLUGININTERFACE_H
+#ifndef PLUGINIFACE_H
+#define PLUGINIFACE_H
 
-// can be declared opque for more flexibility
 struct interface_t
 {
     void (*init)();
@@ -11,8 +10,8 @@ struct interface_t
     void (*deinit)();
 
 };
-extern "C" {
+
+extern "C"{
 const struct interface_t* get_interface();
 }
-
-#endif // PLUGININTERFACE_H
+#endif // PLUGINIFACE_H
