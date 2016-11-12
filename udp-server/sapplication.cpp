@@ -113,13 +113,28 @@ int SApplication::init()
         }
     }
 
-#if 0
-    static QTimer quit;
-    quit.setInterval(20000);
-    connect(&quit, SIGNAL(timeout()),
-            this, SLOT(testKill()));
-    quit.start();
-#endif
+    // plugin setup section
+    // this is a bit toug logic for now
+    PairList list = RecorderConfig::Instance().getTagPairs("Plugin");
+     for(int i=0; i < list.count(); ++i) {
+        if (list.at(i).m_type1 == "name") {
+            // perform the parsina and plugin setup here
+            // the array is ordered and we assume name is
+            // in the front
+            RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
+            RecIface iface =
+                    *RecPluginMngr::getInterface(list.at(i).m_type2);
+            // based on order we emulate a priority queqe here
+            if (list.at(i+1).m_type2.toInt() > 1) {
+                m_plugins.push_back(iface);
+            } else {
+                m_plugins.push_front(iface);
+            }
+        }
+    }
+
+     // test loaded plugins
+    testLoadedPlugins();
     return 0;
 }
 
@@ -129,6 +144,17 @@ void SApplication::deinit()
     Daemon::log("SApplication::deinit()!\n");
     m_recorder.deinit();
     m_server.deinit();
+}
+
+void SApplication::testLoadedPlugins()
+{
+    std::cout << "Testing loaded plugins!" << std::endl;
+    for(int i=0; i < m_plugins.count(); ++i) {
+        m_plugins.at(i).init();
+        m_plugins.at(i).get_data();
+        m_plugins.at(i).put_data(0);
+        m_plugins.at(i).put_ndata(0, 0);
+    }
 }
 
 void SApplication::testKill()

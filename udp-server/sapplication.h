@@ -9,6 +9,7 @@
 #include "utils/wav-writer.h"
 #include "utils/recorder-config.h"
 #include "recorder.h"
+#include "plugin-manager.h"
 
 namespace iz {
 
@@ -32,13 +33,18 @@ public:
     static int m_fdHUP;
     static int m_fdTERM;
 
+private:
+    void testLoadedPlugins();
+
 private slots:
     void testKill();
+
 private:
     Server m_server;
     Recorder m_recorder;
     QString m_recConf;
     bool m_setup;
+    QList<RecIface> m_plugins;
 };
 
 } // iz
