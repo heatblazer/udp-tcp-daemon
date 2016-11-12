@@ -24,3 +24,8 @@ void *get_data()
     printf("get_data()\n");
     return 0x00;
 }
+
+void deinit()
+{
+    printf("deinit()\n");
+}
