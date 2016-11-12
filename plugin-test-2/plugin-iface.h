@@ -1,6 +1,9 @@
 #ifndef PLUGINIFACE_H
 #define PLUGINIFACE_H
 
+#ifdef __cplusplus
+extern "C"{
+#endif
 struct interface_t
 {
     void (*init)();
@@ -11,7 +14,9 @@ struct interface_t
 
 };
 
-extern "C"{
 const struct interface_t* get_interface();
+#ifdef __cplusplus
 }
+#endif
+
 #endif // PLUGINIFACE_H
