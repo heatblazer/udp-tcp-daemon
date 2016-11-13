@@ -6,13 +6,6 @@
 
 namespace iz {
 
-// these are used for typecasting
-typedef void (*init)(void);
-typedef int (*put_ndata)(void*, int);
-typedef int (*put_data)(void*);
-typedef void* (*get_data)(void);
-typedef void (*deinit)(void);
-
 struct interface_t
 {
     void (*init)(void);
