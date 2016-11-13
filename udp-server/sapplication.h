@@ -34,6 +34,7 @@ public:
     static int m_fdTERM;
 
 private:
+    void loadPlugins();
     void testLoadedPlugins();
 
 private slots:
