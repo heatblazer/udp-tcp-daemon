@@ -37,7 +37,7 @@ A wav playback with waveform for listening the records.
     The program supports plugable programs, that can be loaded by describing them in the
     config file. When a programmer wants to support the program with a plugin, she must
     provide that interface:
-    ``` #ifdef __cplusplus
+        ***#ifdef __cplusplus
         extern "C"{
         #endif
         struct interface_t
@@ -53,8 +53,8 @@ A wav playback with waveform for listening the records.
         const struct interface_t* get_interface();
         #ifdef __cplusplus
         }
-        #endif
-    ```
+        #endif***
+
     In brief, I expect the plugin to be able to init and deinit itself, and for now to
     be able to put and get some unknown data, and also to be able to support the C main
     function as the proxy I`ve preserved. So the main can be passed to the plugin. When
