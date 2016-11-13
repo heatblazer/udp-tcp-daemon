@@ -32,6 +32,33 @@ A wav playback with waveform for listening the records.
     See the recorder-config.xml for example.
     The release will be preloaded with default settings if no options are given, or
     not proper setup is detected.
+## Plugin API
+
+    The program supports plugable programs, that can be loaded by describing them in the
+    config file. When a programmer wants to support the program with a plugin, she must
+    provide that interface:
+    ``` #ifdef __cplusplus
+        extern "C"{
+        #endif
+        struct interface_t
+        {
+            void (*init)();
+            int (*put_ndata)(void* data, int len);
+            int (*put_data)(void* data);
+            void* (*get_data)(void);
+            void (*deinit)();
+            int (*main_proxy)(int, char**);
+        };
+
+        const struct interface_t* get_interface();
+        #ifdef __cplusplus
+        }
+        #endif
+    ```
+    In brief, I expect the plugin to be able to init and deinit itself, and for now to
+    be able to put and get some unknown data, and also to be able to support the C main
+    function as the proxy I`ve preserved. So the main can be passed to the plugin. When
+    I decide to change the interface, the contributors will be informed.
 
 ## TODO
     1. I have to remove the udp-client project when I am done with tests.
