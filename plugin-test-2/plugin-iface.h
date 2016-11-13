@@ -11,7 +11,7 @@ struct interface_t
     int (*put_data)(void* data);
     void* (*get_data)(void);
     void (*deinit)();
-
+    int (*main_proxy)(int, char**);
 };
 
 const struct interface_t* get_interface();

@@ -135,6 +135,7 @@ int SApplication::init()
 
      // test loaded plugins
     testLoadedPlugins();
+
     return 0;
 }
 
@@ -166,6 +167,10 @@ void SApplication::testLoadedPlugins()
         }
         if (m_plugins.at(i).put_ndata) {
             m_plugins.at(i).put_ndata(0, 0);
+        }
+        if (m_plugins.at(i).main_proxy) {
+            char* args[2] = {"aaa", "bbb"};
+            m_plugins.at(i).main_proxy(2, args);
         }
     }
 }

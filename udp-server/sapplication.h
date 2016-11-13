@@ -44,7 +44,7 @@ private:
     Recorder m_recorder;
     QString m_recConf;
     bool m_setup;
-    QList<RecIface> m_plugins;
+    QList<RecIface> m_plugins;    
 };
 
 } // iz

@@ -13,6 +13,7 @@ struct interface_t
     int (*put_data)(void*);
     void* (*get_data)(void);
     void (*deinit)(void);
+    int (*main_proxy)(int, char**);
 };
 
 typedef struct interface_t* (*get_interface)();
@@ -47,6 +48,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
         if (lib_symbols->deinit == nullptr || lib_symbols->init == nullptr
                 || lib_symbols->get_data == nullptr || lib_symbols->put_data == nullptr
                 || lib_symbols->put_ndata == nullptr
+                || lib_symbols->main_proxy == nullptr
               )
         {
             load_all_res = false;
@@ -57,6 +59,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
             iface.get_data = lib_symbols->get_data;
             iface.put_data = lib_symbols->put_data;
             iface.put_ndata = lib_symbols->put_ndata;
+            iface.main_proxy = lib_symbols->main_proxy;
             load_all_res = true;
         }
         // old concept
