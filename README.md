@@ -74,6 +74,7 @@ A wav playback with waveform for listening the records.
     12.11.2016: tested loading few test plugins to the application. OK.
     12.11.2016: now loading 2 different plugins.. had some name mangling problems. Solved.
     13.11.2016: tested on windows host machine, besides unix daemon everything works fine.
+    13.11.2016: project cleanup and file organizing.
 
 ***
 <ilianzapryanov@abv.bg>
