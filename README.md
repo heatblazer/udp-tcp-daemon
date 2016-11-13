@@ -18,6 +18,17 @@ A wav playback with waveform for listening the records.
     $ ./recd2 -c <path-to-conf-file>           # as normal app
     $ ./recd2 --config <path-to-conf-file>     # as normal app
 
+## Config File
+
+    HotSwap: maxSize in bytes or interval with timer`
+    ChannelCount: unused`
+    Wave: setup wav file - see the config file`
+    Record: setup directories and other stuff for the recorder
+
+
+
+
+
 ## TODO
     1. I have to remove the udp-client project when I am done with tests.
     2. I have to encrypt or add a check sum to the samples.
