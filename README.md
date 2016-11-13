@@ -20,14 +20,18 @@ A wav playback with waveform for listening the records.
 
 ## Config File
 
-    HotSwap: maxSize in bytes or interval with timer`
-    ChannelCount: unused`
-    Wave: setup wav file - see the config file`
-    Record: setup directories and other stuff for the recorder
+    HotSwap: maxSize in bytes or interval with timer.
+    ChannelCount: unused.
+    Wave: setup wav file - see the config file.
+    Record: setup directories and other stuff for the recorder.
+    Network: transport - can be udp or tcp, port to bind to.
+    Log: name and path to log - unused for now.
+    HeartBeat: send a keep alive packet to client if needed or to port.
+    Plugin: name of the plugin, order - priority, enabled - disabled, path - fullpath.
 
-
-
-
+    See the recorder-config.xml for example.
+    The release will be preloaded with default settings if no options are given, or
+    not proper setup is detected.
 
 ## TODO
     1. I have to remove the udp-client project when I am done with tests.
