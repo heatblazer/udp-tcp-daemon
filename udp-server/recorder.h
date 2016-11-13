@@ -46,9 +46,13 @@ private:
     // 32 chans for now
     // but will be configured outside
     Wav* m_wavs[32];
-    QTimer m_hotswap;
-    QFileSystemWatcher m_filewatcher;
+
+    // hotswap
+    QTimer m_hotswap; // timer based
+    QFileSystemWatcher m_filewatcher; // size based
+
     uint32_t    m_maxFileSize;
+
     static uint32_t s_UID;
     struct {
         int samples_per_sec;
