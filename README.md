@@ -102,6 +102,9 @@ A wav playback with waveform for listening the records.
     12.11.2016: now loading 2 different plugins.. had some name mangling problems. Solved.
     13.11.2016: tested on windows host machine, besides unix daemon everything works fine.
     13.11.2016: project cleanup and file organizing.
+    14.11.2016: now can configure paths for logging and recording
+    14.11.2016: now records wavs to a directory specified.
+    14.11.2016: log writer will be configured for speed of logging.
 
 ***
 <ilianzapryanov@abv.bg>
