@@ -90,11 +90,30 @@ RecIface* RecPluginMngr::getInterface(const QString &iface)
 
 }
 
+void RecPluginMngr::unloadLibrary(const QString &lib)
+{
+    if (m_plugins.find(lib) != m_plugins.end()) {
+        // keep in mind that you don`t deinit the library
+        // just remove the key pointing to it`s interface,
+        // so you won`t be able to access the interface anymore
+        // this is useful if some plugin was added but you don`t
+        // need it anmore
+        m_plugins.remove(lib);
+    }
+
+}
+
+/// nothing by default
+/// \brief RecPluginMngr::RecPluginMngr
+///
 RecPluginMngr::RecPluginMngr()
 {
 
 }
 
+///
+/// \brief RecPluginMngr::~RecPluginMngr
+///
 RecPluginMngr::~RecPluginMngr()
 {
 
