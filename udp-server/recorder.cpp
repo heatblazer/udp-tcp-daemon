@@ -216,9 +216,9 @@ void Recorder::record(const udp_data_t &data)
 #if OK_PASSED_TEST
     int16_t flip_data[32][16] = {0};
 
-    for(int i=0; i < 16; ++i) {
-        for(int j=0; j < 32; ++j) {
-            flip_data[j][i] = data.data[i][j];
+    for(int i=0; i < 32; ++i) {
+        for(int j=0; j < 16; ++j) {
+            flip_data[i][j] = data.data[j][i];
         }
     }
 #endif

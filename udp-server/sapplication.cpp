@@ -141,6 +141,13 @@ void SApplication::loadPlugins()
     // plugin setup section
     // this is a bit toug logic for now
     PairList list = RecorderConfig::Instance().getTagPairs("Plugin");
+
+    // this is small indexed array to sort the list later,
+    // instead of adding temp indexes to interface or
+    // make it more complex;
+    int* indexes = new int[list.count()];
+    memset(indexes, 0, list.count());
+
     for(int i=0; i < list.count(); ++i) {
        if (list.at(i).m_type1 == "name") {
             // perform the parsina and plugin setup here
@@ -149,14 +156,24 @@ void SApplication::loadPlugins()
            RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
            RecIface iface =
                     *RecPluginMngr::getInterface(list.at(i).m_type2);
-           // based on order we emulate a priority queqe here
-           // TODO: better prioritizing
-           if (list.at(i+1).m_type2.toInt() > 1) {
-                m_plugins.push_back(iface);
-           } else {
-                m_plugins.push_front(iface);
-           }
-       }
+           // put in any order for now
+           // store into the indexed array
+           indexes[i] = list.at(i).m_type2.toInt();
+           m_plugins.push_back(iface);
+        }
+    }
+
+    // now a simple bubble sort I don`t expect
+    // hundreds of  plugins anyway...
+    // unused for now... I`ll find a better way
+    for(int i=0; i < list.count(); ++i) {
+        for(int j=i+1; j < list.count(); ++j) {
+            if (indexes[i] < indexes[j]) {
+                int tmp = indexes[i];
+                indexes[i] = indexes[j];
+                indexes[j] = tmp;
+            }
+        }
     }
 }
 
