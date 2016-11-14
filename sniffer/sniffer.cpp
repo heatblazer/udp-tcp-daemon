@@ -11,6 +11,9 @@
 
 #include <pcap.h>
 
+// mine threaded app
+#include <pthread.h>
+
 
 /* We've included the UDP header struct for your ease of customization.
  * For your protocol, you might want to look at netinet/tcp.h for hints
@@ -25,9 +28,32 @@ struct UDP_hdr {
     u_short	uh_ulen;		/* datagram length */
     u_short	uh_sum;			/* datagram checksum */
 };
+////////////////////////////////////////////////////////////////////////////////
+// defs
+static void dump_UDP_packet(const unsigned char *packet, struct timeval ts,
+            unsigned int capture_len);
 
 
 
+////////////////////////////////////////////////////////////////////////////////
+
+static pthread_t g_worker_thread;
+
+/// thread library
+/// \brief worker
+/// \param pArgs
+/// \return
+///
+static void* worker(void* pArgs)
+{
+    (void) pArgs;
+    return 0;
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
 
 /* Note, this routine returns a pointer into a static buffer, and
  * so each call overwrites the value returned by the previous call.
@@ -57,17 +83,20 @@ static void too_short(struct timeval ts, const char *truncated_hdr)
 static void init()
 {
     printf("Sniffer init...\n");
+    pthread_create(&g_worker_thread, NULL, worker, NULL);
 }
 
 int put_ndata(void *data, int len)
 {
     (void) data;
     (void) len;
+    return 0;
 }
 
 static int put_data(void *data)
 {
     (void) data;
+    return 0;
 }
 
 static void *get_data()
@@ -78,8 +107,8 @@ static void *get_data()
 static void deinit()
 {
     printf("Sniffer deinit...\n");
+    pthread_join(g_worker_thread, 0);
 }
-
 
 static struct interface_t s_iface;
 
@@ -169,33 +198,20 @@ static int main_proxy(int argc, char** argv)
     char errbuf[PCAP_ERRBUF_SIZE];
     struct pcap_pkthdr header;
 
-    /* Skip over the program name. */
+        /* Skip over the program name. */
     ++argv; --argc;
-
-    /* We expect exactly one argument, the name of the file to dump. */
-    if ( argc != 1 )
-        {
-        fprintf(stderr, "program requires one argument, the trace file to dump\n");
-        exit(1);
-        }
 
     pcap = pcap_open_offline(argv[0], errbuf);
     if (pcap == NULL)
-        {
+    {
         fprintf(stderr, "error reading pcap file: %s\n", errbuf);
         exit(1);
-        }
-
-    /* Now just loop through extracting packets as long as we have
-     * some to read.
-     */
+    }
     while ((packet = pcap_next(pcap, &header)) != NULL) {
         dump_UDP_packet(packet, header.ts, header.caplen);
     }
 
-    // terminate
     return 0;
-
 }
 
 
