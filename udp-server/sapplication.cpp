@@ -1,6 +1,11 @@
 #include "sapplication.h"
 
-#include <iostream>
+#include <iostream> // remove it later
+
+// qt stuff//
+#include <QDir>
+
+// local headers //
 #include "unix/daemon.h"
 
 namespace iz {
@@ -86,6 +91,24 @@ int SApplication::init()
     if (!m_setup) {
         return -1;
     } else {
+
+        // open directories
+        const MPair<QString, QString>& rec_dir =
+                RecorderConfig::Instance().getAttribPairFromTag("Paths", "records");
+
+        const MPair<QString, QString>& log_dir =
+                RecorderConfig::Instance().getAttribPairFromTag("Paths", "logs");
+
+        if (rec_dir.m_type2 != "") {
+            if (!QDir(rec_dir.m_type2).exists()) {
+                QDir().mkpath(rec_dir.m_type2);
+            }
+        }
+        if (log_dir.m_type2 != "") {
+            if (!QDir(log_dir.m_type2).exists()) {
+                QDir().mkpath(log_dir.m_type2);
+            }
+        }
 
         bool udp = false;
         quint16 port = 0;

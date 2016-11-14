@@ -59,14 +59,28 @@ Recorder::~Recorder()
 /// \return true by default , false for future if something happens
 bool Recorder::init()
 {
+    const MPair<QString, QString>& dir =
+            RecorderConfig::Instance()
+            .getAttribPairFromTag("Paths", "records");
+
     bool res = true;
 
-    char buff[128]={0};
+    char buff[256]={0};
     for(int i=0; i < 32; ++i) {
         s_UID++;
-        sprintf(buff, "%d-%d-%s.wav", i,
-                s_UID,
-                getTimeString());
+        if (dir.m_type1 != "") {
+            sprintf(buff, "%s/%d-%d-%s.wav",
+                    dir.m_type2.toStdString().data(),
+                    i,
+                    s_UID,
+                    getTimeString());
+            m_directory = dir.m_type2;
+        } else {
+            sprintf(buff, "%d-%d-%s.wav", i,
+                    s_UID,
+                    getTimeString());
+            m_directory.clear();
+        }
         m_wavs[i] = new Wav(buff);
     }
     // open files when everything is ok and setup
@@ -260,10 +274,16 @@ void Recorder::testFileWatcher(const QString &file)
             if (m_wavs[i]->getFileSize() > m_maxFileSize) {
                 s_UID++;
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
-                char buff[128] = {0};
-                sprintf(buff, "%d-%d-%s.wav",
-                        s_UID,
-                        i, getTimeString());
+                char buff[256] = {0};
+                if (m_directory != "") {
+                    sprintf(buff, "%s/%d-%d-%s.wav",
+                            m_directory.toStdString().data(),
+                            i, s_UID, getTimeString());
+                } else {
+                    sprintf(buff, "%d-%d-%s.wav",
+                                i,
+                                s_UID, getTimeString());
+                }
                 m_wavs[i]->close();
                 delete m_wavs[i];
                 m_wavs[i] = nullptr;

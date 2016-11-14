@@ -62,6 +62,8 @@ private:
         short audio_fmt;
         short chann_cnt;
     } m_wavParams;
+
+    QString m_directory;
 };
 
 } // iz
