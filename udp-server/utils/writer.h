@@ -14,7 +14,8 @@ public:
     explicit Writer(const QString& fname, QThread* parent=nullptr);
     virtual ~Writer();
     // we may need to extend this class later
-    virtual void write(const QByteArray& data);
+    bool setup();
+    void write(const QByteArray& data);
     virtual void run();
     void startWriter();
     void stopWriter();
@@ -24,6 +25,7 @@ private:
     QMutex              m_mutex;
     QQueue<QByteArray>  m_buffer;
     bool                m_isRunning;
+    unsigned long       m_speed;
 
 };
 
