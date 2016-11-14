@@ -147,7 +147,7 @@ const MPair<QString, QString>
 {
     PairList& l = getTagPairs(tag);
     for(int i=0; i < l.count(); ++i) {
-        if (l.at(i).m_type1.compare(attrib)) {
+        if (l[i].m_type1 == attrib) {
             return l.at(i);
         }
     }
