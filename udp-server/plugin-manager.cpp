@@ -61,9 +61,8 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
             iface.put_ndata = lib_symbols->put_ndata;
             iface.main_proxy = lib_symbols->main_proxy;
             load_all_res = true;
+            m_plugins[name] = iface;
         }
-        // old concept
-        m_plugins[name] = iface;
         return load_all_res;
 
     } else {
