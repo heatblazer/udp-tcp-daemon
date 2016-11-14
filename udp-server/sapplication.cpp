@@ -101,12 +101,12 @@ int SApplication::init()
 
         if (rec_dir.m_type2 != "") {
             if (!QDir(rec_dir.m_type2).exists()) {
-                QDir().mkpath(rec_dir.m_type2);
+                QDir().mkdir(rec_dir.m_type2);
             }
         }
         if (log_dir.m_type2 != "") {
             if (!QDir(log_dir.m_type2).exists()) {
-                QDir().mkpath(log_dir.m_type2);
+                QDir().mkdir(log_dir.m_type2);
             }
         }
 
