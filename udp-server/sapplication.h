@@ -34,6 +34,9 @@ public:
     static int m_fdHUP;
     static int m_fdTERM;
 
+    static int s_argc;
+    static char** s_argv;
+
 private:
     void loadPlugins();
     void testLoadedPlugins();
@@ -47,6 +50,7 @@ private:
     QString m_recConf;
     bool m_setup;
     QList<RecIface> m_plugins;
+
 };
 
 } // iz

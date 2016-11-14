@@ -8,6 +8,8 @@ namespace iz {
 
 int SApplication::m_fdHUP = -1;
 int SApplication::m_fdTERM = -1;
+int SApplication::s_argc = 0;
+char** SApplication::s_argv = 0;
 
 void SApplication::writeToSocket(const char *data)
 {
@@ -24,6 +26,8 @@ SApplication::SApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv),
       m_setup(false)
 {
+    s_argc = argc;
+    s_argv = argv;
     // TODO: use other logic to specify xml file from argc/argv
         // get opts from args and find the xml file
     for(int i=0; i < argc; ++i) {
@@ -175,8 +179,8 @@ void SApplication::testLoadedPlugins()
             m_plugins.at(i).put_ndata(0, 0);
         }
         if (m_plugins.at(i).main_proxy) {
-            char* args[2] = {"aaa", "bbb"};
-            m_plugins.at(i).main_proxy(2, args);
+            m_plugins.at(i).main_proxy(SApplication::s_argc,
+                                       SApplication::s_argv);
         }
     }
 }
