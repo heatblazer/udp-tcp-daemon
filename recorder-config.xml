@@ -23,10 +23,14 @@
      channels="1"
      endiness="LE"
      />
-     
+
+<Paths
+    records="/records"
+    logs="/logs"
+    />
+
 <Record 
-    dir="/records/"
-    hasTimeStamp="true"
+    timestamp="enabled"
     hasNumericConvention="true"
     />
 
@@ -38,8 +42,7 @@
 <!-- name of file, path and timestamp appended and speed of the logging -->
 <Log
     name="recorder.log"
-    path="/logs/"
-    time="enabled"
+    timestamp="enabled"
     speed="1000"
 />
 
