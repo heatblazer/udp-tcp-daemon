@@ -49,6 +49,7 @@ void Client::init()
 
 void Client::transmit()
 {
+    std::cout << "Transmitting...\n";
     static uint32_t counter = 0;
     uint16_t* buff = (uint16_t*) sine_gen(16);
     if (buff) {
