@@ -228,23 +228,7 @@ bool Recorder::setupWavFiles()
         }
     }
 
-    PairList& max_fsize_attr = RecorderConfig::Instance().getTagPairs("HotSwap");
-    for(int i=0; i < max_fsize_attr.count(); ++i) {
-        bool parse_result = false; // careful when converting to int
-        MPair<QString, QString> it = max_fsize_attr.at(i);
-        if (it.m_type1 == "maxSize") {
-            m_maxFileSize = it[it.m_type1].toInt(&parse_result);
-            if (!parse_result) {
-                m_maxFileSize = 250000000;
-            }
-        } else if (it.m_type1 == "interval") {
-            if (!parse_result) {
-                // omit for now
-            }
-        } else {
-            // misra else
-        }
-    }
+    // maxfile size is set from init...
 
     // one time setup all waves at a time
     // don`t open them yet... do this later, after server
