@@ -69,6 +69,7 @@ void QWav::setupWave(int samples_per_sec,
 ///
 int QWav::write(short data[], int len)
 {
+    // hope that write returns ok data
     m_size += m_wav.write((char*) data, len);
     return m_size;
 }
