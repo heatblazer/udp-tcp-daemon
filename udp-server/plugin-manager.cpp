@@ -47,8 +47,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
         if (lib_symbols->deinit == nullptr || lib_symbols->init == nullptr
                 || lib_symbols->get_data == nullptr || lib_symbols->put_data == nullptr
                 || lib_symbols->put_ndata == nullptr
-                || lib_symbols->main_proxy == nullptr
-              )
+                || lib_symbols->main_proxy == nullptr)
         {
             load_all_res = false;
 
