@@ -36,8 +36,8 @@ SApplication::SApplication(int &argc, char **argv)
     // TODO: use other logic to specify xml file from argc/argv
         // get opts from args and find the xml file
     for(int i=0; i < argc; ++i) {
-        if (argv[i] == "-c" ||
-                argv[i] == "--config") {
+        if (strcmp(argv[i], "-c") == 0 ||
+            strcmp(argv[i], "--config") == 0) {
             if (argv[i+1] != nullptr) {
                 // init config file
 
@@ -58,9 +58,8 @@ SApplication::SApplication(int &argc, char **argv)
                           << std::endl;
                 m_setup = false;
             }
-        } else {
-            m_setup = false;
         }
+
     }
 
     // old version:

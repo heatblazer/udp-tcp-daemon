@@ -58,6 +58,8 @@ bool Writer::setup()
         if (!QDir(log_dir.m_type2).exists()) {
             QDir().mkdir(log_dir.m_type2);
             sprintf(fname,"%s/", log_dir.m_type2.toStdString().data());
+        } else {
+            sprintf(fname,"%s/", log_dir.m_type2.toStdString().data());
         }
     }
 
