@@ -268,6 +268,7 @@ void Recorder::hotSwapFiles()
     std::cout << "hotSwapFiles: stub!" << std::endl;
 }
 
+// pending DEPRECATION!!!
 // this is a test but working for now
 // to be deprecated in the future
 void Recorder::testFileWatcher(const QString &file)
