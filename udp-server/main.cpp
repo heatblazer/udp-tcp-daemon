@@ -88,7 +88,7 @@ static int getOpts(char* str)
 }
 
 int main(int argc, char *argv[])
-{    
+{
     // if no args - run in lab mode to test
     // and debug , later we`ll be sure
     // the >1 arg is provided
@@ -116,6 +116,10 @@ int main(int argc, char *argv[])
     iz::SApplication app(argc, argv);
     int res = app.init();
     if (res < 0) {
+        std::cout << "ERROR!\n"
+                  << "program -c <path to conf file>\n"
+                  << "program --config <path to conf file>\n"
+                  << std::endl;
         exit(4);
     }
     return app.exec();
