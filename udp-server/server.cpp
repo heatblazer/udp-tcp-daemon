@@ -39,31 +39,17 @@ struct tcp_data_t
     int16_t data[128];
 };
 
-
+// the err udp packet
 static struct udp_data_t err_udp = {0, 0, 0};
 
 Server::Server(QObject *parent)
     : QObject(parent),
       m_socket({nullptr}),
       m_hearSocket(nullptr),
-      // to be configured
-      m_logger(QString("%1-recorder.log").arg(getTimeString())),
       m_senderHost("127.0.0.1"), // default
       m_senderPort(1234),
       m_sendHeart(false)
 {
-
-    // pass the class to the static signal handlers
-    m_logger.setObjectName("logger thread");
-    m_logger.startWriter();
-
-    m_heartbeat.setInterval(1000);
-    // now I have a pretty sine wave
-    // 10 seconds for test recording
-    // closes program - crashes for test
-    m_recTime.setInterval(10000);
-    connect(&m_heartbeat, SIGNAL(timeout()),
-            this, SLOT(sendHeartbeat()));
 }
 
 Server::~Server()
@@ -80,11 +66,28 @@ Server::~Server()
 void Server::init(bool udp, quint16 port, bool send_heart)
 {
 
+    // the error packet to be sent on packet lost
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
             err_udp.data[i][j] = 0x0000;
         }
     }
+
+    // pass the class to the static signal handlers
+    if (m_logger.setup()) {
+        m_logger.setObjectName("logger thread");
+        m_logger.startWriter();
+    }
+
+    m_heartbeat.setInterval(1000);
+    // now I have a pretty sine wave
+    // 10 seconds for test recording
+    // closes program - crashes for test
+    m_recTime.setInterval(10000);
+    connect(&m_heartbeat, SIGNAL(timeout()),
+            this, SLOT(sendHeartbeat()));
+
+
 
     m_sendHeart = send_heart;
     if (udp) {
