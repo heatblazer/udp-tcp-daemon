@@ -92,15 +92,17 @@ bool Recorder::init()
             m_filewatcher.addPath(m_wavs[i]->getFileName());
         }
     }
-    connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
-            this, SLOT(testFileWatcher(QString)));
-#if 0 // pending fixing bug...
 
+    // test the new concept for hotswapping !
+    // nailed the BUG
     connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
             this, SLOT(performHotSwap(QString)));
-#endif
-    // test the new concept for hotswapping !
 
+    // the old concept, I`ve fixed the bug in performHotSwap(string)
+#if 0
+    connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
+            this, SLOT(testFileWatcher(QString)));
+#endif
     return res;
 }
 
@@ -119,7 +121,9 @@ void Recorder::deinit()
 Wav* Recorder::getWavByName(const QString &fname)
 {
     for(int i=0; i < 32; ++i) {
-        if (fname.compare(QString(m_wavs[i]->getFileName()))) {
+        // fixed a bug with calling compare() here isntead of
+        // ==
+        if (fname == (QString(m_wavs[i]->getFileName()))) {
             return m_wavs[i];
         }
     }
@@ -308,19 +312,24 @@ void Recorder::testFileWatcher(const QString &file)
 void Recorder::performHotSwap(const QString &file)
 {
     Wav* w = getWavByName(file);
-    if (w != nullptr) {
+    if (w != nullptr && w->isOpened()) {
         if (w->getFileSize() > m_maxFileSize) {
-            const char* name = w->getFileName();
-            m_filewatcher.removePath(name);
+            m_filewatcher.removePath(w->getFileName());
+            s_UID++;
             int slot = w->getSlot();
             m_wavs[slot]->close();
             delete m_wavs[slot];
             m_wavs[slot] = nullptr;
-            char buff[128] = {0};
-            s_UID++;
-            sprintf(buff, "%d-%d-%s.wav", slot,
-                    s_UID, getTimeString());
-
+            char buff[256] = {0};
+            if (m_directory != "") {
+                sprintf(buff, "%s/%d-%d-%s.wav",
+                        m_directory.toStdString().data(),
+                        slot, s_UID, getTimeString());
+            } else {
+                sprintf(buff, "%d-%d-%s.wav",
+                            slot,
+                            s_UID, getTimeString());
+            }
             m_wavs[slot] = new Wav(buff);
             m_wavs[slot]->setupWave(m_wavParams.samples_per_sec,
                                     m_wavParams.bits_per_sec,
@@ -329,7 +338,7 @@ void Recorder::performHotSwap(const QString &file)
                                     m_wavParams.audio_fmt,
                                     m_wavParams.chann_cnt);
             m_wavs[slot]->open("wb", slot);
-            m_filewatcher.addPath(buff);
+            m_filewatcher.addPath(m_wavs[slot]->getFileName());
         }
     }
 }
