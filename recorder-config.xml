@@ -12,9 +12,6 @@
     maxSize="30000000"
     interval="10000" />
 
-<!-- unused for now -->
-<Channels count="32" />
-
 <!-- done: setups wav headers from here -->
 <Wave samplesPerFrame="8000" 
      bitsPerSec="16"
