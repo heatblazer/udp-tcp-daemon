@@ -24,9 +24,10 @@
      endiness="LE"
      />
 
+<!-- must not insert leading slashes / -->
 <Paths
-    records="/records"
-    logs="/logs"
+    records="records"
+    logs="logs"
     />
 
 <Record 
