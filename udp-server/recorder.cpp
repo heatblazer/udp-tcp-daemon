@@ -98,11 +98,6 @@ bool Recorder::init()
     connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
             this, SLOT(performHotSwap(QString)));
 
-    // the old concept, I`ve fixed the bug in performHotSwap(string)
-#if 0
-    connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
-            this, SLOT(testFileWatcher(QString)));
-#endif
     return res;
 }
 
