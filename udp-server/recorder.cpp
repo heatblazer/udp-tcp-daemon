@@ -254,7 +254,8 @@ void Recorder::record(const tcp_data_t &data)
     std::cout << "Stub: Record TCP!" << std::endl;
 }
 
-/// stub: timer based - unimplemented!
+/// Timer based hotswap, if time elapses
+/// we swap files
 /// \brief Recorder::hotSwapFiles
 /// hotswaps wave files with new ones when
 /// a given recorder time elapses
@@ -262,7 +263,8 @@ void Recorder::hotSwapFiles()
 {
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            if (m_wavs[i]->getFileSize() > m_maxFileSize) {
+            // кой писал писал
+            if (1) {
                 s_UID++;
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
                 char buff[256] = {0};

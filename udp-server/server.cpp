@@ -79,17 +79,13 @@ void Server::init(bool udp, quint16 port, bool send_heart)
         m_logger.startWriter();
     }
 
-    m_heartbeat.setInterval(1000);
-    // now I have a pretty sine wave
-    // 10 seconds for test recording
-    // closes program - crashes for test
-    m_recTime.setInterval(10000);
-    connect(&m_heartbeat, SIGNAL(timeout()),
-            this, SLOT(sendHeartbeat()));
-
-
-
     m_sendHeart = send_heart;
+
+    if (m_sendHeart) {
+        m_heartbeat.setInterval(1000);
+        connect(&m_heartbeat, SIGNAL(timeout()),
+                this, SLOT(sendHeartbeat()));
+    }
     if (udp) {
         m_socket.udp = new QUdpSocket(this);
         m_hearSocket = new QUdpSocket(this);
@@ -105,7 +101,6 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             char msg2[64] ={0};
             sprintf(msg2, "Server started at: (%s)\n", getTimeString());
             printf("Bind OK!\n");
-
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
             route(CONNECTED);
             m_logger.write(msg);
@@ -222,10 +217,11 @@ void Server::route(States state)
     // handle state in this routing function
     switch (state) {
     case DISCONNECTED:
-        std::cout << "Not connected!" << std::endl;
+        m_logger.write(QByteArray("Not connected!"));
         break;  // try to reconnect
     case CONNECTED:
         std::cout << "Connected!" << std::endl;
+        m_logger.write(QByteArray("Connected!"));
         break;
     case LOST_CONNECTION:
     case GOT_CONNECTION:
@@ -242,9 +238,7 @@ void Server::route(States state)
 ///
 void Server::sendHeartbeat()
 {
-#if 0
     m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
-#endif
 }
 
 /// deinitialze the server, maybe some unfinished
