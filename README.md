@@ -105,6 +105,8 @@ A wav playback with waveform for listening the records.
     14.11.2016: now can configure paths for logging and recording
     14.11.2016: now records wavs to a directory specified.
     14.11.2016: log writer will be configured for speed of logging.
+    15.11.2016: fixed the bug with the hotswap, now testFileWatcher() is pending deprecation.
+
 
 ***
 <ilianzapryanov@abv.bg>
