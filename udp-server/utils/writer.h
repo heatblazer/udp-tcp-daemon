@@ -11,7 +11,7 @@ class Writer : public QThread
 {
     Q_OBJECT
 public:
-    explicit Writer(const QString& fname, QThread* parent=nullptr);
+    explicit Writer(QThread* parent=nullptr);
     virtual ~Writer();
     // we may need to extend this class later
     bool setup();
