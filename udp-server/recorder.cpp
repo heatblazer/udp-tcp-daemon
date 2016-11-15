@@ -3,6 +3,9 @@
 // remove later
 #include <iostream>
 
+// qt //
+#include <QDir>
+
 // wav library //
 #include "utils/wav-writer.h"
 
@@ -62,6 +65,12 @@ bool Recorder::init()
     const MPair<QString, QString>& dir =
             RecorderConfig::Instance()
             .getAttribPairFromTag("Paths", "records");
+
+    if (dir.m_type2 != "") {
+        if (!QDir(dir.m_type2).exists()) {
+            QDir().mkdir(dir.m_type2);
+        }
+    }
 
     bool res = true;
 
