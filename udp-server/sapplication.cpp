@@ -96,17 +96,9 @@ int SApplication::init()
         const MPair<QString, QString>& rec_dir =
                 RecorderConfig::Instance().getAttribPairFromTag("Paths", "records");
 
-        const MPair<QString, QString>& log_dir =
-                RecorderConfig::Instance().getAttribPairFromTag("Paths", "logs");
-
         if (rec_dir.m_type2 != "") {
             if (!QDir(rec_dir.m_type2).exists()) {
                 QDir().mkdir(rec_dir.m_type2);
-            }
-        }
-        if (log_dir.m_type2 != "" ) {
-            if (!QDir(log_dir.m_type2).exists()) {
-                QDir().mkdir(log_dir.m_type2);
             }
         }
 
