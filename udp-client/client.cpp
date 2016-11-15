@@ -24,10 +24,10 @@ namespace iz {
 
 Client::Client(QObject *parent)
     : QObject(parent),
-      m_addres("127.0.0.1")
+      m_addres("192.168.32.154")
 //      m_addres("192.168.32.94")
 {
-    m_timer.setInterval(500);
+    m_timer.setInterval(100);
     connect(&m_timer, SIGNAL(timeout()),
             this, SLOT(transmit()));
 }
@@ -50,10 +50,11 @@ void Client::init()
 void Client::transmit()
 {
     static uint32_t counter = 0;
-    uint16_t* buff = (uint16_t*) sine_gen(128);
+    uint16_t* buff = (uint16_t*) sine_gen(16);
     if (buff) {
-        std::cout << "Transmiting...\n";
-        memcpy(m_packet.packet.data, buff, 128);
+        for(int i=0; i < 32; ++i) {
+            memcpy(m_packet.packet.data[i], buff, 16);
+        }
         memset(m_packet.packet.null_bytes, 0, sizeof(m_packet.packet.null_bytes)
                                                 / sizeof(m_packet.packet.null_bytes[0]));
 
