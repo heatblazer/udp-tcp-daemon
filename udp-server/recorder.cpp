@@ -102,10 +102,47 @@ bool Recorder::init()
         }
     }
 
+    const MPair<QString, QString>& hot_swap = RecorderConfig::Instance()
+            .getAttribPairFromTag("HotSwap", "timeBased");
+    const MPair<QString, QString>& max_size = RecorderConfig::Instance()
+            .getAttribPairFromTag("HotSwap", "maxSize");
+    const MPair<QString, QString>& interval = RecorderConfig::Instance()
+            .getAttribPairFromTag("HotSwap", "interval");
+
+
+    if (hot_swap.m_type1 != "") {
+        if (hot_swap.m_type2 == "enabled" ||
+                hot_swap.m_type2 == "true") {
+            ulong time = 0;
+            if (interval.m_type1 != "") {
+                bool res = false;
+                time = interval.m_type2.toLong(&res);
+                if (!res) {
+                    time = 1000 * 60 * 20;
+                };
+            }
+            m_hotswap.setInterval(time);
+            connect(&m_hotswap, SIGNAL(timeout()), this, SLOT(hotSwapFiles()));
+            m_hotswap.start();
+        } else {
+            if (max_size.m_type1 != "") {
+                bool res = false;
+                m_maxFileSize = max_size.m_type2.toUInt(&res);
+                if(!res) {
+                    m_maxFileSize = 30000000; // 30Mb
+                }
+            }
+            connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
+                    this, SLOT(performHotSwap(QString)));
+        }
+    } else {
+        // setup the default logic
+        // swap by size
+        connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
+                this, SLOT(performHotSwap(QString)));
+    }
     // test the new concept for hotswapping !
     // nailed the BUG
-    connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
-            this, SLOT(performHotSwap(QString)));
 
     return res;
 }
