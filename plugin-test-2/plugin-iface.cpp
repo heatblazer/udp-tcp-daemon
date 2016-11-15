@@ -4,16 +4,15 @@
 
 static void init()
 {
-    printf("Init plugin 2!\n");
+    printf("Init Plugin 2!\n");
     printf("init()\n");
 }
 
 int put_ndata(void *data, int len)
 {
-    int i = 0;
-    for(i=0; i < 10; i++) {
-        printf("put_ndata(%p, %d)\n", data, i+len);
-    }
+    (void) data;
+    (void) len;
+    printf("put_ndata()\n");
     return 0;
 }
 
@@ -38,13 +37,9 @@ static void deinit()
 
 static int main_proxy(int argc, char** argv)
 {
-    int i =0;
-    for(i=0; i < argc; i++) {
-        if (argv[i]) {
-            printf("%s\n", argv[i]);
-        }
-    }
-    return i;
+    (void) argc;
+    (void) argv;
+    return 0;
 }
 
 static struct interface_t s_iface;

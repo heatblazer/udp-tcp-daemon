@@ -104,7 +104,7 @@ int SApplication::init()
                 QDir().mkdir(rec_dir.m_type2);
             }
         }
-        if (log_dir.m_type2 != "") {
+        if (log_dir.m_type2 != "" ) {
             if (!QDir(log_dir.m_type2).exists()) {
                 QDir().mkdir(log_dir.m_type2);
             }
@@ -117,12 +117,12 @@ int SApplication::init()
         const MPair<QString, QString>& port_attr = RecorderConfig::Instance()
                 .getAttribPairFromTag("Network", "port");
         bool parese_res = false;
-        port = trans_attr.m_type2.toInt(&parese_res);
+        port = port_attr.m_type2.toInt(&parese_res);
         if (!parese_res) {
             port = 1234U;
         }
 
-        if (port_attr.m_type2 == "udp") {
+        if (trans_attr.m_type2 == "udp") {
             udp = true;
         } else {
             udp = false;

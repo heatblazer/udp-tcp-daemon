@@ -82,7 +82,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
 
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
-            err_udp.data[i][j] = 0xFFFF >> 1;
+            err_udp.data[i][j] = 0x0000;
         }
     }
 
@@ -131,7 +131,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             route(Server::CONNECTED);
         }
     }
-    // starrt  logging writer //    
+    // starrt  logging writer //
 }
 
 /// ready read datagrams

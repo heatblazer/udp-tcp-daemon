@@ -4,6 +4,7 @@
 
 static void init()
 {
+    printf("Init Plugin1!\n");
     printf("init()\n");
 }
 

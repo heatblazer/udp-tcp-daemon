@@ -9,6 +9,5 @@ SUBDIRS += \
     recorder-gui \
     crypto \
     plugin-test \
-    plugin-test-2 \
-    sniffer
+    plugin-test-2
 
