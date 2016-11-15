@@ -93,22 +93,14 @@ int SApplication::init()
         return -1;
     } else {
 
-        // open directories
-        const MPair<QString, QString>& rec_dir =
-                RecorderConfig::Instance().getAttribPairFromTag("Paths", "records");
-
-        if (rec_dir.m_type2 != "") {
-            if (!QDir(rec_dir.m_type2).exists()) {
-                QDir().mkdir(rec_dir.m_type2);
-            }
-        }
-
         bool udp = false;
         quint16 port = 0;
         const MPair<QString, QString>& trans_attr =
                 RecorderConfig::Instance().getAttribPairFromTag("Network", "transport");
+
         const MPair<QString, QString>& port_attr = RecorderConfig::Instance()
                 .getAttribPairFromTag("Network", "port");
+
         bool parese_res = false;
         port = port_attr.m_type2.toInt(&parese_res);
         if (!parese_res) {
