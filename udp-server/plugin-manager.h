@@ -1,11 +1,13 @@
 #ifndef PLUGINMANAGER_H
 #define PLUGINMANAGER_H
 
-#include <QObject>
-#include <QLibrary>
+// qt stuff //
 #include <QHash>
+#include <QLibrary>
+#include <QObject>
 
-#include "types.h"
+// local files //
+#include "recorder-iface.h"
 
 namespace iz {
 

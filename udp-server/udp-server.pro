@@ -36,7 +36,8 @@ HEADERS += \
     utils/qwave-writer.h \
     utils/writer.h \
     utils/wav-writer-iface.h \
-    plugin-manager.h
+    plugin-manager.h \
+    recorder-iface.h
 
 
 QMAKE_CFLAGS += \

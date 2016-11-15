@@ -1,8 +1,7 @@
 #include "plugin-manager.h"
 
+// std //
 #include <iostream>
-#include <dlfcn.h>
-#include <stdlib.h>
 
 namespace iz {
 

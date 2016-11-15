@@ -9,18 +9,6 @@ namespace iz {
 struct udp_data_t;
 struct tcp_data_t;
 
-struct RecIface
-{
-    void (*init)(void);
-    int (*put_ndata)(void*, int);
-    int (*put_data)(void*);
-    void* (*get_data)(void);
-    void (*deinit)(void);
-    int (*main_proxy)(int, char**); // if we need to call lib in main
-};
-
-
-
 struct wav_hdr_t
 {
     char riff_tag[4];

@@ -3,14 +3,13 @@
 
 // parent //
 #include <QCoreApplication>
-#include <QPair>
 
 // application stuff //
+#include "plugin-manager.h"
+#include "recorder.h"
 #include "server.h"
 #include "utils/wav-writer.h"
 #include "utils/recorder-config.h"
-#include "recorder.h"
-#include "plugin-manager.h"
 
 namespace iz {
 
