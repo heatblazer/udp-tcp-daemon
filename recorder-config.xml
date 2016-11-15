@@ -3,12 +3,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="../schema/recorder-config.xsd"
         version="1.0" >
-        <!--the root element-->
+<!--the root element-->
 
 <!-- done: setups the hotswap interval from here -->
 <!-- new: swap by max size criteria -->
-<!-- format M - mbytes, G - gbytes, K - kbytes -->
+<!-- TODO: format M - mbytes, G - gbytes, K - kbytes -->
+<!-- if timeBased is set to true, size param will be omit and
+     interval for time will be used, I am working on that
+     idea -->
 <HotSwap
+    timeBased="false"
     maxSize="30000000"
     interval="10000" />
 
