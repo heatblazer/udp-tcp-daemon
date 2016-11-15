@@ -261,13 +261,6 @@ void Recorder::record(const tcp_data_t &data)
 /// a given recorder time elapses
 void Recorder::hotSwapFiles()
 {
-    std::cout << "hotSwapFiles: stub!" << std::endl;
-}
-
-// this is a test but working for now
-// to be deprecated in the future
-void Recorder::testFileWatcher(const QString &file)
-{
     (void) file;
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {

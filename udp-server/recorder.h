@@ -36,10 +36,10 @@ public slots:
     void record(const tcp_data_t& data);
 
 private slots:
-    // unimplemented yest
+    // hot swap - time based
     void hotSwapFiles();
-    // remove after  test
-    void testFileWatcher(const QString& file);
+
+    // hot spaw filesystem watcher
     void performHotSwap(const QString& file);
 
 private:
