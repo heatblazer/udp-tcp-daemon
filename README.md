@@ -109,6 +109,7 @@ A wav playback with waveform for listening the records.
     15.11.2016: old hotswap logic moved to the timer based hotswap.
     15.11.2016: config support time based hotswaps and the size based.
     16.11.2016: Now we have a Logger class accessible form everywhere.
+    16.11.2016: I have to test in lab env. the QWavWriter.
 
 
 ***
