@@ -62,19 +62,29 @@
      enabled: or disabled: do we have to use the plugin
      path: absolute path or the one in LD_PATH
 -->
+
+
 <Plugin
     name="TestPlugin1"
     order="1"
     enabled="true"
-    path="/home/ilian/gitprojects/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/plugin-test/libplugin-test.so"
+    path="/home/ilian/github/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/plugin-test/libplugin-test.so"
 />
 
 <Plugin
     name="TestPlugin2"
     order="2"
     enabled="true"
-    path="/home/ilian/gitprojects/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/plugin-test-2/libplugin-test-2.so"
+    path="/home/ilian/github/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/plugin-test-2/libplugin-test-2.so"
 />
+
+<Plugin
+    name="ErrorPlugin"
+    order="2"
+    enabled="true"
+    path="not a valid path"
+/>
+
 
 
 </Config>
