@@ -12,6 +12,7 @@ Writer::Writer(QThread *parent)
       m_isRunning(false),
       m_speed(1000)
 {
+    setObjectName("logger thread");
 }
 
 Writer::~Writer()
@@ -42,7 +43,7 @@ void Writer::run()
     QQueue<QByteArray> dblBuff;
     dblBuff.reserve(100);
     do {
-        usleep(m_speed);
+        QThread::msleep(m_speed);
 
         m_mutex.lock();
         while (!m_buffer.isEmpty()) {
