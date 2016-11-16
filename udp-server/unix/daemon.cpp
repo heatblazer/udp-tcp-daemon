@@ -60,7 +60,9 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 {
     (void) a;
     (void) usr_data;
-    (void) info;
+    char msg[64] = {0};
+    sprintf(msg, "Received SIG (%d)\n", info->si_signo);
+    log_message(msg);
     if (g_application != NULL) {
         g_application->deinit();
     }
@@ -68,6 +70,17 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
     exit(10); // test exit
 }
 
+
+static void writeToSapplicationFd(int a, siginfo_t* info, void* usr_data)
+{
+    (void) a;
+    (void) usr_data;
+    char msg[64] = {0};
+    sprintf(msg, "SIG: %d\n", info->si_signo);
+    log_message(msg);
+    exit(10);
+
+}
 
 int Daemon::m_pid = -1;
 
@@ -155,9 +168,10 @@ void Daemon::daemonize()
     // why does ide says they are unused???
     (void) fd0; (void) fd1; (void) fd2;
 
-    // this has to be removed: it`s a test
-    for(int i=0; i < 32; ++i) {
+    // start at 1
+    for(int i=1; i < 32; ++i) {
         attachSignalHandler(&testSig, i);
+//        attachSignalHandler(0, i);
     }
 }
 
