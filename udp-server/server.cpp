@@ -137,24 +137,21 @@ void Server::readyReadUdp()
                 // packet loss logic below
                 static uint32_t pktcnt = udp->counter;
                 // one frame lost for synching with my counter
+
                 if (udp->counter != ++pktcnt) {
-                    time_t current_time;
-                    struct tm * time_info;
-                    char timeString[9];  // space for "HH:MM:SS\0"
+                    static uint32_t lost_count = 0;
+                    static char msg[128]={0};
+                    sprintf(msg, "Packet lost:(%d) at: [%s]\tTotal lost:(%d)\n",
+                            udp->counter, DateTime::getDateTime(),
+                            lost_count);
 
-                    time(&current_time);
-                    time_info = localtime(&current_time);
-
-                    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
-
-                    char msg[128]={0};
-                    sprintf(msg, "Packet lost:(%d) at: [%s]\t\n",
-                            udp->counter, DateTime::getDateTime());
+                    lost_count++;
 
                     Logger::Instance().logMessage(msg);
                     pktcnt = udp->counter; // synch back
 
                     // always write a null bytes packet on missed udp
+
                     emit dataReady(err_udp);
 
                 } else {
@@ -169,8 +166,8 @@ void Server::readyReadUdp()
             }
         }
     } else {
-        static const char* err_msg = "We can read, but there is no pending datagram!\n";
-        Logger::Instance().logMessage(err_msg);
+        Logger::Instance()
+                .logMessage("We can read, but there is no pending datagram!\n");
     }
 
 }
