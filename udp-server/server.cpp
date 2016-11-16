@@ -147,13 +147,16 @@ void Server::readyReadUdp()
 
                     strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
 
-                    char msg[64]={0};
+                    char msg[128]={0};
                     sprintf(msg, "Packet lost:(%d) at: [%s]\t\n",
-                            udp->counter, timeString );
+                            udp->counter, DateTime::getDateTime());
 
                     Logger::Instance().logMessage(msg);
                     pktcnt = udp->counter; // synch back
+
+                    // always write a null bytes packet on missed udp
                     emit dataReady(err_udp);
+
                 } else {
                 // will use a new logic emit the udp struct
                 // to the recorder, so now we don`t need
@@ -226,6 +229,7 @@ void Server::sendHeartbeat()
 void Server::deinit()
 {
     // nothing for now
+    Logger::Instance().logMessage("Deinitializing server...\n");
 }
 
 } // namespce iz
