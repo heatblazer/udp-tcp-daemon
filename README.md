@@ -112,6 +112,7 @@ A wav playback with waveform for listening the records.
     16.11.2016: I have to test in lab env. the QWavWriter.
     16.11.2016: Signals to be handled by sockstreams via IPC.
     16.11.2016: Added more messages to logs.
+    16.11.2016: Tested time based hotswap and configuration from xml.
 
 
 ***
