@@ -12,7 +12,6 @@ Writer::Writer(QThread *parent)
       m_isRunning(false),
       m_speed(1000)
 {
-
 }
 
 Writer::~Writer()

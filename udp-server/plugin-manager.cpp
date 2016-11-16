@@ -3,16 +3,19 @@
 // std //
 #include <iostream>
 
+// logger //
+#include "utils/logger.h"
+
 namespace iz {
 
 struct interface_t
 {
-    void (*init)(void);
-    int (*put_ndata)(void*, int);
-    int (*put_data)(void*);
-    void* (*get_data)(void);
-    void (*deinit)(void);
-    int (*main_proxy)(int, char**);
+    void    (*init)(void);
+    int     (*put_ndata)(void*, int);
+    int     (*put_data)(void*);
+    void*   (*get_data)(void);
+    void    (*deinit)(void);
+    int     (*main_proxy)(int, char**);
 };
 
 typedef struct interface_t* (*get_interface)();
@@ -20,8 +23,7 @@ typedef struct interface_t* (*get_interface)();
 
 QHash<QString, RecIface> RecPluginMngr::m_plugins;
 
-/// TODO: this has to be changed to match
-/// the correct name of the plugins
+/// Plugin loader
 /// \brief RecPluginMngr::loadLibrary
 /// \param src - must be a config file attribs
 /// \return OK if loaded, fale else
@@ -32,9 +34,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
     QLibrary plugin(src);
     res = plugin.load();
     if (!res) {
-        std::cout <<
-                     plugin.errorString().toStdString()
-                  << std::endl;
+        Logger::Instance().logMessage(plugin.errorString().toStdString().data());
         return res;
     }
 
@@ -61,13 +61,12 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
             load_all_res = true;
             m_plugins[name] = iface;
         }
-        return load_all_res;
 
     } else {
-        std::cout << plugin.errorString().toStdString()
-                  << std::endl;
-        return load_all_res;
+        Logger::Instance().logMessage(plugin.errorString().toStdString().data());
     }
+
+    return load_all_res;
 }
 
 /// get a pointer to the iterface from the
@@ -106,7 +105,6 @@ void RecPluginMngr::unloadLibrary(const QString &lib)
 ///
 RecPluginMngr::RecPluginMngr()
 {
-
 }
 
 ///
@@ -114,7 +112,6 @@ RecPluginMngr::RecPluginMngr()
 ///
 RecPluginMngr::~RecPluginMngr()
 {
-
 }
 
 } // iz
