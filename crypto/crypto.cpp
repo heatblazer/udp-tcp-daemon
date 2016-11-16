@@ -57,6 +57,7 @@ static uint16_t gen16bitCheckSum(char* data, int len=16)
 
 static uint16_t gen16Salt(const char* data, int len=16)
 {
+    (void) gen16Salt;
     uint16_t salt = 0;
     for(int i=0; i < len; ++i) {
         salt += ((data[i] & 0x1) << i);
