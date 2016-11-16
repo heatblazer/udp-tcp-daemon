@@ -204,6 +204,9 @@ void SApplication::testLoadedPlugins()
     }
 }
 
+/// TODO: remove after tests
+/// \brief SApplication::testKill
+///
 void SApplication::testKill()
 {
     Daemon::sendSignal(Daemon::m_pid, SIGKILL);

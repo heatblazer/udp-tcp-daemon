@@ -29,6 +29,7 @@ public:
     void deinit();
 
 public:
+    // new idea: will be able to handle all ...
     // the socket concpet for the signal handlers
     static int m_fdHUP;
     static int m_fdTERM;
@@ -44,10 +45,10 @@ private slots:
     void testKill();
 
 private:
-    Server m_server;
-    Recorder m_recorder;
-    QString m_recConf;
-    bool m_setup;
+    Server      m_server;
+    Recorder    m_recorder;
+    QString     m_recConf;
+    bool        m_setup;
     QList<RecIface> m_plugins;
 
 };
