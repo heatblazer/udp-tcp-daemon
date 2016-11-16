@@ -177,6 +177,9 @@ void SApplication::loadPlugins()
     }
 }
 
+/// TODO: remove this function later
+/// \brief SApplication::testLoadedPlugins
+///
 void SApplication::testLoadedPlugins()
 {
     std::cout << "Testing loaded plugins!" << std::endl;

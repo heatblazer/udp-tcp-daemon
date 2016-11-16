@@ -9,6 +9,8 @@
 // wav library //
 #include "utils/wav-writer.h"
 
+// logger //
+#include "utils/logger.h"
 
 /// timestring
 /// \brief getTimeString
@@ -281,7 +283,7 @@ void Recorder::record(const udp_data_t &data)
 void Recorder::record(const tcp_data_t &data)
 {
     (void) data;
-    std::cout << "Stub: Record TCP!" << std::endl;
+    Logger::Instance().logMessage("STUB! Record from TCP!\n");
 }
 
 /// Timer based hotswap, if time elapses

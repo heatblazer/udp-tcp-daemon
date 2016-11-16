@@ -214,7 +214,6 @@ void Server::route(States state)
         Logger::Instance().logMessage("Not connected!");
         break;  // try to reconnect
     case CONNECTED:
-        std::cout << "Connected!" << std::endl;
         Logger::Instance().logMessage("Connected!");
         break;
     case LOST_CONNECTION:
