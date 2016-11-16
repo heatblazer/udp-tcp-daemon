@@ -72,7 +72,7 @@ A wav playback with waveform for listening the records.
 
 ## BUGS
 ~~[Bug1]Strange bug as for 16.11.2016, when the program gives 100% cpu load on my other Fedora computer.~~
-[Fix Bug1] I've forgot a timer into server that has 10ms tick.
+    [Fix Bug1] I've forgot a timer into server that has 10ms tick.
 
 ## NOTES
     31.10.2016: now correctly records the samples from the incomming device.
