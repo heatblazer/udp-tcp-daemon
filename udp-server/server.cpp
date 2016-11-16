@@ -140,7 +140,7 @@ void Server::readyReadUdp()
 
                 if (udp->counter != ++pktcnt) {
                     static uint32_t lost_count = 0;
-                    static char msg[128]={0};
+                    char msg[128]={0};
                     sprintf(msg, "Packet lost:(%d) at: [%s]\tTotal lost:(%d)\n",
                             udp->counter, DateTime::getDateTime(),
                             lost_count);
@@ -161,8 +161,7 @@ void Server::readyReadUdp()
                     emit dataReady(*udp);
                 }
              } else {
-                static const char* err_msg = "Missed an UDP\n";
-                Logger::Instance().logMessage(err_msg);
+                Logger::Instance().logMessage("Missed an UDP!\n");
             }
         }
     } else {

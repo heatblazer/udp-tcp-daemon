@@ -11,15 +11,12 @@ namespace iz {
 
 Logger* Logger::s_inst = nullptr;
 
-Logger::Logger(QObject *parent)
-    : QObject(parent)
+Logger::Logger()
 {
-
 }
 
 Logger::~Logger()
 {
-
 }
 
 Logger &Logger::Instance()
@@ -94,9 +91,9 @@ void Logger::deinit()
     m_writer.stopWriter();
 }
 
-void Logger::logMessage(const char *msg)
+void Logger::logMessage(const QByteArray &msg)
 {
-    m_writer.write(QByteArray(msg));
+    m_writer.write(msg);
 }
 
 } // iz

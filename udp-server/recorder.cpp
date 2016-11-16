@@ -47,7 +47,7 @@ Recorder::~Recorder()
 /// \return true by default , false for future if something happens
 bool Recorder::init()
 {
-    static char init_msg[256] = {0};
+    char init_msg[256] = {0};
 
     Logger::Instance().logMessage("Initializing recorder...\n");
     const MPair<QString, QString>& dir =
@@ -149,7 +149,7 @@ void Recorder::deinit()
     Logger::Instance().logMessage("Closing all opened records...\n");
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            static char msg[128] = {0};
+            char msg[128] = {0};
             sprintf(msg, "Closing file: (%s)\n", m_wavs[i]->getFileName());
             Logger::Instance().logMessage(msg);
             m_wavs[i]->close();
