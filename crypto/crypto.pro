@@ -10,6 +10,9 @@ QT       += core
 TARGET = crypto
 TEMPLATE = app
 
+CONFIG += c++11
+
+
 DEFINES += CRYPTO_LIBRARY
 
 SOURCES += crypto.cpp \
