@@ -107,7 +107,8 @@ A wav playback with waveform for listening the records.
     14.11.2016: log writer will be configured for speed of logging.
     15.11.2016: fixed the bug with the hotswap, now testFileWatcher() is pending deprecation.
     15.11.2016: old hotswap logic moved to the timer based hotswap.
-    15.11.2016: config support time based hotswaps and the size based
+    15.11.2016: config support time based hotswaps and the size based.
+    16.11.2016: Now we have a Logger class accessible form everywhere.
 
 
 ***
