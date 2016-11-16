@@ -70,7 +70,7 @@ bool Logger::init()
     // setup timestamp
     if (time.m_type1 != "") {
         if (time.m_type2 == "enabled" || time.m_type2 == "true") {
-            strcat(fname, DateTime::getTimeString());
+            strcat(fname, DateTime::getDateTime());
             strcat(fname, "-");
         }
     }
