@@ -6,28 +6,11 @@
 // qt //
 #include <QDir>
 
-// wav library //
-#include "utils/wav-writer.h"
 
-// logger //
+// utils //
+#include "unix/date-time.h"
 #include "utils/logger.h"
-
-/// timestring
-/// \brief getTimeString
-/// \return
-///
-static inline char* getTimeString()
-{
-    time_t current_time;
-    struct tm * time_info;
-    static char timeString[9];  // space for "HH:MM:SS\0"
-
-    time(&current_time);
-    time_info = localtime(&current_time);
-    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
-    return timeString;
-}
-
+#include "utils/wav-writer.h"
 
 namespace iz {
 
@@ -64,6 +47,7 @@ Recorder::~Recorder()
 /// \return true by default , false for future if something happens
 bool Recorder::init()
 {
+    Logger::Instance().logMessage("Initializing recorder...\n");
     const MPair<QString, QString>& dir =
             RecorderConfig::Instance()
             .getAttribPairFromTag("Paths", "records");
@@ -84,12 +68,12 @@ bool Recorder::init()
                     dir.m_type2.toStdString().data(),
                     i,
                     s_UID,
-                    getTimeString());
+                    DateTime::getTimeString());
             m_directory = dir.m_type2;
         } else {
             sprintf(buff, "%d-%d-%s.wav", i,
                     s_UID,
-                    getTimeString());
+                    DateTime::getTimeString());
             m_directory.clear();
         }
         m_wavs[i] = new Wav(buff);
@@ -303,11 +287,11 @@ void Recorder::hotSwapFiles()
                 if (m_directory != "") {
                     sprintf(buff, "%s/%d-%d-%s.wav",
                             m_directory.toStdString().data(),
-                            i, s_UID, getTimeString());
+                            i, s_UID, DateTime::getTimeString());
                 } else {
                     sprintf(buff, "%d-%d-%s.wav",
                                 i,
-                                s_UID, getTimeString());
+                                s_UID, DateTime::getTimeString());
                 }
                 m_wavs[i]->close();
                 delete m_wavs[i];
@@ -345,11 +329,11 @@ void Recorder::performHotSwap(const QString &file)
             if (m_directory != "") {
                 sprintf(buff, "%s/%d-%d-%s.wav",
                         m_directory.toStdString().data(),
-                        slot, s_UID, getTimeString());
+                        slot, s_UID, DateTime::getTimeString());
             } else {
                 sprintf(buff, "%d-%d-%s.wav",
                             slot,
-                            s_UID, getTimeString());
+                            s_UID, DateTime::getTimeString());
             }
             m_wavs[slot] = new Wav(buff);
             m_wavs[slot]->setupWave(m_wavParams.samples_per_sec,

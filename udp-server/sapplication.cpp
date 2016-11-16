@@ -90,16 +90,17 @@ SApplication::~SApplication()
 ///
 int SApplication::init()
 {
+    if(!Logger::Instance().init()) {
+        std::cout << "Failed to init logger!" << std::endl;
+    } else {
+        Logger::Instance().logMessage("Logger set up properly!\n");
+    }
+
+    Logger::Instance().logMessage("Initializing application...\n");
     if (!m_setup) {
+        Logger::Instance().logMessage("Failed to initialize application!\n");
         return -1;
     } else {
-        // logger setup
-        if(!Logger::Instance().init()) {
-            std::cout << "Failed to init logger!" << std::endl;
-        } else {
-            Logger::Instance().logMessage("Logger set up properly!\n");
-        }
-
         // transport initialization
         bool udp = false;
         quint16 port = 0;
@@ -112,6 +113,11 @@ int SApplication::init()
         bool parese_res = false;
         port = port_attr.m_type2.toInt(&parese_res);
         if (!parese_res) {
+            char msg[128] = {0};
+            sprintf(msg, "Parsing (%s) failed. Will use default: (%d)\n",
+                    port_attr.m_type2.toStdString().data(),
+                    1234);
+            Logger::Instance().logMessage(msg);
             port = 1234U;
         }
 
@@ -121,8 +127,12 @@ int SApplication::init()
             udp = false;
         }
         // they need not to depend each other
-        m_recorder.init();
+        if (!m_recorder.init()) {
+            Logger::Instance().logMessage("Failed initialize recorder\n");
+        }
+
         m_server.init(udp, port);
+
         // connect rec to server
         if (udp) {
             connect(&m_server, SIGNAL(dataReady(udp_data_t)),
@@ -137,10 +147,12 @@ int SApplication::init()
     // since I may want to pass some args to
     // the main proxies
     // for now nothing...
+    Logger::Instance().logMessage("Loading pluggins...\n");
     loadPlugins();
      // test loaded plugins
     testLoadedPlugins();
 
+    Logger::Instance().logMessage("Initialization of application completed!\n");
     return 0;
 }
 
@@ -163,16 +175,29 @@ void SApplication::loadPlugins()
     PairList list = RecorderConfig::Instance().getTagPairs("Plugin");
 
     for(int i=0; i < list.count(); ++i) {
-       if (list.at(i).m_type1 == "name") {
+       if (list.at(i).m_type1 == "name" && list.at(i).m_type2 != "") {
             // perform the parsina and plugin setup here
             // the array is ordered and we assume name is
             // in the front
+           static char msg[128] = {0};
+           sprintf(msg, "Loading (%s) plugin...\n",
+                   list.at(i).m_type2.toStdString().data());
+           Logger::Instance().logMessage(msg);
+
            RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
-           RecIface iface =
-                    *RecPluginMngr::getInterface(list.at(i).m_type2);
+           RecIface* iface =
+                    RecPluginMngr::getInterface(list.at(i).m_type2);
            // put in any order for now
            // store into the indexed array
-           m_plugins.push_back(iface);
+           if (iface != nullptr) {
+               sprintf(msg, "Loaded (%s) plugin.\n", list.at(i).m_type2.toStdString().data());
+               Logger::Instance().logMessage(msg);
+               m_plugins.push_back(*iface);
+           } else {
+               sprintf(msg, "\nFailed to load (%s) plugin.\n",
+                       list.at(i).m_type2.toStdString().data());
+                Logger::Instance().logMessage(msg);
+           }
         }
     }
 }

@@ -8,22 +8,7 @@
 #include "server.h"
 #include "utils/logger.h"
 #include "utils/wav-writer.h"
-
-/// timestring
-/// \brief getTimeString
-/// \return
-///
-static inline char* getTimeString()
-{
-    time_t current_time;
-    struct tm * time_info;
-    static char timeString[9];  // space for "HH:MM:SS\0"
-
-    time(&current_time);
-    time_info = localtime(&current_time);
-    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
-    return timeString;
-}
+#include "unix/date-time.h"
 
 namespace iz {
 
@@ -65,7 +50,7 @@ Server::~Server()
 ///
 void Server::init(bool udp, quint16 port, bool send_heart)
 {
-
+    Logger::Instance().logMessage("Initializing server...\n");
     // the error packet to be sent on packet lost
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
@@ -89,11 +74,10 @@ void Server::init(bool udp, quint16 port, bool send_heart)
         connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp())/*, Qt::DirectConnection*/);
 
-
         char msg[64]={0};
         if (bres) {
-            char msg2[64] ={0};
-            sprintf(msg2, "Server started at: (%s)\n", getTimeString());
+            char msg2[128] ={0};
+            sprintf(msg2, "Server started at: (%s)\n", DateTime::getDateTime());
             printf("Bind OK!\n");
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
             route(CONNECTED);
@@ -211,10 +195,10 @@ void Server::route(States state)
     // handle state in this routing function
     switch (state) {
     case DISCONNECTED:
-        Logger::Instance().logMessage("Not connected!");
+        Logger::Instance().logMessage("Not connected!\n");
         break;  // try to reconnect
     case CONNECTED:
-        Logger::Instance().logMessage("Connected!");
+        Logger::Instance().logMessage("Connected!\n");
         break;
     case LOST_CONNECTION:
     case GOT_CONNECTION:

@@ -5,23 +5,7 @@
 
 // local stuff //
 #include "recorder-config.h"
-
-
-/// timestring
-/// \brief getTimeString
-/// \return
-///
-static inline char* getTimeString()
-{
-    time_t current_time;
-    struct tm * time_info;
-    static char timeString[9];  // space for "HH:MM:SS\0"
-
-    time(&current_time);
-    time_info = localtime(&current_time);
-    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
-    return timeString;
-}
+#include "unix/date-time.h"
 
 namespace iz {
 
@@ -86,7 +70,7 @@ bool Logger::init()
     // setup timestamp
     if (time.m_type1 != "") {
         if (time.m_type2 == "enabled" || time.m_type2 == "true") {
-            strcat(fname, getTimeString());
+            strcat(fname, DateTime::getTimeString());
             strcat(fname, "-");
         }
     }

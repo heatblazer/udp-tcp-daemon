@@ -63,7 +63,9 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
         }
 
     } else {
-        Logger::Instance().logMessage(plugin.errorString().toStdString().data());
+        static char err [256] = {0};
+        sprintf(err, "\n%s\n", plugin.errorString().toStdString().data());
+        Logger::Instance().logMessage(err);
     }
 
     return load_all_res;
