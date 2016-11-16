@@ -90,10 +90,9 @@ SApplication::~SApplication()
 ///
 int SApplication::init()
 {
-    if(!Logger::Instance().init()) {
-        std::cout << "Failed to init logger!" << std::endl;
-    } else {
-        Logger::Instance().logMessage("Logger set up properly!\n");
+    bool log_init = Logger::Instance().init();
+    if (!log_init) {
+        exit(11);
     }
 
     Logger::Instance().logMessage("Initializing application...\n");
@@ -131,7 +130,11 @@ int SApplication::init()
             Logger::Instance().logMessage("Failed initialize recorder\n");
         }
 
+//////////// КАРАНТИНА - BUG /////////////////////
+#if 0
         m_server.init(udp, port);
+#endif
+/////////// КАРАНТИНА - BUG //////////////////////
 
         // connect rec to server
         if (udp) {
@@ -173,13 +176,13 @@ void SApplication::loadPlugins()
     // plugin setup section
     // this is a bit toug logic for now
     PairList list = RecorderConfig::Instance().getTagPairs("Plugin");
+    char msg[128] = {0};
 
     for(int i=0; i < list.count(); ++i) {
        if (list.at(i).m_type1 == "name" && list.at(i).m_type2 != "") {
             // perform the parsina and plugin setup here
             // the array is ordered and we assume name is
             // in the front
-           static char msg[128] = {0};
            sprintf(msg, "Loading (%s) plugin...\n",
                    list.at(i).m_type2.toStdString().data());
            Logger::Instance().logMessage(msg);
