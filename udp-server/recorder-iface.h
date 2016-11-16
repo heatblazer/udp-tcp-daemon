@@ -13,6 +13,6 @@ struct RecIface
     int (*main_proxy)(int, char**); // if we need to call lib in main
 };
 
-}
+} // iz
 
 #endif // RECORDERIFACE_H

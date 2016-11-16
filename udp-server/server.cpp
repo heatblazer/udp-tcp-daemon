@@ -6,6 +6,7 @@
 
 #include "types.h"
 #include "server.h"
+#include "utils/logger.h"
 #include "utils/wav-writer.h"
 
 /// timestring
@@ -54,7 +55,6 @@ Server::Server(QObject *parent)
 
 Server::~Server()
 {
-    m_logger.stopWriter();
 }
 
 /// simple init function
@@ -71,12 +71,6 @@ void Server::init(bool udp, quint16 port, bool send_heart)
         for(int j=0; j < 16; ++j) {
             err_udp.data[i][j] = 0x0000;
         }
-    }
-
-    // pass the class to the static signal handlers
-    if (m_logger.setup()) {
-        m_logger.setObjectName("logger thread");
-        m_logger.startWriter();
     }
 
     m_sendHeart = send_heart;
@@ -103,8 +97,8 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             printf("Bind OK!\n");
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
             route(CONNECTED);
-            m_logger.write(msg);
-            m_logger.write(msg2);
+            Logger::Instance().logMessage(msg);
+            Logger::Instance().logMessage(msg2);
             // start timers
             if (m_sendHeart) {
                 m_heartbeat.start();
@@ -115,7 +109,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             printf("Bind FAIL!\n");
             sprintf(msg,"Binding to port (%d) failed!\n", port);
             route(DISCONNECTED);
-            m_logger.write(msg);
+            Logger::Instance().logMessage(msg);
         }
     } else {
         m_socket.server = new QTcpServer(this);
@@ -173,7 +167,7 @@ void Server::readyReadUdp()
                     sprintf(msg, "Packet lost:(%d) at: [%s]\t\n",
                             udp->counter, timeString );
 
-                    m_logger.write(QByteArray(msg));
+                    Logger::Instance().logMessage(msg);
                     pktcnt = udp->counter; // synch back
                     emit dataReady(err_udp);
                 } else {
@@ -184,12 +178,12 @@ void Server::readyReadUdp()
                 }
              } else {
                 static const char* err_msg = "Missed an UDP\n";
-                m_logger.write(QByteArray(err_msg));
+                Logger::Instance().logMessage(err_msg);
             }
         }
     } else {
         static const char* err_msg = "We can read, but there is no pending datagram!\n";
-        m_logger.write(QByteArray(err_msg));
+        Logger::Instance().logMessage(err_msg);
     }
 
 }
@@ -217,11 +211,11 @@ void Server::route(States state)
     // handle state in this routing function
     switch (state) {
     case DISCONNECTED:
-        m_logger.write(QByteArray("Not connected!"));
+        Logger::Instance().logMessage("Not connected!");
         break;  // try to reconnect
     case CONNECTED:
         std::cout << "Connected!" << std::endl;
-        m_logger.write(QByteArray("Connected!"));
+        Logger::Instance().logMessage("Connected!");
         break;
     case LOST_CONNECTION:
     case GOT_CONNECTION:

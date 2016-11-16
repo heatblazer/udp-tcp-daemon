@@ -55,7 +55,6 @@ private:
 
 
     QUdpSocket* m_hearSocket;
-    Writer      m_logger;
     QTimer      m_heartbeat;
     QTimer      m_recTime;
     QHostAddress m_senderHost;

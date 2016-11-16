@@ -6,6 +6,7 @@
 #include <QDir>
 
 // local headers //
+#include "utils/logger.h"
 #include "unix/daemon.h"
 
 namespace iz {
@@ -92,7 +93,14 @@ int SApplication::init()
     if (!m_setup) {
         return -1;
     } else {
+        // logger setup
+        if(!Logger::Instance().init()) {
+            std::cout << "Failed to init logger!" << std::endl;
+        } else {
+            Logger::Instance().logMessage("Logger set up properly!\n");
+        }
 
+        // transport initialization
         bool udp = false;
         quint16 port = 0;
         const MPair<QString, QString>& trans_attr =

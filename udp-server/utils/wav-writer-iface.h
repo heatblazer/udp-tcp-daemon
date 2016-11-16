@@ -59,6 +59,6 @@ public:
 
 };
 
-}
+} // iz
 
 #endif // WAVWRITERIFACE_H

@@ -5,23 +5,6 @@
 
 #include "recorder-config.h"
 
-/// timestring
-/// \brief getTimeString
-/// \return
-///
-static inline char* getTimeString()
-{
-    time_t current_time;
-    struct tm * time_info;
-    static char timeString[9];  // space for "HH:MM:SS\0"
-
-    time(&current_time);
-    time_info = localtime(&current_time);
-    strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
-    return timeString;
-}
-
-
 namespace iz {
 
 Writer::Writer(QThread *parent)
@@ -36,59 +19,11 @@ Writer::~Writer()
 {
 }
 
-bool Writer::setup()
+bool Writer::setup(const QString& fname, int initial_buffsize, ulong log_speed)
 {
     bool res = true;
-
-    const MPair<QString, QString> log_dir = RecorderConfig::Instance()
-            .getAttribPairFromTag("Paths", "logs");
-
-    const MPair<QString, QString> name = RecorderConfig::Instance()
-            .getAttribPairFromTag("Log", "name");
-
-    const MPair<QString, QString> time = RecorderConfig::Instance()
-            .getAttribPairFromTag("Log", "timestamp");
-
-    const MPair<QString, QString> speed = RecorderConfig::Instance()
-            .getAttribPairFromTag("Log", "speed");
-
-    char fname[256] = {0};
-
-    if (log_dir.m_type1 != "") {
-        if (!QDir(log_dir.m_type2).exists()) {
-            QDir().mkdir(log_dir.m_type2);
-            sprintf(fname,"%s/", log_dir.m_type2.toStdString().data());
-        } else {
-            sprintf(fname,"%s/", log_dir.m_type2.toStdString().data());
-        }
-    }
-
-    // setup logger logging speed
-    if (speed.m_type1 != "") {
-        bool res = false;
-        m_speed = speed.m_type2.toULong(&res);
-        if (!res) {
-            m_speed = 1000;
-        }
-    }
-
-    // setup timestamp
-    if (time.m_type1 != "") {
-        if (time.m_type2 == "enabled" || time.m_type2 == "true") {
-            strcat(fname, getTimeString());
-            strcat(fname, "-");
-        }
-    }
-
-    // setup filename
-    if (name.m_type1 != "") {
-        if (name.m_type2 != "") {
-            strcat(fname, name.m_type2.toStdString().data());
-        }
-    }
-
-    m_buffer.reserve(100);
-
+    m_buffer.reserve(initial_buffsize);
+    m_speed = log_speed;
     if (!m_file.isOpen()) {
         m_file.setFileName(fname);
         m_file.open(QIODevice::Append|QIODevice::ReadWrite);

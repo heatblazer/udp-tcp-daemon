@@ -28,6 +28,6 @@ private:
     static QHash<QString, RecIface> m_plugins;
 };
 
-}
+} // iz
 
 #endif // PLUGINMANAGER_H

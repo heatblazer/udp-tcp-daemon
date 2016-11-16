@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     utils/wav-writer.cpp \
     utils/qwave-writer.cpp \
     utils/writer.cpp \
-    plugin-manager.cpp
+    plugin-manager.cpp \
+    utils/logger.cpp
 
 HEADERS += \
     server.h \
@@ -37,7 +38,8 @@ HEADERS += \
     utils/writer.h \
     utils/wav-writer-iface.h \
     plugin-manager.h \
-    recorder-iface.h
+    recorder-iface.h \
+    utils/logger.h
 
 
 QMAKE_CFLAGS += \

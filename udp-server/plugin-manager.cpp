@@ -117,4 +117,4 @@ RecPluginMngr::~RecPluginMngr()
 
 }
 
-}
+} // iz
