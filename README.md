@@ -71,7 +71,7 @@ A wav playback with waveform for listening the records.
     8. GUI must perform Goertzl algorithm for DTM and filtering the sample data.
 
 ## BUGS
-~~[Bug1]Strange bug as for 16.11.2016, when the program gives 100% cpu load on my other Fedora computer.~~
+    [Bug1]Strange bug as for 16.11.2016, when the program gives 100% cpu load on my other Fedora computer.
     [Fix Bug1] I've forgot a timer into server that has 10ms tick.
 
 ## NOTES
