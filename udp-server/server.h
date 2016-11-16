@@ -56,7 +56,6 @@ private:
 
     QUdpSocket* m_hearSocket;
     QTimer      m_heartbeat;
-    QTimer      m_recTime;
     QHostAddress m_senderHost;
     quint16      m_senderPort;
     bool        m_sendHeart; // inspired by...

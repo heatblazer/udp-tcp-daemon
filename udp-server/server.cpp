@@ -80,14 +80,9 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             sprintf(msg2, "Server started at: (%s)\n", DateTime::getDateTime());
             printf("Bind OK!\n");
             sprintf(msg,"Binding to port (%d) succeeds!\n", port);
-            route(CONNECTED);
             Logger::Instance().logMessage(msg);
             Logger::Instance().logMessage(msg2);
             // start timers
-            if (m_sendHeart) {
-                m_heartbeat.start();
-            }
-            m_recTime.start();
 
         } else {
             printf("Bind FAIL!\n");

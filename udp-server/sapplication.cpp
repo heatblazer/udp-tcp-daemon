@@ -130,11 +130,7 @@ int SApplication::init()
             Logger::Instance().logMessage("Failed initialize recorder\n");
         }
 
-//////////// КАРАНТИНА - BUG /////////////////////
-#if 0
         m_server.init(udp, port);
-#endif
-/////////// КАРАНТИНА - BUG //////////////////////
 
         // connect rec to server
         if (udp) {
