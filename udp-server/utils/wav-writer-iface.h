@@ -70,6 +70,13 @@ public:
     /// \return filesizew
     ///
     virtual size_t getFileSize() const = 0;
+
+    /// get channel slot associated with this file
+    /// \brief getSlot
+    /// \return channel slot
+    ///
+    virtual int     getSlot() const = 0;
+
 };
 
 } // iz

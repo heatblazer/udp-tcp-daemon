@@ -36,8 +36,9 @@ public:
 
     const char*  getFileName();
     size_t  getFileSize() const;
+    virtual int getSlot() const;
+
     bool open(OpenMode perms, int slot);
-    int getSlot() const;
 
 private:
     QString m_name;
