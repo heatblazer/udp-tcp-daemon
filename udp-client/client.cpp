@@ -5,7 +5,6 @@
 #include <math.h>
 #include <time.h>
 
-
 static double* tone_gen(int len)
 {
     srand((unsigned)time(NULL));
@@ -27,7 +26,7 @@ Client::Client(QObject *parent)
       m_addres("192.168.32.154")
 //      m_addres("192.168.32.94")
 {
-    m_timer.setInterval(100);
+    m_timer.setInterval(20);
     connect(&m_timer, SIGNAL(timeout()),
             this, SLOT(transmit()));
 }
