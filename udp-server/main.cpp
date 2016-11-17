@@ -1,65 +1,3 @@
-#ifdef QWAVE
-#include <time.h>
-#include <math.h>
-#include "utils/qwave-writer.h"
-
-static double* sine_gen(int len)
-{
-    srand((unsigned)time(NULL));
-    double* buff = (double*) malloc(len * (sizeof(double)));
-    if (buff) {
-        for(int i=0; i < len; ++i) {
-            buff[i] = sin(2000 * (2 * M_PI) * i / 6000) + sqrt(0.01) * rand();
-        }
-        return buff;
-    } else {
-        return NULL;
-    }
-}
-
-int main(int argc, char** argv)
-{
-    (void) argc;
-    (void) argv;
-    iz::QWav wav("test.wav");
-    wav.setupWave();
-    wav.open(iz::QWav::WriteOnly, 10);
-    double* sine = sine_gen(64333);
-
-    for (int i=0; i < 10; ++i) {
-        wav.write((short*) sine, 64333);
-    }
-    wav.close();
-
-    return 0;
-}
-#elif PLUGIN_TEST
-
-#include "plugin-manager.h"
-
-
-int main(int argc, char** argv)
-{
-    if (argc < 2) {
-        return 1;
-    }
-
-    bool res = iz::RecPluginMngr::loadLibrary(QString(argv[1]));
-    if (res) {
-        iz::RecIface *dummy =
-                iz::RecPluginMngr::getInterface(QString(argv[1]));
-        if (dummy) {
-            dummy->init();
-            dummy->get_data();
-            dummy->put_data(0);
-            dummy->put_ndata(0, 0);
-        }
-    }
-
-    return 0;
-}
-
-#else
 #include "sapplication.h"
 #include "unix/daemon.h"
 #include "utils/recorder-config.h"
@@ -137,4 +75,3 @@ int main(int argc, char *argv[])
     }
     return app.exec();
 }
-#endif
