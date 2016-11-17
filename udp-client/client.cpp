@@ -19,6 +19,34 @@ static double* tone_gen(int len)
     }
 }
 
+
+static double* sine_gen(int len)
+{
+    double* buff = (double*) malloc(len * sizeof(double));
+    if (!buff) {
+        return NULL;
+    }
+
+    for(int i=0; i < len; ++i) {
+        buff[i] = sin(1000 * (2 * M_PI) * i / 44100);
+    }
+
+    return buff;
+}
+
+short* gen_sawtooth(int len)
+{
+    short* buff = (short*) malloc(sizeof(short) * len);
+    if (!buff) {
+        return NULL;
+    }
+
+    for(int i=0; i < len; ++i) {
+        buff[i] = len - abs(i % (2 * len) - len);
+    }
+    return buff;
+}
+
 namespace iz {
 
 Client::Client(QObject *parent)
@@ -50,7 +78,7 @@ void Client::transmit()
 {
     std::cout << "Transmitting...\n";
     static uint32_t counter = 0;
-    uint16_t* buff = (uint16_t*) tone_gen(16);
+    uint16_t* buff = (uint16_t*) gen_sawtooth(16);
     if (buff) {
         for(int i=0; i < 32; ++i) {
             memcpy(m_packet.packet.data[i], buff, 16);
