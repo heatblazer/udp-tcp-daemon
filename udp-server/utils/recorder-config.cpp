@@ -111,7 +111,10 @@ bool RecorderConfig::loadFile(const QString &fname)
 ///
 bool RecorderConfig::fastLoadFile(const QString &fname)
 {
-    bool res = true;
+    bool res = false;
+    if (fname == "") {
+        return res;
+    }
     QFile file(fname);
     if (file.open(QIODevice::ReadOnly)) {
         QXmlStreamReader reader(file.readAll());
@@ -128,7 +131,71 @@ bool RecorderConfig::fastLoadFile(const QString &fname)
                 }
             }
         }
+        res = true;
+    } else {
+        res = false;
     }
+    return res;
+}
+
+/// load dfault settings
+/// \brief RecorderConfig::loadDefaults
+/// \return true always
+///
+bool RecorderConfig::loadDefaults()
+{
+    bool res = true;
+    m_tags["HotSwap"].append(MPair<QString, QString>(QString("timeBased"),
+                             QString("false")));
+    m_tags["HotSwap"].append(MPair<QString, QString>(QString("maxSize"),
+                             QString("30000000")));
+    m_tags["HotSwap"].append(MPair<QString, QString>(QString("interval"),
+                             QString("10000")));
+
+    m_tags["Wave"].append(MPair<QString, QString>(QString("samplesPerFrame"),
+                                                  QString("8000")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("bitsPerSec"),
+                                                  QString("16")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("fmtLength"),
+                                                  QString("16")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("audioFormat"),
+                                                  QString("1")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("channels"),
+                                                  QString("1")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("endiness"),
+                                                  QString("LE")));
+
+    m_tags["Paths"].append(MPair<QString, QString>(QString("records"),
+                                                  QString("records")));
+    m_tags["Paths"].append(MPair<QString, QString>(QString("logs"),
+                                                  QString("logs")));
+
+    m_tags["Record"].append(MPair<QString, QString>(QString("timestamp"),
+                                                  QString("enabled")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("hasNumericConvention"),
+                                                  QString("true")));
+
+    m_tags["Network"].append(MPair<QString, QString>(QString("transport"),
+                                                  QString("udp")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("port"),
+                                                  QString("1234")));
+
+    m_tags["Log"].append(MPair<QString, QString>(QString("name"),
+                                                  QString("recorder.log")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("timestamp"),
+                                                  QString("enabled")));
+    m_tags["Wave"].append(MPair<QString, QString>(QString("speed"),
+                                                  QString("1000")));
+
+    m_tags["Heartbeat"].append(MPair<QString, QString>(QString("timeout"),
+                                                  QString("2000")));
+    m_tags["Heartbeat"].append(MPair<QString, QString>(QString("port"),
+                                                  QString("5678")));
+    m_tags["Heartbeat"].append(MPair<QString, QString>(QString("host"),
+                                                  QString("127.0.0.1")));
+    m_tags["Heartbeat"].append(MPair<QString, QString>(QString("enabled"),
+                                                  QString("false")));
+
     return res;
 }
 

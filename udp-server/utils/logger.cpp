@@ -80,6 +80,7 @@ bool Logger::init()
     }
 
     if (m_writer.setup(QString(fname), 100, log_speed)) {
+        m_writer.setObjectName("logger thread");
         m_writer.startWriter();
     }
 
