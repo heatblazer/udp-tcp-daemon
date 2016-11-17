@@ -136,7 +136,7 @@ void Server::readyReadUdp()
                 if (udp->counter != ++pktcnt) {
                     static uint32_t lost_count = 0;
                     static char msg[164] = {0};
-                    snprintf(msg, sizeof(msg), "Packet lost:(%d) at: [%s]\tTotal lost:(%d)\n",
+                    snprintf(msg, sizeof(msg), "Packet lost:(%d)\t at: [%s]  Total lost:(%d)\n",
                             udp->counter, DateTime::getDateTime(),
                             lost_count);
 
