@@ -116,7 +116,8 @@ A wav playback with waveform for listening the records.
     16.11.2016: Signals to be handled by sockstreams via IPC.
     16.11.2016: Added more messages to logs.
     16.11.2016: Tested time based hotswap and configuration from xml.
-
+    17.11.2016: Testing time based hotswap in lab environment and also a simple filter as plugin.
+    17.11.2016: Improved user menu and startup options aswell more friendly messages.
 
 ***
 <ilianzapryanov@abv.bg>
