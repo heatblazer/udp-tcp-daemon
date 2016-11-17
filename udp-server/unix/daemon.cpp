@@ -60,8 +60,8 @@ static void testSig(int a, siginfo_t *info ,void* usr_data)
 {
     (void) a;
     (void) usr_data;
-    char msg[64] = {0};
-    sprintf(msg, "Received SIG (%d)\n", info->si_signo);
+    char msg[96] = {0};
+    snprintf(msg, sizeof(msg), "Received SIG (%d)\n", info->si_signo);
     log_message(msg);
     if (g_application != NULL) {
         g_application->deinit();
@@ -75,8 +75,8 @@ static void writeToSapplicationFd(int a, siginfo_t* info, void* usr_data)
 {
     (void) a;
     (void) usr_data;
-    char msg[64] = {0};
-    sprintf(msg, "SIG: %d\n", info->si_signo);
+    char msg[96] = {0};
+    snprintf(msg, sizeof(msg), "SIG: %d\n", info->si_signo);
     log_message(msg);
     exit(10);
 
@@ -144,12 +144,12 @@ void Daemon::daemonize()
     // get current dir
     getcwd(pwd, sizeof(pwd)/sizeof(pwd[0]));
     // set to current dir
-    char msg[64]={0};
+    char msg[512]={0};
     if (chdir(pwd) < 0) {
-        sprintf(msg, "Could not set: (%s) as cwd!\n", pwd);
+        snprintf(msg, sizeof(msg), "Could not set: (%s) as cwd!\n", pwd);
         exit(3);
     } else {
-        sprintf(msg, "Setup (%s) as cwd!\n", pwd);
+        snprintf(msg, sizeof(msg), "Setup (%s) as cwd!\n", pwd);
     }
     log_message(msg);
 
@@ -194,8 +194,8 @@ void Daemon::attachSignalHandler(sigHndl hnd, int slot)
             exit(3);
         } else {
             sigaction(slot, &s_signals[slot], NULL);
-            char msg[64]={0};
-            sprintf(msg, "Registered SIG: (%d) to be handled!\n", slot);
+            char msg[96]={0};
+            snprintf(msg, sizeof(msg), "Registered SIG: (%d) to be handled!\n", slot);
             log_message(msg);
         }
     }

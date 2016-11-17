@@ -43,14 +43,14 @@ bool Logger::init()
     const MPair<QString, QString> speed = RecorderConfig::Instance()
             .getAttribPairFromTag("Log", "speed");
 
-    char fname[256] = {0};
+    char fname[512] = {0};
 
     if (log_dir.m_type1 != "") {
         if (!QDir(log_dir.m_type2).exists()) {
             QDir().mkdir(log_dir.m_type2);
-            sprintf(fname,"%s/", log_dir.m_type2.toStdString().data());
+            snprintf(fname, sizeof(fname), "%s/", log_dir.m_type2.toStdString().data());
         } else {
-            sprintf(fname,"%s/", log_dir.m_type2.toStdString().data());
+            snprintf(fname, sizeof(fname), "%s/", log_dir.m_type2.toStdString().data());
         }
     }
 

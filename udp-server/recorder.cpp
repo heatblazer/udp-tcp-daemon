@@ -66,14 +66,14 @@ bool Recorder::init()
     for(int i=0; i < 32; ++i) {
         s_UID++;
         if (dir.m_type1 != "") {
-            sprintf(buff, "%s/%d-%d-%s.wav",
+            snprintf(buff, sizeof(buff), "%s/%d-%d-%s.wav",
                     dir.m_type2.toStdString().data(),
                     i,
                     s_UID,
                     DateTime::getTimeString());
             m_directory = dir.m_type2;
         } else {
-            sprintf(buff, "%d-%d-%s.wav", i,
+            snprintf(buff, sizeof(buff), "%d-%d-%s.wav", i,
                     s_UID,
                     DateTime::getTimeString());
             m_directory.clear();
@@ -109,7 +109,7 @@ bool Recorder::init()
                 if (!res) {
                     time = 1000 * 60 * 20;
                 };
-                sprintf(init_msg, "Time interval is: (%ld)\n", time);
+                snprintf(init_msg, sizeof(init_msg),"Time interval is: (%ld)\n", time);
                 Logger::Instance().logMessage(init_msg);
             }
             m_hotswap.setInterval(time);
@@ -124,7 +124,7 @@ bool Recorder::init()
                     m_maxFileSize = 30000000; // 30Mb
                 }
             }
-            sprintf(init_msg, "File size limit is: (%d) bytes\n", m_maxFileSize);
+            snprintf(init_msg, sizeof(init_msg), "File size limit is: (%d) bytes\n", m_maxFileSize);
             Logger::Instance().logMessage(init_msg);
 
             connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
@@ -149,8 +149,8 @@ void Recorder::deinit()
     Logger::Instance().logMessage("Closing all opened records...\n");
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            char msg[128] = {0};
-            sprintf(msg, "Closing file: (%s)\n", m_wavs[i]->getFileName());
+            static char msg[128] = {0};
+            snprintf(msg, sizeof(msg), "Closing file: (%s)\n", m_wavs[i]->getFileName());
             Logger::Instance().logMessage(msg);
             m_wavs[i]->close();
             delete m_wavs[i];
@@ -297,13 +297,13 @@ void Recorder::hotSwapFiles()
             if (1) {
                 s_UID++;
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
-                char buff[256] = {0};
+                static char buff[256] = {0};
                 if (m_directory != "") {
-                    sprintf(buff, "%s/%d-%d-%s.wav",
+                    snprintf(buff, sizeof(buff), "%s/%d-%d-%s.wav",
                             m_directory.toStdString().data(),
                             i, s_UID, DateTime::getTimeString());
                 } else {
-                    sprintf(buff, "%d-%d-%s.wav",
+                    snprintf(buff, sizeof(buff), "%d-%d-%s.wav",
                                 i,
                                 s_UID, DateTime::getTimeString());
                 }
@@ -339,13 +339,13 @@ void Recorder::performHotSwap(const QString &file)
             m_wavs[slot]->close();
             delete m_wavs[slot];
             m_wavs[slot] = nullptr;
-            char buff[256] = {0};
+            static char buff[256] = {0};
             if (m_directory != "") {
-                sprintf(buff, "%s/%d-%d-%s.wav",
+                snprintf(buff, sizeof(buff), "%s/%d-%d-%s.wav",
                         m_directory.toStdString().data(),
                         slot, s_UID, DateTime::getTimeString());
             } else {
-                sprintf(buff, "%d-%d-%s.wav",
+                snprintf(buff, sizeof(buff), "%d-%d-%s.wav",
                             slot,
                             s_UID, DateTime::getTimeString());
             }

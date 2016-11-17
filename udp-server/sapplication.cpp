@@ -122,7 +122,7 @@ int SApplication::init()
         port = port_attr.m_type2.toInt(&parese_res);
         if (!parese_res) {
             char msg[128] = {0};
-            sprintf(msg, "Parsing (%s) failed. Will use default: (%d)\n",
+            snprintf(msg, sizeof(msg), "Parsing (%s) failed. Will use default: (%d)\n",
                     port_attr.m_type2.toStdString().data(),
                     1234);
             Logger::Instance().logMessage(msg);
@@ -188,7 +188,7 @@ void SApplication::loadPlugins()
             // perform the parsina and plugin setup here
             // the array is ordered and we assume name is
             // in the front
-           sprintf(msg, "Loading (%s) plugin...\n",
+           snprintf(msg, sizeof(msg), "Loading (%s) plugin...\n",
                    list.at(i).m_type2.toStdString().data());
            Logger::Instance().logMessage(msg);
 
@@ -198,11 +198,11 @@ void SApplication::loadPlugins()
            // put in any order for now
            // store into the indexed array
            if (iface != nullptr) {
-               sprintf(msg, "Loaded (%s) plugin.\n", list.at(i).m_type2.toStdString().data());
+               snprintf(msg, sizeof(msg), "Loaded (%s) plugin.\n", list.at(i).m_type2.toStdString().data());
                Logger::Instance().logMessage(msg);
                m_plugins.push_back(*iface);
            } else {
-               sprintf(msg, "\nFailed to load (%s) plugin.\n",
+               snprintf(msg, sizeof(msg), "\nFailed to load (%s) plugin.\n",
                        list.at(i).m_type2.toStdString().data());
                 Logger::Instance().logMessage(msg);
            }

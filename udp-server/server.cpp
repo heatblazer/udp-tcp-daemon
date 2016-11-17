@@ -77,16 +77,16 @@ void Server::init(bool udp, quint16 port, bool send_heart)
         char msg[64]={0};
         if (bres) {
             char msg2[128] ={0};
-            sprintf(msg2, "Server started at: (%s)\n", DateTime::getDateTime());
+            snprintf(msg2, sizeof(msg2),"Server started at: (%s)\n", DateTime::getDateTime());
             printf("Bind OK!\n");
-            sprintf(msg,"Binding to port (%d) succeeds!\n", port);
+            snprintf(msg, sizeof(msg), "Binding to port (%d) succeeds!\n", port);
             Logger::Instance().logMessage(msg);
             Logger::Instance().logMessage(msg2);
             // start timers
 
         } else {
             printf("Bind FAIL!\n");
-            sprintf(msg,"Binding to port (%d) failed!\n", port);
+            snprintf(msg, sizeof(msg), "Binding to port (%d) failed!\n", port);
             route(DISCONNECTED);
             Logger::Instance().logMessage(msg);
         }
@@ -135,8 +135,8 @@ void Server::readyReadUdp()
 
                 if (udp->counter != ++pktcnt) {
                     static uint32_t lost_count = 0;
-                    static char msg[128]={0};
-                    sprintf(msg, "Packet lost:(%d) at: [%s]\tTotal lost:(%d)\n",
+                    static char msg[164] = {0};
+                    snprintf(msg, sizeof(msg), "Packet lost:(%d) at: [%s]\tTotal lost:(%d)\n",
                             udp->counter, DateTime::getDateTime(),
                             lost_count);
 
