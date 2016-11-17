@@ -274,7 +274,7 @@ void Recorder::record(const udp_data_t &data)
             m_wavs[i]->write((short*) flip_data[i], 16);
 #else
             // test plugin iface
-            RecIface* iface = RecPluginMngr::getInterface("LowPassFilter");
+            RecIface* iface = RecPluginMngr::getInterface("LPF");
             // filtered
             if (iface != nullptr) {
                 short* smooth_data = (short*) data.data[i];

@@ -8,7 +8,5 @@ SUBDIRS += \
     udp-client \
     recorder-gui \
     crypto \
-    plugin-test \
-    plugin-test-2 \
     low-pass-filter
 

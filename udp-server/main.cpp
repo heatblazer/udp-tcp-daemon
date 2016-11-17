@@ -26,7 +26,9 @@ static int getOpts(char* str)
     } else if( (strcmp(str, "-h") == 0) ||
                (strcmp(str, "--help")) == 0) {
         opts = 2;
-    } else {
+    } else if ( (strcmp(str, "-c")) == 0 ||
+                (strcmp(str, "--config")) == 0) {
+        // reserved for future preloading of configuations!!!
         opts = 0;
     }
     return opts;
@@ -37,19 +39,27 @@ int main(int argc, char *argv[])
     // if no args - run in lab mode to test
     // and debug , later we`ll be sure
     // the >1 arg is provided
+    std::cout << "Starting recording server..."
+              << std::endl;
+
+    bool is_daemon = false;
     if (argc > 1) {
         int opts = 0;
         for(int i=0; i < argc; ++i) {
            opts = getOpts(argv[i]);
            switch(opts) {
            case 1: // and only for now
-               iz::Daemon::daemonize();
+               std::cout << "Setting the server as daemon." << std::endl;
+               is_daemon = true;
                break;
            case 2:
                std::cout << help_message;
                exit(0);
            case 0:
+               std::cout << "Stub!!! Preloading configuration!" << std::endl;
+               break;
            default:
+               std::cout << "No arguments!" << std::endl;
                break;
            }
         }
@@ -65,6 +75,11 @@ int main(int argc, char *argv[])
                   << std::endl;
     }
 
+    if (is_daemon) {
+        iz::Daemon::daemonize();
+    }
+
+
     iz::SApplication app(argc, argv);
     int res = app.init();
     if (res < 0) {
@@ -73,5 +88,6 @@ int main(int argc, char *argv[])
                   << res << ") " << std::endl;
         exit(4);
     }
+
     return app.exec();
 }

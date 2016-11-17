@@ -65,18 +65,11 @@
 
 
 <Plugin
-    name="TestPlugin1"
+    name="LPF"
     order="1"
     enabled="true"
-    path="/home/ilian/github/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/plugin-test/libplugin-test.so"
-/>
-
-<Plugin
-    name="TestPlugin2"
-    order="2"
-    enabled="true"
-    path="/home/ilian/github/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/plugin-test-2/libplugin-test-2.so"
-/>
+    path="/home/ilian/github/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/low-pass-filter/liblow-pass-filter.so"
+    />
 
 <Plugin
     name="ErrorPlugin"
