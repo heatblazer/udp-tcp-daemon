@@ -66,6 +66,10 @@ int main(int argc, char** argv)
 #include "types.h"
 #include <iostream>
 
+static const char* help_message = "This is a recording server over udp streams.\n"
+        "The program is in early test mode and shall be used until proved"
+        "and comes with no warranty!\n";
+
 // the standart server test - passed for now
 // I got a correct sine wave from the client
 // and recorded it to a wav file
@@ -81,6 +85,9 @@ static int getOpts(char* str)
     if ( (strcmp(str, "-d") == 0) ||
          (strcmp(str, "--daemon") == 0)) {
         opts = 1;
+    } else if( (strcmp(str, "-h") == 0) ||
+               (strcmp(str, "--help")) == 0) {
+        opts = 2;
     } else {
         opts = 0;
     }
@@ -100,6 +107,9 @@ int main(int argc, char *argv[])
            case 1: // and only for now
                iz::Daemon::daemonize();
                break;
+           case 2:
+               std::cout << help_message;
+               exit(0);
            case 0:
            default:
                break;
@@ -109,8 +119,8 @@ int main(int argc, char *argv[])
         std::cout << "Usage:\n"
                   << "Load config: recd2 -c <path to conf file>\n"
                   << "Load config: recd2 --config <path to conf file>\n"
-                  << "Help: recd2 -h\n"
-                  << "Help: recd2 --help\n"
+                  << "Print help and exit: recd2 -h\n"
+                  << "Print help and exit: recd2 --help\n"
                   << "Daemonize: recd2 -d\n"
                   << std::endl;
         std::cout << "You will be entering a failsafe mode with defaults."
