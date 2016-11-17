@@ -58,7 +58,7 @@ static int main_proxy(int argc, char** argv)
 {
     (void) argc;
     (void) argv;
-    printf("No args main...\n");
+    printf("LowPassFilter: No args main...\n");
     return 0;
 }
 
