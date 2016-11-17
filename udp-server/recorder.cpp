@@ -6,7 +6,6 @@
 // qt //
 #include <QDir>
 
-
 // utils //
 #include "unix/date-time.h"
 #include "utils/logger.h"

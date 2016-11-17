@@ -1,6 +1,8 @@
 #ifndef WAVWRITERIFACE_H
 #define WAVWRITERIFACE_H
 
+#include <unistd.h>
+
 namespace iz {
 
 /// typical wav interface
@@ -57,6 +59,17 @@ public:
     ///
     virtual bool isOpened() const = 0;
 
+    /// get name of file
+    /// \brief getFileName
+    /// \return filename
+    ///
+    virtual  const char* getFileName() = 0;
+
+    /// get filesize in bytes
+    /// \brief getFileSize
+    /// \return filesizew
+    ///
+    virtual size_t getFileSize() const = 0;
 };
 
 } // iz

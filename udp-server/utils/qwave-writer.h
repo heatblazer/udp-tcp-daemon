@@ -34,7 +34,7 @@ public:
     virtual void* read();
     virtual bool isOpened() const;
 
-    const QString&  getFileName();
+    const char*  getFileName();
     size_t  getFileSize() const;
     bool open(OpenMode perms, int slot);
     int getSlot() const;

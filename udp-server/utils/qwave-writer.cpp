@@ -119,9 +119,9 @@ QWav::~QWav()
 
 }
 
-const QString &QWav::getFileName()
+const char *QWav::getFileName()
 {
-    return m_name;
+    return m_name.toStdString().data();
 }
 
 size_t QWav::getFileSize() const
