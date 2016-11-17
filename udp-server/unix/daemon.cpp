@@ -75,6 +75,7 @@ static void writeToSapplicationFd(int a, siginfo_t* info, void* usr_data)
 {
     (void) a;
     (void) usr_data;
+    (void) writeToSapplicationFd;
     char msg[96] = {0};
     snprintf(msg, sizeof(msg), "SIG: %d\n", info->si_signo);
     log_message(msg);

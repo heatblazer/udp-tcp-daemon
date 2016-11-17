@@ -38,6 +38,12 @@ public:
     size_t  getFileSize() const;
     virtual int getSlot() const;
 
+    /// open for QWav
+    /// \brief open a wav file for writing
+    /// \param QT permissions remap from QIODevice
+    /// \param slot - channel slot
+    /// \return true opened false else
+    ///
     bool open(OpenMode perms, int slot);
 
 private:
