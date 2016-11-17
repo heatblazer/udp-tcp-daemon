@@ -52,13 +52,10 @@ SApplication::SApplication(int &argc, char **argv)
                 // config is OK, no checks and always return TRUE
                 // which is dangerous in release
                 m_setup = RecorderConfig::Instance().fastLoadFile(QString(argv[i+1]));
-                if (!m_setup) {
-                    m_setup = RecorderConfig::Instance().loadDefaults();
-                }
-#endif
+ #endif
             } else {
                 // initializing with default setting
-                std::cout << "Warning! Please provide a config file after ("
+                std::cout << "Warning! You did not point a config file after: ("
                           << argv[i] << ") argument! Loading application with defaults!"
                           << std::endl;
 

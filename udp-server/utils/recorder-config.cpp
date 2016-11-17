@@ -145,6 +145,8 @@ bool RecorderConfig::fastLoadFile(const QString &fname)
 bool RecorderConfig::loadDefaults()
 {
     bool res = true;
+
+    // hotswap defaults
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("timeBased"),
                              QString("false")));
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("maxSize"),
@@ -152,6 +154,7 @@ bool RecorderConfig::loadDefaults()
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("interval"),
                              QString("10000")));
 
+    // wav setup defaults
     m_tags["Wave"].append(MPair<QString, QString>(QString("samplesPerFrame"),
                                                   QString("8000")));
     m_tags["Wave"].append(MPair<QString, QString>(QString("bitsPerSec"),
@@ -165,28 +168,33 @@ bool RecorderConfig::loadDefaults()
     m_tags["Wave"].append(MPair<QString, QString>(QString("endiness"),
                                                   QString("LE")));
 
+    // paths defaults
     m_tags["Paths"].append(MPair<QString, QString>(QString("records"),
                                                   QString("records")));
     m_tags["Paths"].append(MPair<QString, QString>(QString("logs"),
                                                   QString("logs")));
 
+    // records defaults
     m_tags["Record"].append(MPair<QString, QString>(QString("timestamp"),
                                                   QString("enabled")));
-    m_tags["Wave"].append(MPair<QString, QString>(QString("hasNumericConvention"),
+    m_tags["Record"].append(MPair<QString, QString>(QString("hasNumericConvention"),
                                                   QString("true")));
 
+    // network defaults
     m_tags["Network"].append(MPair<QString, QString>(QString("transport"),
                                                   QString("udp")));
-    m_tags["Wave"].append(MPair<QString, QString>(QString("port"),
+    m_tags["Network"].append(MPair<QString, QString>(QString("port"),
                                                   QString("1234")));
 
+    // log defaults
     m_tags["Log"].append(MPair<QString, QString>(QString("name"),
                                                   QString("recorder.log")));
-    m_tags["Wave"].append(MPair<QString, QString>(QString("timestamp"),
+    m_tags["Log"].append(MPair<QString, QString>(QString("timestamp"),
                                                   QString("enabled")));
-    m_tags["Wave"].append(MPair<QString, QString>(QString("speed"),
+    m_tags["Log"].append(MPair<QString, QString>(QString("speed"),
                                                   QString("1000")));
 
+    // heartbeat defaults
     m_tags["Heartbeat"].append(MPair<QString, QString>(QString("timeout"),
                                                   QString("2000")));
     m_tags["Heartbeat"].append(MPair<QString, QString>(QString("port"),
