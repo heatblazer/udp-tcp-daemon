@@ -35,7 +35,7 @@ public:
     virtual ~Wav();
     // in case we migrate to other file api we made these virtual
     // but provide some defailt implementation
-    virtual bool open(const char* perms);
+    virtual bool open(unsigned slot);
     virtual void close();
     virtual bool isOpened() const ;
     virtual int write(short int data[], int len);
@@ -46,9 +46,6 @@ public:
     virtual const char* getFileName();
     virtual size_t getFileSize() const;
     virtual int     getSlot() const;
-
-public:
-    bool    open(const char* perms, int slot);
 
 protected:
     FILE*   m_file;

@@ -13,10 +13,10 @@ class WavIface
 public:
     /// opens a wav file
     /// \brief open
-    /// \param perms - RW perms
+    /// \param channel slot
     /// \return true on success, false else
     ///
-    virtual bool open(const char* perms) = 0;
+    virtual bool open(unsigned slot) = 0;
 
     /// closes the file
     /// \brief close

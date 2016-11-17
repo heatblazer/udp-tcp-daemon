@@ -26,7 +26,7 @@ public:
     };
     explicit QWav(const QString& fname);
     virtual ~QWav();
-    virtual bool open(const char* perms);
+    virtual bool open(unsigned slot);
     virtual void close();
     virtual int write(short int data[], int len);
     virtual void setupWave(int samples_per_sec=8000, int bits_per_sec=16, int riff_len=0,
@@ -37,14 +37,6 @@ public:
     const char*  getFileName();
     size_t  getFileSize() const;
     virtual int getSlot() const;
-
-    /// open for QWav
-    /// \brief open a wav file for writing
-    /// \param QT permissions remap from QIODevice
-    /// \param slot - channel slot
-    /// \return true opened false else
-    ///
-    bool open(OpenMode perms, int slot);
 
 private:
     QString m_name;

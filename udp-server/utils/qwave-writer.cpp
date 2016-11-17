@@ -99,10 +99,26 @@ void QWav::close()
 /// \param perms - unused see open(QIODevice perms, int slot);
 /// \return always false
 ///
-bool QWav::open(const char *perms)
+bool QWav::open(unsigned slot)
 {
-    (void) perms;
-    return false;
+    if (m_wav.exists()) {
+        return false;
+    }
+    m_wav.setFileName(m_name);
+    if (!m_wav.isOpen()) {
+        m_wav.open(QIODevice::WriteOnly);
+    }
+    // we have not called setup! Load some defaults !
+    if (!m_setup) {
+        // write default header
+        setupWave();
+    }
+    m_wav.write((char*)&m_header, sizeof(m_header));
+    m_wav.flush();
+    m_size += 44;
+    m_slot = slot;
+    return m_wav.isOpen();
+
 }
 
 QWav::QWav(const QString &fname)
@@ -129,34 +145,6 @@ size_t QWav::getFileSize() const
     return m_size;
 }
 
-/// the actual function to use
-/// never use the interface open
-/// \brief QWav::open
-/// \param perms
-/// \param slot
-/// \return
-///
-bool QWav::open(OpenMode perms, int slot)
-{
-    if (m_wav.exists()) {
-        return false;
-    }
-    m_wav.setFileName(m_name);
-    if (!m_wav.isOpen()) {
-        m_wav.open((QIODevice::OpenModeFlag)perms);
-    }
-    // we have not called setup! Load some defaults !
-    if (!m_setup) {
-        // write default header
-        setupWave();
-    }
-    m_wav.write((char*)&m_header, sizeof(m_header));
-    m_wav.flush();
-    m_size += 44;
-    m_slot = slot;
-    return m_wav.isOpen();
-
-}
 
 int QWav::getSlot() const
 {

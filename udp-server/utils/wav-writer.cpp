@@ -59,12 +59,14 @@ Wav::~Wav()
 /// open a wav file
 /// and write a wav header on it
 /// \brief Wav::open
-/// \param perms
+/// \param channel slot
 /// \return
 /// TODO: new logic here : write the filled header
-bool Wav::open(const char *perms)
+
+bool Wav::open(unsigned slot)
 {
-    m_file = fopen(m_filename, perms);
+    m_slot = slot;
+    m_file = fopen(m_filename, "wb");
     if (m_file == NULL) {
         return m_isOpened;
     }
@@ -81,14 +83,7 @@ bool Wav::open(const char *perms)
     m_maxSize += 44;
     m_isOpened = true;
     return m_isOpened;
-}
 
-bool Wav::open(const char *perms, int slot)
-{
-    bool res = false;
-    m_slot = slot;
-    res = open(perms);
-    return res;
 }
 
 int Wav::getSlot() const
