@@ -86,7 +86,7 @@ bool Recorder::init()
     res &= setupWavFiles();
 
     for(int i=0; i < 32; ++i) {
-        res &= m_wavs[i]->open("wb", i);
+        res &= m_wavs[i]->open(i);
         if (res) {
             m_filewatcher.addPath(m_wavs[i]->getFileName());
         }
@@ -330,7 +330,7 @@ void Recorder::hotSwapFiles()
                                      m_wavParams.fmt_len,
                                      m_wavParams.audio_fmt,
                                      m_wavParams.chann_cnt);
-                m_wavs[i]->open("wb", i);
+                m_wavs[i]->open(i);
                 m_filewatcher.addPath(m_wavs[i]->getFileName());
             }
         }
@@ -369,7 +369,7 @@ void Recorder::performHotSwap(const QString &file)
                                     m_wavParams.fmt_len,
                                     m_wavParams.audio_fmt,
                                     m_wavParams.chann_cnt);
-            m_wavs[slot]->open("wb", slot);
+            m_wavs[slot]->open(slot);
             m_filewatcher.addPath(m_wavs[slot]->getFileName());
         }
     }
