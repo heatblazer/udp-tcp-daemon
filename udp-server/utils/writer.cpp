@@ -40,7 +40,7 @@ void Writer::write(const QByteArray &data)
 void Writer::run()
 {
     QQueue<QByteArray> dblBuff;
-    dblBuff.reserve(100);
+    dblBuff.reserve(512); // bigger
     do {
         QThread::msleep(m_speed);
 
