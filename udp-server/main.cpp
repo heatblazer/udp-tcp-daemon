@@ -106,20 +106,23 @@ int main(int argc, char *argv[])
            }
         }
     } else {
-        std::cout << "ERROR!\n"
-                  << "program -c <path to conf file>\n"
-                  << "program --config <path to conf file>\n"
+        std::cout << "Usage:\n"
+                  << "Load config: recd2 -c <path to conf file>\n"
+                  << "Load config: recd2 --config <path to conf file>\n"
+                  << "Help: recd2 -h\n"
+                  << "Help: recd2 --help\n"
+                  << "Daemonize: recd2 -d\n"
                   << std::endl;
-        exit(4);
+        std::cout << "You will be entering a failsafe mode with defaults."
+                  << std::endl;
     }
 
     iz::SApplication app(argc, argv);
     int res = app.init();
     if (res < 0) {
-        std::cout << "ERROR!\n"
-                  << "program -c <path to conf file>\n"
-                  << "program --config <path to conf file>\n"
-                  << std::endl;
+        std::cout << "Error!\n"
+                  << "Program failed to initalize with error: ("
+                  << res << ") " << std::endl;
         exit(4);
     }
     return app.exec();
