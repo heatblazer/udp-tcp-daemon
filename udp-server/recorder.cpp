@@ -257,7 +257,7 @@ bool Recorder::setupWavFiles()
 ///
 void Recorder::record(const udp_data_t &data)
 {
-    // flip the data
+    // flip the data for dimo`s recorder
 #if OK_PASSED_TEST
     int16_t flip_data[32][16] = {0};
 
@@ -270,7 +270,7 @@ void Recorder::record(const udp_data_t &data)
     for(int i=0; i < 32; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             // TODO: test!
-#ifdef OK_PASSED_TEST
+#ifdef OK_PASSED_TEST // for dimo`s recorder
             m_wavs[i]->write((short*) flip_data[i], 16);
 #else
             // test plugin iface
