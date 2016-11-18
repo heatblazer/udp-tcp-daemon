@@ -120,6 +120,7 @@ A wav playback with waveform for listening the records.
     17.11.2016: Improved user menu and startup options aswell more friendly messages.
     18.11.2016: config improved: takes time in minutes and size in MB/GB.
     18.11.2016: pending test to sniffer port to test program packet loss counter.
+    18.11.2016: Added WAV files with embeded META info for further research.
 
 ***
 <ilianzapryanov@abv.bg>
