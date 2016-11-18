@@ -51,8 +51,9 @@ namespace iz {
 
 Client::Client(QObject *parent)
     : QObject(parent),
-      m_addres("192.168.32.154")
+//      m_addres("192.168.32.154")
 //      m_addres("192.168.32.94")
+      m_addres("127.0.0.1")
 {
     m_timer.setInterval(20);
     connect(&m_timer, SIGNAL(timeout()),

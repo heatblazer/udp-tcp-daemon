@@ -69,3 +69,10 @@ QMAKE_INSTALL_PROGRAM = install -m 4755 -p
 
 target.path = /usr/bin
 INSTALLS += target
+
+DISTFILES += \
+    ../resources/30-31-13:51:39.wav \
+    ../resources/31-32-13:51:39.wav \
+    ../resources/usesEntireiXMLSpec.WAV \
+    ../resources/wav1 \
+    ../resources/wav2
