@@ -148,7 +148,7 @@ bool Recorder::init()
                     max_size_modifier = 1000000000;
                 }
                 const char* size = is_digit(max_size.m_type2.toStdString().data());
-                ulong mfs = QString(size).toLong();
+                ulong mfs = QString(size).toLong(&res);
                 m_maxFileSize = mfs * max_size_modifier;
 
                 if(!res) {
