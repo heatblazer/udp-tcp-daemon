@@ -118,6 +118,8 @@ A wav playback with waveform for listening the records.
     16.11.2016: Tested time based hotswap and configuration from xml.
     17.11.2016: Testing time based hotswap in lab environment and also a simple filter as plugin.
     17.11.2016: Improved user menu and startup options aswell more friendly messages.
+    18.11.2016: config improved: takes time in minutes and size in MB/GB.
+    18.11.2016: pending test to sniffer port to test program packet loss counter.
 
 ***
 <ilianzapryanov@abv.bg>
