@@ -42,7 +42,7 @@ short* gen_sawtooth(int len)
     }
 
     for(int i=0; i < len; ++i) {
-        buff[i] = len - abs(i % (2 * len) - len);
+        buff[i] = abs((i++ % len) - (len/2));
     }
     return buff;
 }
