@@ -7,14 +7,14 @@
 
 <!-- done: setups the hotswap interval from here -->
 <!-- new: swap by max size criteria -->
-<!-- TODO: format M - mbytes, G - gbytes, K - kbytes -->
+<!-- TODO: format M - mbytes, G - gbytes -->
 <!-- if timeBased is set to true, size param will be omit and
      interval for time will be used, I am working on that
      idea -->
 <HotSwap
-    timeBased="false"
-    maxSize="30000000"
-    interval="10000" />
+    timeBased="enabled"
+    maxSize="300MB"
+    interval="1" /> <!-- minutes only!-->
 
 <!-- done: setups wav headers from here -->
 <Wave samplesPerFrame="8000" 
