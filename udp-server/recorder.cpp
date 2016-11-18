@@ -14,6 +14,18 @@
 #include "utils/logger.h"
 #include "utils/wav-writer.h"
 
+static const char* is_digit(const char* str) {
+#define DIGIT(c) ((c >= '0') && (c <= '9'))
+    static char digit[10] = {0};
+    int size = 0;
+    while (DIGIT(*str) && size < 10) {
+        digit[size] = *str;
+        size++;
+        str++;
+    }
+#undef DIGIT
+    return digit;
+}
 namespace iz {
 
 struct udp_data_t
@@ -103,25 +115,42 @@ bool Recorder::init()
     if (hot_swap.m_type1 != "") {
         if (hot_swap.m_type2 == "enabled" ||
                 hot_swap.m_type2 == "true") {
+            // setup timer based
             Logger::Instance().logMessage("HotSwap is set to time based!\n");
-            ulong time = 0;
+            ulong time = 60000; // 1 min minumum
+            ulong time_modifier = 1;
             if (interval.m_type1 != "") {
                 bool res = false;
-                time = interval.m_type2.toLong(&res);
+                const char* t_string = is_digit(interval.m_type2.toStdString().data());
+                time_modifier = QString(t_string).toInt(&res);
                 if (!res) {
-                    time = 1000 * 60 * 20;
-                };
+                    time_modifier = 1; // 1 min
+                }
+                time = time * time_modifier;
                 snprintf(init_msg, sizeof(init_msg),"Time interval is: (%ld)\n", time);
                 Logger::Instance().logMessage(init_msg);
             }
+            // set the timer
             m_hotswap.setInterval(time);
             connect(&m_hotswap, SIGNAL(timeout()), this, SLOT(hotSwapFiles()));
             m_hotswap.start();
         } else {
+            // setup filesize change
             Logger::Instance().logMessage("HotSwap is set to file size changed!\n");
             if (max_size.m_type1 != "") {
                 bool res = false;
-                m_maxFileSize = max_size.m_type2.toUInt(&res);
+                ulong max_size_modifier = 1;
+                if (max_size.m_type2.contains("MB", Qt::CaseInsensitive) ||
+                        max_size.m_type2.contains("M", Qt::CaseInsensitive)) {
+                    max_size_modifier = 1000000;
+                } else if (max_size.m_type2.contains("GB", Qt::CaseInsensitive) ||
+                           max_size.m_type2.contains("G", Qt::CaseInsensitive)) {
+                    max_size_modifier = 1000000000;
+                }
+                const char* size = is_digit(max_size.m_type2.toStdString().data());
+                ulong mfs = QString(size).toLong();
+                m_maxFileSize = mfs * max_size_modifier;
+
                 if(!res) {
                     m_maxFileSize = 30000000; // 30Mb
                 }

@@ -49,6 +49,7 @@ private:
 
     // hotswap
     QTimer m_hotswap; // timer based
+
     QFileSystemWatcher m_filewatcher; // size based
 
     uint32_t    m_maxFileSize;
