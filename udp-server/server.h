@@ -19,6 +19,7 @@ namespace iz {
 
 class SApplication;
 class ServerThread;
+class UserServer;
 
 class Server : public QObject
 {
@@ -85,9 +86,12 @@ class UserServer : public QTcpServer
     explicit UserServer(QObject* parent = nullptr);
     virtual ~UserServer();
     void startServer();
-
+private slots:
+    void hConnection();
+    void disconnected();
 protected:
     void incomingConnection(qintptr socketDescriptor);
+    QTcpSocket*         p_conn;
     friend class ServerThread;
 };
 

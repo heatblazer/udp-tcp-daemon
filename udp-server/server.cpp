@@ -151,11 +151,11 @@ void Server::readyReadUdp()
                              "Total desynch:(%d)\n"
                              "Server counter: (%d)\n"
                              "Lost: (%d)\n",
-                             udp->counter,
-                             DateTime::getDateTime(),
-                             desynch,
-                             (udp->counter - pktcnt));
-
+                             udp->counter, // next got ocunter
+                             DateTime::getDateTime(), // current time
+                             desynch,               // desync counter
+                             pktcnt,                // server counter
+                             (udp->counter - pktcnt)); // lost
                     desynch++;
 
                     Logger::Instance().logMessage(msg);
@@ -226,11 +226,15 @@ void Server::route(States state)
 void Server::sendHeartbeat()
 {
     static const char* heart_attack =
+#ifdef HEARTATTACK
     "..................................................."
     "..................................................."
     "..................................................."
     "..................................................."
     "..................................................."
+#else
+    "heartbeat"
+#endif
     ;
 
     m_hearSocket->writeDatagram(heart_attack, m_senderHost, m_senderPort);
@@ -265,7 +269,8 @@ void ServerThread::run()
 }
 
 UserServer::UserServer(QObject *parent)
-    : QTcpServer(parent)
+    : QTcpServer(parent),
+      p_conn(nullptr)
 {
 }
 
@@ -280,11 +285,31 @@ UserServer::~UserServer()
 void UserServer::startServer()
 {
     int port = 5678;
+    connect(this, SIGNAL(newConnection()),
+            this, SLOT(hConnection()));
+
     if (!this->listen(QHostAddress::Any, port)) {
         std::cout << "Could not start user server\n";
+
     } else {
         std::cout << "Started user server!\n";
     }
+}
+
+void UserServer::hConnection()
+{
+    while (p_conn->canReadLine()) {
+        QByteArray line = p_conn->readLine();
+        // echo back
+        p_conn->write(line);
+        p_conn->flush();
+        p_conn->waitForBytesWritten();
+    }
+}
+
+void UserServer::disconnected()
+{
+    p_conn->deleteLater();
 }
 
 /// TODO: open socket and respond back to user
@@ -294,6 +319,16 @@ void UserServer::startServer()
 void UserServer::incomingConnection(qintptr socketDescriptor)
 {
     std::cout << "Connection coming from: (" << socketDescriptor << ")" << std::endl;
+    p_conn = new QTcpSocket;
+    if (!p_conn->setSocketDescriptor(socketDescriptor)) {
+        std::cout << "Can`t setup user response!\n";
+    } else {
+        connect(p_conn, SIGNAL(readyRead()),
+                this, SLOT(hConnection()), Qt::DirectConnection);
+        connect(p_conn, SIGNAL(disconnected()),
+                this, SLOT(disconnected()));
+    }
+
 }
 
 } // namespce iz
