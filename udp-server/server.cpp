@@ -301,9 +301,25 @@ void UserServer::hConnection()
     while (p_conn->canReadLine()) {
         QByteArray line = p_conn->readLine();
         // echo back
-        p_conn->write(line);
+        QByteArray resp;
+        if (line.contains("help")) {
+            resp.append("Help unavailable yet. See you later!\n");
+        } else if (line.contains("version")) {
+            resp.append("recd2: version 1.0\n");
+        } else if (line.contains("quit")) {
+            resp.append("BYE!\n");
+            p_conn->write(resp);
+            p_conn->flush();
+            p_conn->waitForBytesWritten();
+            p_conn->disconnectFromHost();
+            return;
+        } else {
+            resp.append("Unknown command!\nRefer to: 'help' and 'version' for now!\n");
+        }
+        p_conn->write(resp);
         p_conn->flush();
         p_conn->waitForBytesWritten();
+
     }
 }
 
