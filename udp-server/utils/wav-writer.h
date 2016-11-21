@@ -47,6 +47,8 @@ public:
     virtual size_t getFileSize() const;
     virtual int     getSlot() const;
 
+private:
+
 protected:
     FILE*   m_file;
     wav_hdr_t m_header;
