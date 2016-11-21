@@ -64,7 +64,8 @@ void Server::init(bool udp, quint16 port, bool send_heart)
     m_sendHeart = send_heart;
 
     if (m_sendHeart) {
-        m_heartbeat.setInterval(1000);
+        // heartattack for flooding for testing
+        m_heartbeat.setInterval(10);
         connect(&m_heartbeat, SIGNAL(timeout()),
                 this, SLOT(sendHeartbeat()));
     }
@@ -126,23 +127,36 @@ void Server::readyReadUdp()
             qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                    &m_senderHost, &m_senderPort);
 
-
-            // the udp structure from the device
-            udp_data_t* udp = (udp_data_t*) buff.data();
+#ifdef HEARTATTACK
+            static bool onetime = false;
+            if (!onetime) {
+                onetime = true;
+                m_heartbeat.start();
+            }
+#endif
 
             if (read > 0) {
+                // the udp structure from the device
+                udp_data_t* udp = (udp_data_t*) buff.data();
+
                 // packet loss logic below
-                static uint32_t pktcnt = udp->counter;
+                static uint32_t pktcnt = 0;
                 // one frame lost for synching with my counter
 
                 if (udp->counter != ++pktcnt) {
-                    static uint32_t lost_count = 0;
-                    static char msg[164] = {0};
-                    snprintf(msg, sizeof(msg), "Packet lost:(%d)\t at: [%s]  Total lost:(%d)\n",
-                            udp->counter, DateTime::getDateTime(),
-                            lost_count);
+                    static char msg[300] = {0};
+                    static uint32_t desynch  = 0;
+                    snprintf(msg, sizeof(msg),
+                             "Last synch packet:(%d)\t at: [%s]\n"
+                             "Total desynch:(%d)\n"
+                             "Server counter: (%d)\n"
+                             "Lost: (%d)\n",
+                             udp->counter,
+                             DateTime::getDateTime(),
+                             desynch,
+                             (udp->counter - pktcnt));
 
-                    lost_count++;
+                    desynch++;
 
                     Logger::Instance().logMessage(msg);
                     pktcnt = udp->counter; // synch back
@@ -211,7 +225,15 @@ void Server::route(States state)
 ///
 void Server::sendHeartbeat()
 {
-    m_hearSocket->writeDatagram("hearbeat", m_senderHost, m_senderPort);
+    static const char* heart_attack =
+    "..................................................."
+    "..................................................."
+    "..................................................."
+    "..................................................."
+    "..................................................."
+    ;
+
+    m_hearSocket->writeDatagram(heart_attack, m_senderHost, m_senderPort);
 }
 
 /// deinitialze the server, maybe some unfinished
@@ -252,6 +274,9 @@ UserServer::~UserServer()
 
 }
 
+/// starts user`s server
+/// \brief UserServer::startServer
+///
 void UserServer::startServer()
 {
     int port = 5678;
@@ -262,6 +287,10 @@ void UserServer::startServer()
     }
 }
 
+/// TODO: open socket and respond back to user
+/// \brief UserServer::incomingConnection
+/// \param socketDescriptor
+///
 void UserServer::incomingConnection(qintptr socketDescriptor)
 {
     std::cout << "Connection coming from: (" << socketDescriptor << ")" << std::endl;
