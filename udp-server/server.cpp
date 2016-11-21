@@ -1,3 +1,6 @@
+// qt //
+#include <QNetworkReply>
+
 // std //
 #include <iostream> // for test purpose only!
 
@@ -102,7 +105,6 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             route(Server::CONNECTED);
         }
     }
-    // starrt  logging writer //
 }
 
 /// ready read datagrams
@@ -221,6 +223,48 @@ void Server::deinit()
 {
     // nothing for now
     Logger::Instance().logMessage("Deinitializing server...\n");
+}
+
+ServerThread::ServerThread(QThread *parent)
+    : QThread(parent),
+      p_usr(nullptr)
+{
+}
+
+ServerThread::~ServerThread()
+{
+}
+
+void ServerThread::run()
+{
+    p_usr = new UserServer;
+    p_usr->startServer();
+    exec();
+}
+
+UserServer::UserServer(QObject *parent)
+    : QTcpServer(parent)
+{
+}
+
+UserServer::~UserServer()
+{
+
+}
+
+void UserServer::startServer()
+{
+    int port = 5678;
+    if (!this->listen(QHostAddress::Any, port)) {
+        std::cout << "Could not start user server\n";
+    } else {
+        std::cout << "Started user server!\n";
+    }
+}
+
+void UserServer::incomingConnection(qintptr socketDescriptor)
+{
+    std::cout << "Connection coming from: (" << socketDescriptor << ")" << std::endl;
 }
 
 } // namespce iz

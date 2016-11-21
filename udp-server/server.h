@@ -5,8 +5,9 @@
 #include <QFile>
 #include <QObject>
 #include <QTimer>
+#include <QThread>
 #include <QTcpSocket>
-#include <QTcpServer>
+#include <QTcpServer> // usr server
 #include <QUdpSocket>
 
 // custom //
@@ -15,6 +16,9 @@
 #include "utils/wav-writer.h"
 
 namespace iz {
+
+class SApplication;
+class ServerThread;
 
 class Server : public QObject
 {
@@ -50,7 +54,7 @@ private slots:
 private:
     union {
         QUdpSocket* udp;
-        QTcpServer* server;
+        QTcpServer* server; // pending deprecation...
     } m_socket;
 
 
@@ -71,6 +75,36 @@ private:
     // move to antoher buffer, new concept, unimplemented
 
 };
+
+///////////////////////////////////////////////////////////////////////////////////
+
+
+class UserServer : public QTcpServer
+{
+    Q_OBJECT
+    explicit UserServer(QObject* parent = nullptr);
+    virtual ~UserServer();
+    void startServer();
+
+protected:
+    void incomingConnection(qintptr socketDescriptor);
+    friend class ServerThread;
+};
+
+class ServerThread : public QThread
+{
+    Q_OBJECT
+    explicit ServerThread(QThread* parent = nullptr);
+    virtual ~ServerThread();
+    virtual void run();
+
+private slots:
+
+private:
+    UserServer* p_usr;
+    friend class SApplication;
+};
+
 
 } // namespace iz
 

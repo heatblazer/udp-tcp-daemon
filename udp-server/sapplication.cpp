@@ -161,6 +161,12 @@ int SApplication::init()
     testLoadedPlugins();
 
     Logger::Instance().logMessage("Initialization of application completed!\n");
+
+    static ServerThread us;
+    us.setObjectName("user server");
+    us.moveToThread(&us);
+    us.start();
+
     return 0;
 }
 
