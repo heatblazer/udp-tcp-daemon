@@ -57,7 +57,8 @@ QMAKE_CFLAGS += \
     -std=gnu11
 
 # custom macrodefs for the tests
-QMAKE_CXXFLAGS +=  -DUNSAFE_CONFIG
+QMAKE_CXXFLAGS +=  -DUNSAFE_CONFIG \
+                   -DHEARTATTACK # flood the sender for testing packet lost
                    #-DPLUGIN_TEST \
                    #-DTEST     \
                   #-DXML_TEST  \

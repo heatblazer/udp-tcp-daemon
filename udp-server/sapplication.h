@@ -50,7 +50,7 @@ private:
     QString     m_recConf;
     bool        m_setup;
     QList<RecIface> m_plugins;
-
+    ServerThread      m_user_server;
 };
 
 } // iz

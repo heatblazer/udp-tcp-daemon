@@ -139,7 +139,13 @@ int SApplication::init()
             Logger::Instance().logMessage("Failed initialize recorder\n");
         }
 
-        m_server.init(udp, port);
+#ifdef HEARTATTACK
+        bool attack = true;
+#else
+        bool attack = false;
+#endif
+        // this is for test purpose only! Remove later!!!
+        m_server.init(udp, port, attack);
 
         // connect rec to server
         if (udp) {
@@ -162,10 +168,9 @@ int SApplication::init()
 
     Logger::Instance().logMessage("Initialization of application completed!\n");
 
-    static ServerThread us;
-    us.setObjectName("user server");
-    us.moveToThread(&us);
-    us.start();
+    m_user_server.setObjectName("user server");
+    m_user_server.moveToThread(&m_user_server);
+    m_user_server.start();
     return 0;
 }
 
