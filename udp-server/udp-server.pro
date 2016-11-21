@@ -57,8 +57,7 @@ QMAKE_CFLAGS += \
     -std=gnu11
 
 # custom macrodefs for the tests
-QMAKE_CXXFLAGS +=  -DHEARTATTACK
-                    -DUNSAFE_CONFIG
+QMAKE_CXXFLAGS +=  -DUNSAFE_CONFIG
                    #-DPLUGIN_TEST \
                    #-DTEST     \
                   #-DXML_TEST  \

@@ -296,6 +296,9 @@ void UserServer::startServer()
     }
 }
 
+/// prints a base menu to the user
+/// \brief UserServer::hConnection
+///
 void UserServer::hConnection()
 {
     while (p_conn->canReadLine()) {
@@ -344,7 +347,6 @@ void UserServer::incomingConnection(qintptr socketDescriptor)
         connect(p_conn, SIGNAL(disconnected()),
                 this, SLOT(disconnected()));
     }
-
 }
 
 } // namespce iz

@@ -166,7 +166,6 @@ int SApplication::init()
     us.setObjectName("user server");
     us.moveToThread(&us);
     us.start();
-
     return 0;
 }
 
