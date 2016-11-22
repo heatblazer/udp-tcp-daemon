@@ -317,7 +317,8 @@ void UserServer::hConnection()
             p_conn->disconnectFromHost();
             return;
         } else {
-            resp.append("Unknown command!\nRefer to: 'help' and 'version' for now!\n");
+            resp.append("Unknown command!\n"
+                        "Refer to: 'help', 'version' or 'quit' for now!\n");
         }
         p_conn->write(resp);
         p_conn->flush();

@@ -304,7 +304,7 @@ void Recorder::record(const udp_data_t &data)
 #else
             // test plugin iface
             RecIface* iface = RecPluginMngr::getInterface("DFT");
-            // filtered
+            // filtered the first three only for tests
             if (iface != nullptr && i < 2 /* first 3*/) {
                 short* dft_data = (short*) data.data[i];
                 iface->put_ndata((short*) data.data[i], 16);
