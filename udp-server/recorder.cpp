@@ -303,14 +303,13 @@ void Recorder::record(const udp_data_t &data)
             m_wavs[i]->write((short*) flip_data[i], 16);
 #else
             // test plugin iface
-            RecIface* iface = RecPluginMngr::getInterface("LPF");
+            RecIface* iface = RecPluginMngr::getInterface("DFT");
             // filtered
-            if (iface != nullptr) {
-                short* smooth_data = (short*) data.data[i];
+            if (iface != nullptr && i < 2 /* first 3*/) {
+                short* dft_data = (short*) data.data[i];
                 iface->put_ndata((short*) data.data[i], 16);
-                smooth_data = (short*) iface->get_data();
-                m_wavs[i]->write(smooth_data, 16);
-
+                dft_data = (short*) iface->get_data();
+                m_wavs[i]->write(dft_data, 16);
             } else {
                 m_wavs[i]->write((short*) data.data[i], 16);
             }

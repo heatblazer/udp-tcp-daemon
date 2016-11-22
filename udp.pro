@@ -8,5 +8,5 @@ SUBDIRS += \
     udp-client \
     recorder-gui \
     crypto \
-    low-pass-filter
+    DFT   #discrete fourier transform
 

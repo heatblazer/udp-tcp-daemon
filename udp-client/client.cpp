@@ -47,6 +47,15 @@ short* gen_sawtooth(int len)
     return buff;
 }
 
+short* gen_const_tone(int len)
+{
+    short* buff = new short[len];
+    for(int i=0; i < len; ++i) {
+        buff[i] = 0;
+    }
+    return buff;
+}
+
 namespace iz {
 
 Client::Client(QObject *parent)
@@ -79,7 +88,7 @@ void Client::transmit()
 {
     std::cout << "Transmitting...\n";
     static uint32_t counter = 0;
-    uint16_t* buff = (uint16_t*) gen_sawtooth(16);
+    uint16_t* buff = (uint16_t*) gen_const_tone(16);
     if (buff) {
         for(int i=0; i < 32; ++i) {
             memcpy(m_packet.packet.data[i], buff, 16);
