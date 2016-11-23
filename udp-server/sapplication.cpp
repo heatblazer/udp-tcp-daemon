@@ -50,11 +50,11 @@ SApplication::SApplication(int &argc, char **argv)
                     // init config file
 
                   // I will test the fast loading of XML file here
-    #ifndef UNSAFE_CONFIG
+#ifndef UNSAFE_CONFIG
                     // this will be safe check element by element and attribs
                     // and will return true or false
                     m_setup = RecorderConfig::Instance().loadFile(QString(argv[i+1]));
-    #else
+#else
                     // this is lab tested xml parsing assuming
                     // config is OK, no checks and always return TRUE
                     // which is dangerous in release
@@ -63,10 +63,9 @@ SApplication::SApplication(int &argc, char **argv)
                         std::cout << "Warning! You did not point a config file after: ("
                                   << argv[i] << ") argument! Loading application with defaults!"
                                   << std::endl;
-
                         m_setup = RecorderConfig::Instance().loadDefaults();
                     }
-     #endif
+#endif
                 }
             }
         }

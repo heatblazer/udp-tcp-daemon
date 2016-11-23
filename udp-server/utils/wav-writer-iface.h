@@ -77,6 +77,13 @@ public:
     ///
     virtual int     getSlot() const = 0;
 
+    /// rename a filename
+    /// \brief renameFile - renames a filename by a given pattern
+    /// \param oldname
+    /// \param newname
+    ///
+    virtual void renameFile(const char* oldname, const char* newname) = 0;
+
 };
 
 } // iz

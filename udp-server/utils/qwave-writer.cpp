@@ -151,4 +151,10 @@ int QWav::getSlot() const
     return m_slot;
 }
 
+void QWav::renameFile(const char *oldname, const char *newname)
+{
+    (void) oldname;
+    m_wav.rename(QString(newname));
+}
+
 } // iz

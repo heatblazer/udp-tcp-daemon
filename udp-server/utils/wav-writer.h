@@ -19,16 +19,6 @@ namespace iz {
 /// \brief The Wav class
 class Wav : public WavIface
 {
-public:
-    // deprecated
-    enum Params {
-        SAMPLES_PER_FRAME,
-        BITS_PER_SEC,
-        RIFF_LEN,
-        AUD_FORMAT,
-        CHANNELS,
-        SIZE
-    };
 
 public:
     Wav(const char* fname);
@@ -46,6 +36,7 @@ public:
     virtual const char* getFileName();
     virtual size_t getFileSize() const;
     virtual int     getSlot() const;
+    virtual void renameFile(const char* oldname, const char* newname);
 
 private:
 
@@ -53,10 +44,9 @@ protected:
     FILE*   m_file;
     wav_hdr_t m_header;
     char m_filename[64];
-    // to be deprecated
-    int m_attribs[Params::SIZE];
     bool m_isSetup;
     bool m_isOpened;
+    bool m_requiresFlip;
     size_t m_maxSize;
     int m_slot; // slot to the file
 };

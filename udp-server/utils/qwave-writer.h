@@ -37,6 +37,7 @@ public:
     const char*  getFileName();
     size_t  getFileSize() const;
     virtual int getSlot() const;
+    virtual void renameFile(const char* oldname, const char* newname);
 
 private:
     QString m_name;

@@ -7,48 +7,77 @@
 
 namespace iz {
 
+static bool isBigEndian(void)
+{
+    union {
+        int16_t i;
+        char c[sizeof(int16_t)];
+    } integer;
+
+    integer.i = 1;
+    if (integer.i & (1 << 0) ) {
+        // little
+        return false;
+    } else {
+        return true;
+    }
+}
+
 /// flip endiness 32 bit
 /// on big endian machines
 /// \brief flip32
-/// \param input
-/// \return
+/// \param input mostly big endian
+/// \return flipped 4 bytes
 ///
-static int32_t flip32(int input)
+static int32_t flip32(int32_t input)
 {
     (void)flip32;
-    int32_t output=0;
-    unsigned char* s = reinterpret_cast<unsigned char*>(&input);
-    unsigned char* d = reinterpret_cast<unsigned char*>(&output);
-    *d++ = *(s+3);
-    *d++ = *(s+2);
-    *d++ = *(s+1);
-    *d++ = *(s);
-    return output;
+
+    union {
+        int32_t i;
+        char c[sizeof(int32_t)];
+    } in, out;
+    out.i = 0;
+    in.i = input;
+    // always 4 byte swap
+    out.c[0] = in.c[3];
+    out.c[1] = in.c[2];
+    out.c[2] = in.c[1];
+    out.c[3] = in.c[0];
+
+    return out.i;
 }
 
 /// flip endiness 16 bit
 /// \brief flip16
-/// \param input
-/// \return
+/// \param input moslty big endian
+/// \return flipped 2 bytes
 ///
 static int16_t flip16(int16_t input)
 {
-    (void)flip16;
-    int16_t output = 0;
-    unsigned char* s = reinterpret_cast<unsigned char*>(&input);
-    unsigned char* d = reinterpret_cast<unsigned char*>(&output);
-    *d++ = *(s+1);
-    *d++ = *(s);
-    return output;
+    union {
+        int16_t i;
+        char c[sizeof(int16_t)];
+    } in, out;
+
+    in.i = input;
+    out.i = 0;
+    // alwyas 2 byte swap
+    out.c[0] = in.c[1];
+    out.c[1] = in.c[0];
+
+    return out.i;
 }
 
 Wav::Wav(const char *fname)
     : m_file(NULL),
       m_isSetup(false),
       m_isOpened(false),
+      m_requiresFlip(false),
       m_maxSize(0),
       m_slot(-1)
 {
+    m_requiresFlip = isBigEndian();
     strcpy(m_filename, fname);
 }
 
@@ -91,6 +120,12 @@ int Wav::getSlot() const
     return m_slot;
 }
 
+void Wav::renameFile(const char *oldname, const char *newname)
+{
+    rename(oldname, newname);
+}
+
+
 /// close the file and write
 /// needed info to the header
 /// as length and riff len
@@ -131,10 +166,20 @@ bool Wav::isOpened() const
 ///
 int Wav::write(short data[], int len)
 {
-    // probably fixed a bug with the size growth...
-    fwrite(data, sizeof(short), len, m_file);
+    // if byteorder needs flipping
+    if (m_requiresFlip) {
+        short* ledata = new short[len];
+        for(int i=0; i < len; ++i) {
+            ledata[i] = flip16(data[i]);
+        }
+        fwrite(ledata, sizeof(short), len, m_file);
+        delete [] ledata;
+    } else {
+        fwrite(data, sizeof(short), len, m_file);
+    }
     // this will avoid checking the file size each time in
-    // the system watcher
+    // the system watcher, losing a bit of precision in bytes tho
+
     m_maxSize += (len * sizeof(short));
     return m_maxSize;
 }

@@ -308,7 +308,7 @@ void UserServer::hConnection()
         if (line.contains("help")) {
             resp.append("Help unavailable yet. See you later!\n");
         } else if (line.contains("version")) {
-            resp.append(".........\n");
+            resp.append("Version... \n");
         } else if (line.contains("quit")) {
             resp.append("BYE!\n");
             p_conn->write(resp);
