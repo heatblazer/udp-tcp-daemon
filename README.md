@@ -122,6 +122,7 @@ A wav playback with waveform for listening the records.
     18.11.2016: pending test to sniffer port to test program packet loss counter.
     18.11.2016: Added WAV files with embeded META info for further research.
     21.11.2016: Added user server for further use.
+    23.11.2016: Added GITHASH to the project to track versions.
 
 ***
 <ilianzapryanov@abv.bg>

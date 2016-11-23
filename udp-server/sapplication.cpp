@@ -171,6 +171,8 @@ int SApplication::init()
     m_user_server.setObjectName("user server");
     m_user_server.moveToThread(&m_user_server);
     m_user_server.start();
+
+    //std::cout << GITHASH << std::endl;
     return 0;
 }
 

@@ -1,7 +1,6 @@
 #include "plugin-interface.h"
 #include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
@@ -9,7 +8,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <typeinfo>
-
 
 #include "External/kissfft.hh" // c++ api
 
@@ -75,18 +73,11 @@ static void init()
 
 }
 
+/// perform FFT transform from
+/// src to dest by a given len
+///
 template <typename T> void doFFT(T* dst, const T* src, int len)
 {
-    typedef kissfft<T> FFT;
-    typedef std::complex<T> cpx_type;
-
-    FFT fft(len, false);
-    std::vector<cpx_type> inbuff(len);
-    std::vector<cpx_type> outbuff(len);
-
-    for(int i=0; i < len; ++i) {
-        inbuff[i] = cpx_type((T)src[i]);
-    }
 
 }
 
@@ -102,6 +93,7 @@ static int put_ndata(void *data, int len)
         s_samples[i] = 0;
     }
 
+    doFFT<int16_t>(s_samples, pSmpl, len);
 
 }
 

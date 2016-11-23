@@ -11,7 +11,6 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-
 LIBS += -ldl
 
 SOURCES += main.cpp \
@@ -76,4 +75,5 @@ DISTFILES += \
     ../resources/31-32-13:51:39.wav \
     ../resources/usesEntireiXMLSpec.WAV \
     ../resources/wav1 \
-    ../resources/wav2
+    ../resources/wav2 \
+    ../recd2.pri
