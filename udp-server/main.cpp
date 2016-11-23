@@ -1,3 +1,31 @@
+#ifdef EXPERIMENTAL_WAV
+#include "utils/wav-writer.h"
+
+int main(int argc, char** argv)
+{
+    iz::Wav* wavs[32] = {0};
+    for(int i=0; i < 32; ++i) {
+        char buff[10] = {0};
+        sprintf(buff, "%d", i);
+        wavs[i] = new iz::Wav(buff);
+        wavs[i]->open(i);
+    }
+
+    for(int i=0; i < 32; ++i) {
+    }
+
+    for(int i=0; i < 32; ++i) {
+        char buff[20] = {0};
+        wavs[i]->close();
+        sprintf(buff, "%s-%d.wav", wavs[i]->getFileName(), i+10);
+        wavs[i]->renameFile(wavs[i]->getFileName(), buff);
+    }
+
+    return 0;
+}
+
+#else
+
 #include "sapplication.h"
 #include "unix/daemon.h"
 #include "utils/recorder-config.h"
@@ -91,3 +119,4 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+#endif

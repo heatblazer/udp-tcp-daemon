@@ -185,6 +185,8 @@ void SApplication::deinit()
         // deinit in priority order
         m_plugins.at(i).deinit();
     }
+
+    m_user_server.wait(1000);
 }
 
 void SApplication::loadPlugins()

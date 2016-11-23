@@ -80,16 +80,30 @@ bool Recorder::init()
     for(int i=0; i < 32; ++i) {
         s_UID++;
         if (dir.m_type1 != "") {
+#ifdef EXPERIMENTAL_WAV
+            snprintf(buff, sizeof(buff), "%s/%d-%d-%s",
+                    dir.m_type2.toStdString().data(),
+                    i,
+                    s_UID,
+                    DateTime::getTimeString());
+#else
             snprintf(buff, sizeof(buff), "%s/%d-%d-%s.wav",
                     dir.m_type2.toStdString().data(),
                     i,
                     s_UID,
                     DateTime::getTimeString());
+#endif
             m_directory = dir.m_type2;
         } else {
+#ifdef EXPERIMENTAL_WAV
+            snprintf(buff, sizeof(buff), "%d-%d-%s", i,
+                    s_UID,
+                    DateTime::getTimeString());
+#else
             snprintf(buff, sizeof(buff), "%d-%d-%s.wav", i,
                     s_UID,
                     DateTime::getTimeString());
+#endif
             m_directory.clear();
         }
         m_wavs[i] = new Wav(buff);
@@ -340,15 +354,32 @@ void Recorder::hotSwapFiles()
                 m_filewatcher.removePath(m_wavs[i]->getFileName());
                 static char buff[256] = {0};
                 if (m_directory != "") {
+#ifdef EXPERIMENTAL_WAV
+                    snprintf(buff, sizeof(buff), "%s/%d-%d-%s-%s.wav",
+                            m_directory.toStdString().data(),
+                            i, s_UID, m_wavs[i]->getFileName(),
+                             DateTime::getTimeString());
+#else
                     snprintf(buff, sizeof(buff), "%s/%d-%d-%s.wav",
                             m_directory.toStdString().data(),
                             i, s_UID, DateTime::getTimeString());
+
+#endif
                 } else {
+#ifdef EXPERIMENTAL_WAV
+                    snprintf(buff, sizeof(buff), "%d-%d-%s-%s.wav",
+                                i,
+                                s_UID,
+                             m_wavs[i]->getFileName(),
+                             DateTime::getTimeString());
+#else
                     snprintf(buff, sizeof(buff), "%d-%d-%s.wav",
                                 i,
                                 s_UID, DateTime::getTimeString());
+#endif
                 }
                 m_wavs[i]->close();
+                m_wavs[i]->renameFile(m_wavs[i]->getFileName(), buff);
                 delete m_wavs[i];
                 m_wavs[i] = nullptr;
                 m_wavs[i] = new Wav(buff);
