@@ -6,12 +6,12 @@ extern "C"{
 // can be declared opque for more flexibility
 struct interface_t
 {
-    void (*init)();
-    int (*put_ndata)(void* data, int len);
-    int (*put_data)(void* data);
-    void* (*get_data)(void);
-    void (*deinit)();
-    int (*main_proxy)(int, char**);
+    void    (*init)();
+    int     (*put_ndata)(void* data, int len);
+    int     (*put_data)(void* data);
+    void*   (*get_data)(void);
+    void    (*deinit)();
+    int     (*main_proxy)(int, char**);
 };
 
 const struct interface_t* get_interface();

@@ -5,40 +5,89 @@
 #include <string.h>
 #include <math.h>
 
+// needed for kissfft c++ //
+#include <iostream>
+#include <cstdlib>
+#include <typeinfo>
+
+
+#include "External/kissfft.hh" // c++ api
+
+template <typename T> struct node_t
+{
+    // copy ctor to be implemented
+    T data;
+    struct node_t* next;
+};
+
+
+template <typename T> class queue
+{
+public:
+    queue() : first(nullptr), last(nullptr){}
+    ~queue() {}
+
+    void enqueue(T data)
+    {
+        node_t<T> *n = new node_t<T>();
+        n->data = data;
+        n->next = nullptr;
+
+        if (first == nullptr) {
+            first = n;
+            last = first;
+        } else {
+            last->next = n;
+            last = n;
+        }
+    }
+
+    T dequeue()
+    {
+        if (first == nullptr) {
+            // empty
+            T none;
+            return none;
+        } else {
+            node_t<T>* deleteme = first;
+            first = first->next;
+            T ret = deleteme->data;
+            delete deleteme;
+            return ret;
+        }
+    }
+
+    bool empty() { return (first == nullptr ); }
+private:
+    node_t<T>* first, *last;
+};
 
 static int16_t* s_samples = nullptr;
 
-void static DFT(int16_t* src, int N)
-{
-    int n, k; // indexes for time and freq domain
-    int16_t* x_real = new int16_t[N];
-    int16_t* x_imaginery = new int16_t[N];
-    int16_t* p_spectrum = new int16_t[N];
-
-    for(k=0; k < N; k++) {
-        // calculate real and imaginery parts
-        x_real[k] = 0;
-        for(int i=0; i < N; ++i) {
-            x_real[i] += (src[i] * cos(i * k * M_PI_2 / N));
-        }
-
-        x_imaginery[k] = 0;
-        for(int i=0; i < N; ++i) {
-            x_imaginery[i] -= (float) (src[i] * sin(i * k * M_PI_2/ N));
-        }
-
-        p_spectrum[k] = (x_imaginery[k]*x_imaginery[k]) + (x_real[k]*x_real[k]);
-    }
-
-    for(int i=0; i < N; ++i) {
-        src[i] = p_spectrum[i];
-    }
-}
+static queue<int16_t*>* s_list = nullptr;
 
 
 static void init()
 {
     printf("Init DFT\n");
+    printf("Init DFT heap...\n");
+    s_list = new queue<int16_t*>();
+
+}
+
+template <typename T> void doFFT(T* dst, const T* src, int len)
+{
+    typedef kissfft<T> FFT;
+    typedef std::complex<T> cpx_type;
+
+    FFT fft(len, false);
+    std::vector<cpx_type> inbuff(len);
+    std::vector<cpx_type> outbuff(len);
+
+    for(int i=0; i < len; ++i) {
+        inbuff[i] = cpx_type((T)src[i]);
+    }
+
 }
 
 static int put_ndata(void *data, int len)
@@ -50,25 +99,33 @@ static int put_ndata(void *data, int len)
     s_samples = new int16_t[len];
     int16_t* pSmpl = (int16_t*) data;
     for(int i=0; i < len; ++i) {
-        s_samples[i] = pSmpl[i];
+        s_samples[i] = 0;
     }
 
-    DFT(s_samples, len);
+
 }
 
 static int put_data(void *data)
 {
-    return 0;
+    s_list->enqueue((int16_t*) data);
 }
 
 static void *get_data()
 {
-    return (int16_t*) s_samples;
+    if (s_samples) {
+        return (int16_t*) s_samples;
+    } else {
+        return nullptr;
+    }
 }
 
 static void deinit()
 {
     printf("Deinit DFT\n");
+    printf("Deinit DFT heap...\n");
+    while (!s_list->empty()) {
+        (void) s_list->dequeue();
+    }
 }
 
 static int main_proxy(int argc, char** argv)
