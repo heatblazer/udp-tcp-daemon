@@ -177,19 +177,17 @@ template <typename T> void doFFT(T* dst, const T* src, int len=16)
 
 }
 
+/// just copy it
+/// \brief put_ndata
+/// \param data
+/// \param len
+/// \return
+///
 static int put_ndata(void *data, int len)
 {
-    if (s_samples) {
-        delete [] s_samples;
-        s_samples = nullptr;
-    }
-    s_samples = new int16_t[len];
-    int16_t* pSmpl = (int16_t*) data;
-    for(int i=0; i < len; ++i) {
-        s_samples[i] = 0;
-    }
 
-    doFFT<int16_t>(s_samples, pSmpl, len);
+    s_samples = (int16_t*) data;
+    //doFFT<int16_t>(s_samples, s_samples, len);
 
 }
 

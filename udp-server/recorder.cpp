@@ -278,6 +278,25 @@ bool Recorder::setupWavFiles()
     return res;
 }
 
+/// buffered recording for future use
+/// and for now for use of writing error packets
+/// \brief Recorder::record
+/// \param buffered packets
+///
+void Recorder::record(QQueue<udp_data_t> &packets)
+{
+    while (!packets.isEmpty()) {
+        for(int j=0; j < 32; ++j) {
+            if (m_wavs[j] != nullptr && m_wavs[j]->isOpened()) {
+                // TODO: test!
+                // test plugin iface
+                const udp_data_t& data = packets.dequeue();
+                m_wavs[j]->write((short*) data.data[j], 16);
+            }
+        }
+    }
+}
+
 /// asume the file is opened and setup,
 /// now we handle the signals from the server
 /// and write the sample data to a specific slot
@@ -302,6 +321,8 @@ void Recorder::record(const udp_data_t &data)
 #ifdef OK_PASSED_TEST // for dimo`s recorder
             m_wavs[i]->write((short*) flip_data[i], 16);
 #else
+
+#ifdef PLUGIN_TEST
             // test plugin iface
             RecIface* iface = RecPluginMngr::getInterface("DFT");
             // filtered the first three only for tests
@@ -313,7 +334,11 @@ void Recorder::record(const udp_data_t &data)
             } else {
                 m_wavs[i]->write((short*) data.data[i], 16);
             }
-#endif
+#else
+            m_wavs[i]->write((short*) data.data[i], 16);
+#endif // plugintest
+
+#endif // dimo`s flip array
         }
     }
 }

@@ -32,6 +32,7 @@ signals:
     void recordedBytes(uint32_t bytes);
 
 public slots:
+    void record(QQueue<udp_data_t> &packets);
     void record(const udp_data_t& data);
     void record(const tcp_data_t& data);
 

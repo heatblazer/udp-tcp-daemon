@@ -56,13 +56,12 @@ QMAKE_CFLAGS += \
     -std=gnu11
 
 # custom macrodefs for the tests
-QMAKE_CXXFLAGS +=  -DUNSAFE_CONFIG
-                  #  -DEXPERIMENTAL_WAV \
-                  # -DHEARTATTACK # flood the sender for testing packet lost
-                   #-DPLUGIN_TEST \
+QMAKE_CXXFLAGS +=  -DUNSAFE_CONFIG \
+                   -DHEARTATTACK            # flood the sender for testing packet lost
+                  #  -DEXPERIMENTAL_WAV \   # test wav renaming
+                   #-DPLUGIN_TEST \         # test plugin interface
                    #-DTEST     \
-                  #-DXML_TEST  \
-                   #-DCRYPTO_TEST \
+                  #-DXML_TEST  \            # test configuration - unused
 
 
 # redefine a Makefile INSTALL_PROGRAM variable. We want to instal wit SUID bit

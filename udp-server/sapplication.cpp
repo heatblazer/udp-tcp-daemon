@@ -150,6 +150,10 @@ int SApplication::init()
         if (udp) {
             connect(&m_server, SIGNAL(dataReady(udp_data_t)),
                 &m_recorder, SLOT(record(udp_data_t)));
+
+            connect(&m_server, SIGNAL(dataReady(QQueue<udp_data_t>&)),
+                    &m_recorder, SLOT(record(QQueue<udp_data_t>&)));
+
         } else {
             connect(&m_server, SIGNAL(dataReady(tcp_data_t)),
                     &m_recorder, SLOT(record(tcp_data_t)));

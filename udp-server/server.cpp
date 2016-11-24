@@ -57,7 +57,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
     // the error packet to be sent on packet lost
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
-            err_udp.data[i][j] = 0x0000;
+            err_udp.data[i][j] = 37222;
         }
     }
 
@@ -116,6 +116,7 @@ void Server::readyReadUdp()
     // write error udp to prevent wav size
     // fragmenation, if missed an udp,
     // I`ll write a 16 samples with max valuse
+    static QQueue<udp_data_t> error_packets;
 
     if (m_socket.udp->hasPendingDatagrams()) {
         while (m_socket.udp->hasPendingDatagrams()) {
@@ -134,13 +135,13 @@ void Server::readyReadUdp()
                 m_heartbeat.start();
             }
 #endif
-
             if (read > 0) {
                 // the udp structure from the device
                 udp_data_t* udp = (udp_data_t*) buff.data();
 
                 // packet loss logic below
                 static uint32_t pktcnt = 0;
+                static bool one_time_synch = false;
                 // one frame lost for synching with my counter
 
                 if (udp->counter != ++pktcnt) {
@@ -157,13 +158,20 @@ void Server::readyReadUdp()
                              pktcnt,                // server counter
                              (udp->counter - pktcnt)); // lost
                     desynch++;
+                    int errs = udp->counter - pktcnt;
 
                     Logger::Instance().logMessage(msg);
                     pktcnt = udp->counter; // synch back
 
                     // always write a null bytes packet on missed udp
-
-                    emit dataReady(err_udp);
+                    if(!one_time_synch) {
+                        one_time_synch = true;
+                        emit dataReady(err_udp);
+                    } else {
+                        for(int i=0; i < errs; ++i) {
+                            emit dataReady(err_udp);
+                        }
+                    }
 
                 } else {
                 // will use a new logic emit the udp struct

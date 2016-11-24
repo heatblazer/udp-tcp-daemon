@@ -42,6 +42,7 @@ public:
     void deinit();
 
 signals:
+    void dataReady(QQueue<udp_data_t>& packets);
     void dataReady(const udp_data_t& data);
     void dataReady(const tcp_data_t& data);
 
