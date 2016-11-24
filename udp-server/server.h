@@ -50,6 +50,8 @@ private slots:
     void readyReadUdp();
     void handleConnection();
     void hStateChange(QAbstractSocket::SocketState state);
+    void error(QAbstractSocket::SocketError err);
+    void checkConnection();
 
     void route(States state);
     void disconnected();
@@ -64,6 +66,7 @@ private:
 
     QUdpSocket* m_hearSocket;
     QTimer      m_heartbeat;
+    QTimer      m_liveConnection;
     QHostAddress m_senderHost;
     quint16      m_senderPort;
     bool        m_sendHeart; // inspired by...
@@ -85,6 +88,7 @@ private:
     // and to append the  firs occurency I meet, then
     // move to antoher buffer, new concept, unimplemented
 
+    QQueue<udp_data_t> m_monitorData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////

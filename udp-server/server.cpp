@@ -83,16 +83,26 @@ void Server::init(bool udp, quint16 port, bool send_heart)
                 this, SLOT(disconnected()));
         connect(m_socket.udp, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
                 this, SLOT(hStateChange(QAbstractSocket::SocketState)));
+        connect(m_socket.udp, SIGNAL(error(QAbstractSocket::SocketError)),
+                this, SLOT(error(QAbstractSocket::SocketError)));
+
 
         char msg[64]={0};
         if (bres) {
             char msg2[128] ={0};
-            snprintf(msg2, sizeof(msg2),"Server started at: (%s)\n", DateTime::getDateTime());
+            snprintf(msg2, sizeof(msg2),
+                     "Server started at: (%s)\n"
+                     "Monitor live each 1000 ms!\n", DateTime::getDateTime());
+
             printf("Bind OK!\n");
             snprintf(msg, sizeof(msg), "Binding to port (%d) succeeds!\n", port);
             Logger::Instance().logMessage(msg);
             Logger::Instance().logMessage(msg2);
             // start timers
+            m_liveConnection.setInterval(1000);
+            connect(&m_liveConnection, SIGNAL(timeout()),
+                    this, SLOT(checkConnection()));
+            m_liveConnection.start();
 
         } else {
             printf("Bind FAIL!\n");
@@ -174,6 +184,7 @@ void Server::readyReadUdp()
                 // will use a new logic emit the udp struct
                 // to the recorder, so now we don`t need
                 // to depend each other
+                    m_monitorData.append(*udp);
                     emit dataReady(*udp);
                 }
              } else {
@@ -198,6 +209,32 @@ void Server::handleConnection()
 void Server::hStateChange(QAbstractSocket::SocketState state)
 {
     (void) state;
+}
+
+void Server::error(QAbstractSocket::SocketError err)
+{
+    std::cout << "Got err: "  << err << std::endl;
+}
+
+/// monitor of the incomming datagrams
+/// \brief Server::checkConnection
+/// check periodically for datagrams coming from
+/// outside.
+void Server::checkConnection()
+{
+    if (m_monitorData.isEmpty()) {
+        // ok
+        std::cout << "NOT OK!\n";
+        disconnected();
+    } else {
+        // not ok!
+        //disconnected();
+        std::cout << "OK\n";
+        // make sure you purge the list
+        if (m_monitorData.count() > 100) {
+            m_monitorData.clear();
+        }
+    }
 }
 
 /// dummy router for future uses of the states
