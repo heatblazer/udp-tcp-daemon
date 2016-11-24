@@ -184,7 +184,7 @@ int Wav::write(short data[], int len)
     return m_maxSize;
 }
 
-/// unimplemented
+/// unimplemented since not needed
 /// \brief Wav::read
 /// \return
 ///
