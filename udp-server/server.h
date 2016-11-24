@@ -49,14 +49,16 @@ signals:
 private slots:
     void readyReadUdp();
     void handleConnection();
+    void hStateChange(QAbstractSocket::SocketState state);
 
     void route(States state);
+    void disconnected();
     void sendHeartbeat();
 
 private:
     union {
         QUdpSocket* udp;
-        QTcpServer* server; // pending deprecation...
+        QTcpSocket* tcp; // pending deprecation...
     } m_socket;
 
 
@@ -65,6 +67,13 @@ private:
     QHostAddress m_senderHost;
     quint16      m_senderPort;
     bool        m_sendHeart; // inspired by...
+
+    struct {
+        uint32_t paketCounter;
+        uint32_t desynchCounter;
+        uint32_t totalLost;
+        bool     onetimeSynch;
+    } m_conn_info;
 
     // for the hotswap I may need an auxilary buffer
     // to store the udp packets while closing and creating

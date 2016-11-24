@@ -37,7 +37,8 @@ Server::Server(QObject *parent)
       m_hearSocket(nullptr),
       m_senderHost("127.0.0.1"), // default
       m_senderPort(1234),
-      m_sendHeart(false)
+      m_sendHeart(false),
+      m_conn_info({0, 0, 0, false})
 {
 }
 
@@ -78,6 +79,11 @@ void Server::init(bool udp, quint16 port, bool send_heart)
         connect(m_socket.udp, SIGNAL(readyRead()),
                 this, SLOT(readyReadUdp())/*, Qt::DirectConnection*/);
 
+        connect(m_socket.udp, SIGNAL(disconnected()),
+                this, SLOT(disconnected()));
+        connect(m_socket.udp, SIGNAL(stateChanged(QAbstractSocket::SocketState)),
+                this, SLOT(hStateChange(QAbstractSocket::SocketState)));
+
         char msg[64]={0};
         if (bres) {
             char msg2[128] ={0};
@@ -95,16 +101,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             Logger::Instance().logMessage(msg);
         }
     } else {
-        m_socket.server = new QTcpServer(this);
-        if (m_socket.server != nullptr)
-        connect(m_socket.server, SIGNAL(newConnection()),
-                this, SLOT(handleConnection()));
-
-        if (!m_socket.server->listen(QHostAddress::Any, port)) {
-            route(Server::DISCONNECTED);
-        } else {
-            route(Server::CONNECTED);
-        }
+        // unused tcp logic for now
     }
 }
 
@@ -116,7 +113,6 @@ void Server::readyReadUdp()
     // write error udp to prevent wav size
     // fragmenation, if missed an udp,
     // I`ll write a 16 samples with max valuse
-    static QQueue<udp_data_t> error_packets;
 
     if (m_socket.udp->hasPendingDatagrams()) {
         while (m_socket.udp->hasPendingDatagrams()) {
@@ -127,7 +123,7 @@ void Server::readyReadUdp()
 
             qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                    &m_senderHost, &m_senderPort);
-
+////////////////// deleteme later ///////////////////
 #ifdef HEARTATTACK
             static bool onetime = false;
             if (!onetime) {
@@ -139,33 +135,34 @@ void Server::readyReadUdp()
                 // the udp structure from the device
                 udp_data_t* udp = (udp_data_t*) buff.data();
 
-                // packet loss logic below
-                static uint32_t pktcnt = 0;
-                static bool one_time_synch = false;
                 // one frame lost for synching with my counter
 
-                if (udp->counter != ++pktcnt) {
+                if (udp->counter != ++m_conn_info.paketCounter) {
                     static char msg[300] = {0};
-                    static uint32_t desynch  = 0;
+
                     snprintf(msg, sizeof(msg),
                              "Last synch packet:(%d)\t at: [%s]\n"
                              "Total desynch:(%d)\n"
                              "Server counter: (%d)\n"
-                             "Lost: (%d)\n",
+                             "Lost: (%d)\n"
+                             "Total lost: (%d)\n",
                              udp->counter, // next got ocunter
-                             DateTime::getDateTime(), // current time
-                             desynch,               // desync counter
-                             pktcnt,                // server counter
-                             (udp->counter - pktcnt)); // lost
-                    desynch++;
-                    int errs = udp->counter - pktcnt;
+                             DateTime::getDateTime(),       // current time
+                             m_conn_info.desynchCounter,    // desync counter
+                             m_conn_info.paketCounter,      // server counter
+                             (udp->counter - m_conn_info.paketCounter),  // lost
+                             m_conn_info.totalLost);               // total lost
+
+                    m_conn_info.desynchCounter++;
+                    int errs = udp->counter - m_conn_info.paketCounter;
+                    m_conn_info.totalLost += errs;
 
                     Logger::Instance().logMessage(msg);
-                    pktcnt = udp->counter; // synch back
+                    m_conn_info.paketCounter = udp->counter; // synch back
 
                     // always write a null bytes packet on missed udp
-                    if(!one_time_synch) {
-                        one_time_synch = true;
+                    if(!m_conn_info.onetimeSynch) {
+                        m_conn_info.onetimeSynch = true;
                         emit dataReady(err_udp);
                     } else {
                         for(int i=0; i < errs; ++i) {
@@ -186,8 +183,8 @@ void Server::readyReadUdp()
     } else {
         Logger::Instance()
                 .logMessage("We can read, but there is no pending datagram!\n");
+        disconnected();
     }
-
 }
 
 /// Connect and read TCP packets
@@ -195,13 +192,12 @@ void Server::readyReadUdp()
 ///
 void Server::handleConnection()
 {
-    QTcpSocket* tcp = m_socket.server->nextPendingConnection();
-    QByteArray bytes;
-    if (tcp->canReadLine()) {
-        bytes = tcp->readAll();
-        tcp_data_t* data = (tcp_data_t*) bytes.data();
-        emit dataReady(*data);
-    }
+    // unimplemented
+}
+
+void Server::hStateChange(QAbstractSocket::SocketState state)
+{
+    (void) state;
 }
 
 /// dummy router for future uses of the states
@@ -214,6 +210,7 @@ void Server::route(States state)
     switch (state) {
     case DISCONNECTED:
         Logger::Instance().logMessage("Not connected!\n");
+        disconnected();
         break;  // try to reconnect
     case CONNECTED:
         Logger::Instance().logMessage("Connected!\n");
@@ -226,6 +223,24 @@ void Server::route(States state)
     default:
         break;
     }
+}
+
+void Server::disconnected()
+{
+    static char msg[350] = {0};
+    snprintf(msg, sizeof(msg), "Lost connection!\n"
+             "Last desynch counter: (%d)\n"
+             "Last total lost packages: (%d)\n"
+             "Last pakcet counter: (%d)\n",
+             m_conn_info.desynchCounter,
+             m_conn_info.totalLost,
+             m_conn_info.paketCounter);
+
+    Logger::Instance().logMessage(msg);
+    m_conn_info.desynchCounter = 0;
+    m_conn_info.paketCounter = 0;
+    m_conn_info.totalLost = 0;
+    m_conn_info.onetimeSynch = false;
 }
 
 /// stub

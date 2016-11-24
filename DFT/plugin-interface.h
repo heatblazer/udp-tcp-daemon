@@ -7,6 +7,7 @@ extern "C"{
 struct interface_t
 {
     void    (*init)();
+    void    (*copy)(const void* src, void* dst, int len);
     int     (*put_ndata)(void* data, int len);
     int     (*put_data)(void* data);
     void*   (*get_data)(void);

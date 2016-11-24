@@ -248,7 +248,7 @@ void Wav::setupWave(int samples_per_sec, int bits_per_sec, int riff_len,
 /// \param fmtlen
 /// \param audfmt
 /// \param chans
-/// Old concept
+/// Old concept pending deletion ...
 void Wav::write_hdr(int spf, int bps, int rifflen, int fmtlen, short audfmt, short chans)
 {
     struct wav_hdr_t hdr;

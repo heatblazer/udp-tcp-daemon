@@ -6,6 +6,7 @@ namespace iz {
 struct RecIface
 {
     void (*init)(void);
+    void (*copy)(const void* src, void* dst, int len);
     int (*put_ndata)(void*, int);
     int (*put_data)(void*);
     void* (*get_data)(void);
