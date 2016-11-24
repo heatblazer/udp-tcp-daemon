@@ -123,6 +123,7 @@ A wav playback with waveform for listening the records.
     18.11.2016: Added WAV files with embeded META info for further research.
     21.11.2016: Added user server for further use.
     23.11.2016: Added GITHASH to the project to track versions.
+    23.11.2016: Wav library has rename functionality and endian swaps.
 
 ***
 <ilianzapryanov@abv.bg>
