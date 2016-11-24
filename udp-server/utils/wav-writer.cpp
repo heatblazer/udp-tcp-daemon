@@ -7,7 +7,7 @@
 
 namespace iz {
 
-static bool isBigEndian(void)
+static inline bool isBigEndian(void)
 {
     union {
         int16_t i;
@@ -29,7 +29,7 @@ static bool isBigEndian(void)
 /// \param input mostly big endian
 /// \return flipped 4 bytes
 ///
-static int32_t flip32(int32_t input)
+static inline int32_t flip32(int32_t input)
 {
     (void)flip32;
 
@@ -53,7 +53,7 @@ static int32_t flip32(int32_t input)
 /// \param input moslty big endian
 /// \return flipped 2 bytes
 ///
-static int16_t flip16(int16_t input)
+static inline int16_t flip16(int16_t input)
 {
     union {
         int16_t i;

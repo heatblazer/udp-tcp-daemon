@@ -1,7 +1,69 @@
 #include "qwave-writer.h"
-// unimplemented yet
 
 namespace iz {
+
+static inline bool isBigEndian(void)
+{
+    union {
+        int16_t i;
+        char c[sizeof(int16_t)];
+    } integer;
+
+    integer.i = 1;
+    if (integer.i & (1 << 0) ) {
+        // little
+        return false;
+    } else {
+        return true;
+    }
+}
+
+/// flip endiness 32 bit
+/// on big endian machines
+/// \brief flip32
+/// \param input mostly big endian
+/// \return flipped 4 bytes
+///
+static inline int32_t flip32(int32_t input)
+{
+    (void)flip32;
+
+    union {
+        int32_t i;
+        char c[sizeof(int32_t)];
+    } in, out;
+    out.i = 0;
+    in.i = input;
+    // always 4 byte swap
+    out.c[0] = in.c[3];
+    out.c[1] = in.c[2];
+    out.c[2] = in.c[1];
+    out.c[3] = in.c[0];
+
+    return out.i;
+}
+
+/// flip endiness 16 bit
+/// \brief flip16
+/// \param input moslty big endian
+/// \return flipped 2 bytes
+///
+static inline int16_t flip16(int16_t input)
+{
+    union {
+        int16_t i;
+        char c[sizeof(int16_t)];
+    } in, out;
+
+    in.i = input;
+    out.i = 0;
+    // alwyas 2 byte swap
+    out.c[0] = in.c[1];
+    out.c[1] = in.c[0];
+
+    return out.i;
+}
+
 
 bool QWav::isOpened() const
 {
