@@ -125,6 +125,7 @@ A wav playback with waveform for listening the records.
     21.11.2016: Added user server for further use.
     23.11.2016: Added GITHASH to the project to track versions.
     23.11.2016: Wav library has rename functionality and endian swaps.
+    24.11.2016: Added a timer based transmission monitoring to the server.
 
 ***
 <ilianzapryanov@abv.bg>
