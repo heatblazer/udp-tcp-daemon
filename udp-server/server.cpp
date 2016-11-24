@@ -231,9 +231,7 @@ void Server::checkConnection()
         //disconnected();
         std::cout << "OK\n";
         // make sure you purge the list
-        if (m_monitorData.count() > 100) {
-            m_monitorData.clear();
-        }
+        m_monitorData.clear();
     }
 }
 
