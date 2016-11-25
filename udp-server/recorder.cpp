@@ -63,6 +63,8 @@ Recorder::~Recorder()
 bool Recorder::init()
 {
     char init_msg[256] = {0};
+    char buff[256]={0};
+    bool res = true;
 
     Logger::Instance().logMessage("Initializing recorder...\n");
     const MPair<QString, QString>& dir =
@@ -75,9 +77,7 @@ bool Recorder::init()
         }
     }
 
-    bool res = true;
 
-    char buff[256]={0};
 
     // setup channels
     const MPair<QString, QString> max =
@@ -195,7 +195,7 @@ void Recorder::deinit()
     Logger::Instance().logMessage("Closing all opened records...\n");
     for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
-            static char msg[128] = {0};
+            static char msg[256] = {0};
             snprintf(msg, sizeof(msg), "Closing file: (%s)\n", m_wavs[i]->getFileName());
             Logger::Instance().logMessage(msg);
             m_wavs[i]->close();
