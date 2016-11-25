@@ -335,8 +335,22 @@ void Recorder::record(const udp_data_t &data)
             }
 #else
             const QList<RecIface>& plugins = RecPluginMngr::listPlugins();
-            for(int i=0; i < plugins.count(); ++i) {
-                RecIface next_plugin = plugins.at(i);
+            // pass the data to multiple plugins
+            // TODO: fill in later when a specific need is pending.
+            if (/*plugins.count() > */0) {
+                for(int j=0; j < plugins.count(); ++j) {
+                    // get the next plugin
+                    const RecIface& next_plugin = plugins.at(j);
+
+                    // make a copy of the data
+                    short* copy_data = new short[16];
+
+                    // pass it to the filter
+                    next_plugin.put_ndata((short*) copy_data, 16);
+                    // write to wave file
+                }
+            } else {
+                // noplugins - I will rewrite the logic later
                 m_wavs[i]->write((short*) data.data[i], 16);
             }
 #endif // plugintest
