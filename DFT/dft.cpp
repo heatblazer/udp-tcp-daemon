@@ -191,13 +191,7 @@ static int put_ndata(void *data, int len)
 
 }
 
-static void copy(const void* src, void *dst, int len)
-{
-    if (src == nullptr || dst == nullptr) {
-        return;
-    }
-    memcpy(dst, src, len);
-}
+
 
 
 static int put_data(void *data)
@@ -236,7 +230,6 @@ static struct interface_t s_iface;
 const struct interface_t *get_interface()
 {
     s_iface.init = &init;
-    s_iface.copy = &copy;
     s_iface.deinit = &deinit;
     s_iface.get_data = &get_data;
     s_iface.put_data = &put_data;

@@ -88,7 +88,7 @@ private:
     // and to append the  firs occurency I meet, then
     // move to antoher buffer, new concept, unimplemented
 
-    QQueue<udp_data_t> m_monitorData;
+    QQueue<char> m_monitorData;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////

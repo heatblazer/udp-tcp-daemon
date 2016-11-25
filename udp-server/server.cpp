@@ -125,6 +125,8 @@ void Server::readyReadUdp()
     // I`ll write a 16 samples with max valuse
 
     if (m_socket.udp->hasPendingDatagrams()) {
+        m_monitorData.append('.');
+
         while (m_socket.udp->hasPendingDatagrams()) {
 
             QByteArray buff;
@@ -184,7 +186,6 @@ void Server::readyReadUdp()
                 // will use a new logic emit the udp struct
                 // to the recorder, so now we don`t need
                 // to depend each other
-                    m_monitorData.append(*udp);
                     emit dataReady(*udp);
                 }
              } else {
