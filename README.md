@@ -19,7 +19,7 @@ A wav playback with waveform for listening the records.
     $ ./recd2 --config <path-to-conf-file>     # as normal app
 
 ## Config File
-
+    Channels: count - number of channels up to 128
     HotSwap: maxSize in bytes or interval with timer.
     ChannelCount: unused.
     Wave: setup wav file - see the config file.
@@ -127,6 +127,7 @@ A wav playback with waveform for listening the records.
     23.11.2016: Added GITHASH to the project to track versions.
     23.11.2016: Wav library has rename functionality and endian swaps.
     24.11.2016: Added a timer based transmission monitoring to the server.
+    25.11.2016: Configurable channel count.
 
 ***
 <ilianzapryanov@abv.bg>
