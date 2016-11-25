@@ -57,12 +57,12 @@ private:
 
     static uint32_t s_UID;
     struct {
-        int samples_per_sec;
-        int bits_per_sec;
-        int riff_len;
-        int fmt_len;
-        short audio_fmt;
-        short chann_cnt;
+        int     samples_per_sec;
+        int     bits_per_sec;
+        int     riff_len;
+        int     fmt_len;
+        short   audio_fmt;
+        short   chann_cnt;
     } m_wavParams;
 
     QString m_directory;

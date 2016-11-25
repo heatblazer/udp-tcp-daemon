@@ -334,7 +334,11 @@ void Recorder::record(const udp_data_t &data)
                 m_wavs[i]->write((short*) data.data[i], 16);
             }
 #else
-            m_wavs[i]->write((short*) data.data[i], 16);
+            const QList<RecIface>& plugins = RecPluginMngr::listPlugins();
+            for(int i=0; i < plugins.count(); ++i) {
+                RecIface next_plugin = plugins.at(i);
+                m_wavs[i]->write((short*) data.data[i], 16);
+            }
 #endif // plugintest
 
 #endif // dimo`s flip array

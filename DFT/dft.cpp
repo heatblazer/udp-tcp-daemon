@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <typeinfo>
 
-#include "External/kissfft.hh" // c++ api
+#include "External/kiss_fft.h" // c++ api
 
 template <typename T> struct node_t
 {
@@ -21,12 +21,15 @@ template <typename T> struct node_t
 
 template <typename T> class queue
 {
+    size_t m_size;
 public:
-    queue() : first(nullptr), last(nullptr){}
+    queue() : m_size(0) , first(nullptr), last(nullptr){}
     ~queue() {}
 
     void enqueue(T data)
     {
+        m_size++;
+
         node_t<T> *n = new node_t<T>();
         n->data = data;
         n->next = nullptr;
@@ -42,6 +45,7 @@ public:
 
     T dequeue()
     {
+        m_size--;
         if (first == nullptr) {
             // empty
             T none;
@@ -55,22 +59,17 @@ public:
         }
     }
 
+    size_t count() { return m_size; }
     bool empty() { return (first == nullptr ); }
+
 private:
-    node_t<T>* first, *last;
+    node_t<T> *first, *last;
 };
 
+///////////////////////////////////////////////////////////////////////////////////
 static int16_t* s_samples = nullptr;
-
 static queue<int16_t*>* s_list = nullptr;
-
-#define SIN_2PI_16 0.38268343236508978
-#define SIN_4PI_16 0.707106781186547460
-#define SIN_6PI_16 0.923879532511286740
-#define C_P_S_2PI_16 1.30656296487637660
-#define C_M_S_2PI_16 0.54119610014619690
-#define C_P_S_6PI_16 1.3065629648763766
-#define C_M_S_6PI_16 -0.54119610014619690
+///////////////////////////////////////////////////////////////////////////////////
 
 
 static void init()
@@ -78,103 +77,66 @@ static void init()
     printf("Init DFT\n");
     printf("Init DFT heap...\n");
     s_list = new queue<int16_t*>();
-
 }
 
-/// perform FFT transform from
-/// src to dest by a given len
-///
-template <typename T> void doFFT(T* dst, const T* src, int len=16)
+
+static void check(kiss_fft_cpx* in, kiss_fft_cpx* out, int len)
 {
-    T temp, out0, out1, out2, out3, out4, out5, out6, out7,
-            out8, out9, out10, out11, out12, out13, out14, out15;
+    double errpow = 0, sigpow = 0;
 
-    out0 = src[0] + src[8];
-    out1 = src[1] + src[9];
-    out2 = src[2] + src[10];
-    out3 = src[3] + src[11];
-    out4 = src[4] + src[12];
-    out5 = src[5] + src[13];
-    out6 = src[6] + src[14];
-    out7 = src[7] + src[15];
+    for(int i=0; i < len; ++i) {
+        double ansreal = 0;
+        double ansimag = 0;
+        double difreal;
+        double difimag;
 
-    // butterfly here
-    // [1]  [8]  []
-    //    \/   \/
-    //    /\   /\
-    // [2]  [9]  []
-    //
-    out8 = src[0] - src[8];
-    out9 = src[1] - src[9];
-    out10 = src[2] - src[10];
-    out11 = src[3] - src[11];
-    out12 = src[12] - src[4];
-    out13 = src[13] - src[5];
-    out14 = src[14] - src[6];
-    out15 = src[15] - src[7];
+        for(int k=0; k < len; ++k) {
+            double phase = -2.0 * M_PI * i * k / len;
+            double real =       cos(phase);
+            double imaginary =  sin(phase);
+#ifdef FIXED_POINT
+            real /= len;
+            imaginary /= len;
+#endif
+            ansreal += in[k].r * real - in[k].i * imaginary;
+            ansimag += in[k].r * imaginary + in[k].i * real;
+        }
 
-    temp = (out13 - out9) * (SIN_2PI_16);
-    out9 = out9 * (C_P_S_2PI_16) + temp;
-    out13 = out13 * (C_M_S_2PI_16) + temp;
+        difreal = ansreal - out[i].r;
+        difimag = ansimag - out[i].i;
 
-    out14 *= (SIN_4PI_16);
-    out10 *= (SIN_4PI_16);
-    out14 = out14 - out10;
-    out10 = out14 + out10 + out10;
+        errpow += (difreal * difreal) + (difimag * difimag);
+        sigpow += (ansreal * ansreal) + (ansimag * ansimag);
+    }
+}
 
-    temp = (out15 - out11) * (SIN_6PI_16);
-    out11 = out11 * (C_P_S_6PI_16) + temp;
-    out15 = out15 * (C_M_S_6PI_16) + temp;
 
-    out8 += out10;
-    out10 = out8 - out10 - out10;
+static void doDFT(int16_t* in, int len)
+{
+    int16_t *in2 = nullptr;
+    in2 = new int16_t[len];
 
-    out12 += out14;
-    out14 = out12 - out14 - out14;
+    double arg = 0, cosarg = 0, sinarg = 0;
 
-    out9 += out11;
-    out11 = out9 - out11 - out11;
+    for(int i=0; i < len; ++i) {
+        in2[i] = 0;
+        arg =  -2.0 * 3.141592654 * ((double) i) / ((double) len);
 
-    out13 += out15;
-    out15 = out13 - out15 - out15;
+        for(int k=0; k < len; ++k) {
+            sinarg = sin(k * arg); // imaginare part
+            cosarg = cos(k * arg); // real part
+            printf("[%f]\n", (in[k] * cosarg) - (in[k] * sinarg));
+            in2[k] += (in[k] * cosarg) - (in[k] * sinarg);
+        }
+        puts("-------\n");
+    }
 
-    dst[1] = out8 + out9;
-    dst[7] = out8 - out9;
+    for (int i=0; i < len; ++i) {
+        in[i] = in2[i] / (double) len;
+    }
 
-    dst[9] = out12 + out13;
-    dst[15] = out12 - out13;
-
-    dst[5] = out10 + out15;
-    dst[13] = out14 - out11;
-    dst[3] = out10 - out15;
-    dst[11] = -out14 - out11;
-
-    out0 = out0 + out4;
-    out4 = out0 - out4 - out4;
-    out1 = out1 + out5;
-    out5 = out1 - out5 - out5;
-    out2 += out6;
-    out6 = out2 - out6 - out6;
-    out3 += out7;
-    out7 = out3 - out7 - out7;
-
-    dst[0] = out0 + out2;
-    dst[4] = out0 - out2;
-    out1 += out3;
-    dst[12] = out3 + out3 - out1;
-    dst[0] += out1;
-    dst[8] = dst[0] - out1 - out1;
-
-    out5 *= SIN_4PI_16;
-    out7 *= SIN_4PI_16;
-    out5 = out5 - out7;
-    out7 = out5 + out7 + out7;
-
-    dst[14] = out6 - out7;
-    dst[2] = out5 + out4;
-    dst[6] = out4 - out5;
-    dst[10] = -out7 - out6;
-
+    delete [] in2;
+    in2 = nullptr;
 }
 
 /// just copy it
@@ -185,10 +147,23 @@ template <typename T> void doFFT(T* dst, const T* src, int len=16)
 ///
 static int put_ndata(void *data, int len)
 {
+    if (s_samples != nullptr) {
+        delete s_samples;
+        s_samples = nullptr;
+    } else {
+        s_samples = new int16_t[len];
+        memset(s_samples, 0, len);
+    }
 
-    s_samples = (int16_t*) data;
-    //doFFT<int16_t>(s_samples, s_samples, len);
+    int16_t* pData = (int16_t*) data;
 
+    for(int i=0; i < len; ++i) {
+        s_samples[i] = pData[i];
+    }
+
+    doDFT(s_samples, len);
+
+    return 0;
 }
 
 
@@ -196,7 +171,7 @@ static int put_ndata(void *data, int len)
 
 static int put_data(void *data)
 {
-    s_list->enqueue((int16_t*) data);
+    (void) data;
 }
 
 static void *get_data()
@@ -211,9 +186,12 @@ static void *get_data()
 static void deinit()
 {
     printf("Deinit DFT\n");
-    printf("Deinit DFT heap...\n");
-    while (!s_list->empty()) {
-        (void) s_list->dequeue();
+    if (s_list != nullptr) {
+        printf("Deinit DFT heap...\n");
+        while (!s_list->empty()) {
+            (void) s_list->dequeue();
+        }
+        delete s_list;
     }
 }
 

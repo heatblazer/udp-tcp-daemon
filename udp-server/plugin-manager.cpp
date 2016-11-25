@@ -20,8 +20,8 @@ struct interface_t
 
 typedef struct interface_t* (*get_interface)();
 
-
 QHash<QString, RecIface> RecPluginMngr::m_plugins;
+QList<RecIface> RecPluginMngr::m_listPlugins;
 
 /// Plugin loader
 /// \brief RecPluginMngr::loadLibrary
@@ -60,6 +60,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
             iface.main_proxy = lib_symbols->main_proxy;
             load_all_res = true;
             m_plugins[name] = iface;
+            m_listPlugins.append(iface);
         }
 
     } else {
@@ -78,7 +79,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
 /// \param name of loaded plugin
 /// \return
 ///
-RecIface* RecPluginMngr::getInterface(const QString &iface)
+const RecIface *RecPluginMngr::getInterface(const QString &iface)
 {
 
     if( m_plugins.find(iface) != m_plugins.end() ) {
@@ -98,6 +99,11 @@ void RecPluginMngr::unloadLibrary(const QString &lib)
         // need it anmore
         m_plugins.remove(lib);
     }
+}
+
+const QList<RecIface> &RecPluginMngr::listPlugins()
+{
+    return m_listPlugins;
 }
 
 /// nothing by default

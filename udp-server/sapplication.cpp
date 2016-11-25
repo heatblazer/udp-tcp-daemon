@@ -210,7 +210,7 @@ void SApplication::loadPlugins()
            Logger::Instance().logMessage(msg);
 
            RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
-           RecIface* iface =
+           const RecIface* iface =
                     RecPluginMngr::getInterface(list.at(i).m_type2);
            // put in any order for now
            // store into the indexed array

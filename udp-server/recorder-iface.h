@@ -3,6 +3,9 @@
 
 namespace iz {
 
+/// plugin reflection
+/// \brief The RecIface struct
+///
 struct RecIface
 {
     void    (*init)(void);
