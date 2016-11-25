@@ -16,7 +16,12 @@ int SApplication::m_fdHUP = -1;
 int SApplication::m_fdTERM = -1;
 int SApplication::s_argc = 0;
 char** SApplication::s_argv = 0;
+QList<RecIface> SApplication::m_plugins;
 
+/// TODO: write to the file desc of the app
+/// \brief SApplication::writeToSocket
+/// \param data
+///
 void SApplication::writeToSocket(const char *data)
 {
     (void) data;

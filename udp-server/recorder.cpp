@@ -6,8 +6,8 @@
 // qt //
 #include <QDir>
 
-// plugins //
-#include "plugin-manager.h"
+// parent app //
+#include "sapplication.h"
 
 // utils //
 #include "unix/date-time.h"
@@ -334,7 +334,7 @@ void Recorder::record(const udp_data_t &data)
                 m_wavs[i]->write((short*) data.data[i], 16);
             }
 #else
-            const QList<RecIface>& plugins = RecPluginMngr::listPlugins();
+            const QList<RecIface>& plugins = SApplication::m_plugins;
             // pass the data to multiple plugins
             // TODO: fill in later when a specific need is pending.
             if (/*plugins.count() > */0) {

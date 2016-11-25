@@ -52,8 +52,12 @@ private:
     Recorder            m_recorder;
     QString             m_recConf;
     bool                m_setup;
-    QList<RecIface>     m_plugins;
     ServerThread        m_user_server;
+
+    static QList<RecIface>     m_plugins;
+
+    friend class Recorder;
+    friend class Server;
 };
 
 } // iz
