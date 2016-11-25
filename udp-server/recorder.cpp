@@ -169,7 +169,6 @@ bool Recorder::init()
     }
     // test the new concept for hotswapping !
     // nailed the BUG
-
     return res;
 }
 
@@ -394,7 +393,6 @@ void Recorder::hotSwapFiles()
             }
         }
     }
-
 }
 
 /// \brief Recorder::performHotSwap

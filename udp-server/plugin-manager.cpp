@@ -86,7 +86,6 @@ RecIface* RecPluginMngr::getInterface(const QString &iface)
     } else {
         return nullptr;
     }
-
 }
 
 void RecPluginMngr::unloadLibrary(const QString &lib)
@@ -99,7 +98,6 @@ void RecPluginMngr::unloadLibrary(const QString &lib)
         // need it anmore
         m_plugins.remove(lib);
     }
-
 }
 
 /// nothing by default
