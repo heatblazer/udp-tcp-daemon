@@ -87,9 +87,9 @@ bool Recorder::init()
     } else {
         bool res = false;
         m_maxChans = max.m_type2.toInt(&res);
-        if (!res || m_maxChans > 127) {
+        if (!res || m_maxChans > 127 || m_maxChans <= 0) {
             // precatuions !!!
-            m_maxChans = 127;
+            m_maxChans = 32;
         }
     }
 
