@@ -44,10 +44,11 @@ private slots:
     void performHotSwap(const QString& file);
 
 private:
-    // 32 chans for now
+    // 128  chans max - I can use Wav** m_wavs but
+    // I`ll just unuse the rest
     // but will be configured outside
-    Wav* m_wavs[32];
-
+    Wav* m_wavs[128];
+    int m_maxChans;
     // hotswap
     QTimer m_hotswap; // timer based
 

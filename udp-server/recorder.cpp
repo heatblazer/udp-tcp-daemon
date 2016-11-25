@@ -46,6 +46,7 @@ uint32_t Recorder::s_UID = 0;
 
 Recorder::Recorder(QObject *parent)
     : QObject(parent),
+      m_maxChans(0),
       m_maxFileSize(0)
 {
 }
@@ -77,7 +78,22 @@ bool Recorder::init()
     bool res = true;
 
     char buff[256]={0};
-    for(int i=0; i < 32; ++i) {
+
+    // setup channels
+    const MPair<QString, QString> max =
+            RecorderConfig::Instance().getAttribPairFromTag("Channels", "count");
+    if (max.m_type1 == "") {
+        m_maxChans = 32;
+    } else {
+        bool res = false;
+        m_maxChans = max.m_type2.toInt(&res);
+        if (!res || m_maxChans > 127) {
+            // precatuions !!!
+            m_maxChans = 127;
+        }
+    }
+
+    for(int i=0; i < m_maxChans; ++i) {
         s_UID++;
         if (dir.m_type1 != "") {
             snprintf(buff, sizeof(buff), "%s/%d-%d-%s.wav",
@@ -97,7 +113,7 @@ bool Recorder::init()
     // open files when everything is ok and setup
     res &= setupWavFiles();
 
-    for(int i=0; i < 32; ++i) {
+    for(int i=0; i < m_maxChans; ++i) {
         res &= m_wavs[i]->open(i);
         if (res) {
             m_filewatcher.addPath(m_wavs[i]->getFileName());
@@ -177,7 +193,7 @@ void Recorder::deinit()
 
     Logger::Instance().logMessage("Deinitializing recorder...\n");
     Logger::Instance().logMessage("Closing all opened records...\n");
-    for(int i=0; i < 32; ++i) {
+    for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             static char msg[128] = {0};
             snprintf(msg, sizeof(msg), "Closing file: (%s)\n", m_wavs[i]->getFileName());
@@ -191,7 +207,7 @@ void Recorder::deinit()
 
 Wav* Recorder::getWavByName(const QString &fname)
 {
-    for(int i=0; i < 32; ++i) {
+    for(int i=0; i < m_maxChans; ++i) {
         // fixed a bug with calling compare() here isntead of
         // ==
         if (fname == (QString(m_wavs[i]->getFileName()))) {
@@ -263,7 +279,7 @@ bool Recorder::setupWavFiles()
     // one time setup all waves at a time
     // don`t open them yet... do this later, after server
     // init and binding
-    for(int i=0; i < 32; ++i) {
+    for(int i=0; i < m_maxChans; ++i) {
         m_wavs[i]->setupWave(samples_per_sec, bits_per_sec, riff_len,
                              fmt_len, audio_fmt, chann_cnt);
     }
@@ -285,7 +301,7 @@ bool Recorder::setupWavFiles()
 void Recorder::record(QQueue<udp_data_t> &packets)
 {
     while (!packets.isEmpty()) {
-        for(int j=0; j < 32; ++j) {
+        for(int j=0; j < m_maxChans; ++j) {
             if (m_wavs[j] != nullptr && m_wavs[j]->isOpened()) {
                 // TODO: test!
                 // test plugin iface
@@ -314,7 +330,7 @@ void Recorder::record(const udp_data_t &data)
         }
     }
 #endif
-    for(int i=0; i < 32; ++i) {
+    for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             // TODO: test!
 #ifdef OK_PASSED_TEST // for dimo`s recorder
@@ -374,7 +390,7 @@ void Recorder::record(const tcp_data_t &data)
 /// a given recorder time elapses
 void Recorder::hotSwapFiles()
 {
-    for(int i=0; i < 32; ++i) {
+    for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             // кой писал писал
             if (1) {
