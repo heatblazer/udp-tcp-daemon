@@ -57,8 +57,8 @@ QMAKE_CFLAGS += \
 
 # custom macrodefs for the tests
 QMAKE_CXXFLAGS +=  -DUNSAFE_CONFIG \
-                   -DHEARTATTACK            # flood the sender for testing packet lost
-                  #  -DEXPERIMENTAL_WAV \   # test wav renaming
+                   #-DHEARTATTACK \            # flood the sender for testing packet lost
+                   # -DEXPERIMENTAL_WAV \   # test wav renaming
                    #-DPLUGIN_TEST \         # test plugin interface
                    #-DTEST     \
                   #-DXML_TEST  \            # test configuration - unused

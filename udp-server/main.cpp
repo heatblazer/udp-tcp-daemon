@@ -3,6 +3,7 @@
 
 int main(int argc, char** argv)
 {
+
     iz::Wav* wavs[32] = {0};
     for(int i=0; i < 32; ++i) {
         char buff[10] = {0};

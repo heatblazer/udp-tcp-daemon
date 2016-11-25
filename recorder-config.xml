@@ -65,10 +65,10 @@
 
 
 <Plugin
-    name="LPF"
+    name="DFT"
     order="1"
     enabled="true"
-    path="/home/ilian/github/build-udp-Desktop_Qt_5_7_0_GCC_64bit-Debug/low-pass-filter/liblow-pass-filter.so"
+    path="/home/ilian/github/build-recd2-Desktop_Qt_5_7_0_GCC_64bit-Debug/DFT/libDFT.so"
     />
 
 <Plugin

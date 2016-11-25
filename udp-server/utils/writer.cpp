@@ -7,6 +7,10 @@
 
 namespace iz {
 
+/// TODO: configure speed of the logging!!!
+/// \brief Writer::Writer
+/// \param parent
+///
 Writer::Writer(QThread *parent)
     : QThread(parent),
       m_isRunning(false),
