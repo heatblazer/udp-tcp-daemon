@@ -36,8 +36,8 @@ static inline int32_t flip32(int32_t input)
     union {
         int32_t i;
         char c[sizeof(int32_t)];
-    } in, out;
-    out.i = 0;
+    } in = {0}, out = {0};
+
     in.i = input;
     // always 4 byte swap
     out.c[0] = in.c[3];
@@ -58,10 +58,9 @@ static inline int16_t flip16(int16_t input)
     union {
         int16_t i;
         char c[sizeof(int16_t)];
-    } in, out;
+    } in = {0}, out = {0};
 
     in.i = input;
-    out.i = 0;
     // alwyas 2 byte swap
     out.c[0] = in.c[1];
     out.c[1] = in.c[0];

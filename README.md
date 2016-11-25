@@ -70,6 +70,7 @@ A wav playback with waveform for listening the records.
     6. I have to add Build/Install instructions and options to the BUILD section.
     7. Daemon logging must support sys/log functionality. Not done yet.
     8. GUI must perform Goertzl algorithm for DTM and filtering the sample data.
+    9. Meta info file.
 
 ## BUGS
     [Bug1]Strange bug as for 16.11.2016, when the program gives 100% cpu load on my other Fedora computer.

@@ -5,13 +5,13 @@ namespace iz {
 
 struct RecIface
 {
-    void (*init)(void);
-    void (*copy)(const void* src, void* dst, int len);
-    int (*put_ndata)(void*, int);
-    int (*put_data)(void*);
-    void* (*get_data)(void);
-    void (*deinit)(void);
-    int (*main_proxy)(int, char**); // if we need to call lib in main
+    void    (*init)(void);
+    void    (*copy)(const void* src, void* dst, int len);
+    int     (*put_ndata)(void*, int);
+    int     (*put_data)(void*);
+    void*   (*get_data)(void);
+    void    (*deinit)(void);
+    int     (*main_proxy)(int, char**); // if we need to call lib in main
 };
 
 } // iz
