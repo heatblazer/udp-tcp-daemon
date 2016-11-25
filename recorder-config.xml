@@ -11,6 +11,13 @@
 <!-- if timeBased is set to true, size param will be omit and
      interval for time will be used, I am working on that
      idea -->
+
+<!-- now using this tag to specify max channels -->
+<!-- by default recorder support up to 128 -->
+<Channels
+    count="32"
+    />
+
 <HotSwap
     timeBased="enabled"
     maxSize="300MB"
