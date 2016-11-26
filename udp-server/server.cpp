@@ -1,11 +1,5 @@
-// qt //
-#include <QNetworkReply>
-
 // std //
 #include <iostream> // for test purpose only!
-
-// Daemon time //
-#include <time.h> // for time stamping
 
 #include "types.h"
 #include "server.h"
@@ -354,6 +348,7 @@ void UserServer::startServer()
     }
 }
 
+
 /// prints a base menu to the user
 /// \brief UserServer::hConnection
 ///
@@ -374,9 +369,12 @@ void UserServer::hConnection()
             p_conn->waitForBytesWritten();
             p_conn->disconnectFromHost();
             return;
-        } else {
+        } else if (line.contains("info")) {
+
+        }
+        else {
             resp.append("Unknown command!\n"
-                        "Refer to: 'help', 'version' or 'quit' for now!\n");
+                        "Refer to: 'help', 'version', 'info' or 'quit' for now!\n");
         }
         p_conn->write(resp);
         p_conn->flush();

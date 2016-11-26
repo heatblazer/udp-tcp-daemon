@@ -89,6 +89,8 @@ private:
     // move to antoher buffer, new concept, unimplemented
 
     QQueue<char> m_monitorData;
+
+    friend class UserServer;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +108,7 @@ private slots:
 protected:
     void incomingConnection(qintptr socketDescriptor);
     QTcpSocket*         p_conn;
+
     friend class ServerThread;
 };
 
