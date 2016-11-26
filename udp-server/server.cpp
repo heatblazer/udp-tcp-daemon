@@ -213,14 +213,16 @@ void Server::error(QAbstractSocket::SocketError err)
 }
 
 /// monitor of the incomming datagrams
+/// printing messages will be removed soon
+/// since I won`t be needing it but I expect
+/// to perform some tests on them
 /// \brief Server::checkConnection
 /// check periodically for datagrams coming from
 /// outside.
 void Server::checkConnection()
 {
     if (m_monitorData.isEmpty()) {
-        // ok
-        std::cout << "NOT OK!\n";
+        // not ok!
         disconnected();
     } else {
         // print minor info each 30 secs
@@ -236,15 +238,12 @@ void Server::checkConnection()
                      "===========================================\n",
                      m_conn_info.paketCounter,
                      m_conn_info.desynchCounter,
-                     m_conn_info.totalLost
-                     );
+                     m_conn_info.totalLost);
+
             Logger::Instance().logMessage(srvinfo);
-        } else {
-            print_message++;
         }
-        // not ok!
-        //disconnected();
-        std::cout << "OK\n";
+        print_message++;
+
         // make sure you purge the list
         m_monitorData.clear();
     }
@@ -275,13 +274,20 @@ void Server::route(States state)
     }
 }
 
+/// reboot packet lost logic if connectionf
+/// from the device has ended
+/// \brief Server::disconnected
+///
 void Server::disconnected()
 {
     static char msg[350] = {0};
-    snprintf(msg, sizeof(msg), "Lost connection!\n"
+    snprintf(msg, sizeof(msg),
+             "---------------------------------\n"
+             "Lost connection!\n"
              "Last desynch counter: (%d)\n"
              "Last total lost packages: (%d)\n"
-             "Last pakcet counter: (%d)\n",
+             "Last pakcet counter: (%d)\n"
+             "---------------------------------\n",
              m_conn_info.desynchCounter,
              m_conn_info.totalLost,
              m_conn_info.paketCounter);
