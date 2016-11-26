@@ -76,6 +76,19 @@ SApplication::SApplication(int &argc, char **argv)
         }
     }
 
+    // load plugins to the app
+    // I`ll better call that in the constructor
+    // since I may want to pass some args to
+    // the main proxies
+    // for now nothing...
+    Logger::Instance().logMessage("Loading pluggins...\n");
+    loadPlugins();
+
+    // call all plugins main proxies if needed
+    for(int i=0; i < m_plugins.count(); ++i) {
+        m_plugins.at(i).main_proxy(argc, argv);
+    }
+
     // old version:
     // daemon registration of this app to be used in the
     // future signal handlers and do some stuff there
@@ -105,7 +118,7 @@ int SApplication::init()
 {
     bool log_init = Logger::Instance().init();
     if (!log_init) {
-        exit(11);
+        return -1;
     }
 
     Logger::Instance().logMessage("Initializing application...\n");
@@ -141,6 +154,7 @@ int SApplication::init()
         // they need not to depend each other
         if (!m_recorder.init()) {
             Logger::Instance().logMessage("Failed initialize recorder\n");
+            return -1;
         }
 
 #ifdef HEARTATTACK
@@ -165,20 +179,13 @@ int SApplication::init()
         }
     }
 
-    // I`ll better call that in the constructor
-    // since I may want to pass some args to
-    // the main proxies
-    // for now nothing...
-    Logger::Instance().logMessage("Loading pluggins...\n");
-    loadPlugins();
-
     Logger::Instance().logMessage("Initialization of application completed!\n");
 
+    // registe user server
     m_user_server.setObjectName("user server");
     m_user_server.moveToThread(&m_user_server);
     m_user_server.start();
 
-    //std::cout << GITHASH << std::endl;
     return 0;
 }
 
@@ -227,6 +234,17 @@ void SApplication::loadPlugins()
                 Logger::Instance().logMessage(msg);
            }
         }
+    }
+}
+
+/// init and prepare all plugins, assume the plugin
+/// provider has implemented init(...)
+/// \brief SApplication::initAllPlugins
+///
+void SApplication::initAllPlugins()
+{
+    for(int i=0; i < m_plugins.count(); ++i) {
+        m_plugins.at(i).init();
     }
 }
 

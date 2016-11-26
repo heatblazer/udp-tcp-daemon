@@ -39,6 +39,7 @@ public:
 
 private:
     void loadPlugins();
+    void initAllPlugins();
 
 private slots:
 

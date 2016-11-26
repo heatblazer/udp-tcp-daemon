@@ -181,10 +181,12 @@ void Server::readyReadUdp()
                 // to depend each other
                     emit dataReady(*udp);
                 }
+
              } else {
                 Logger::Instance().logMessage("Missed an UDP!\n");
             }
         }
+
     } else {
         Logger::Instance()
                 .logMessage("We can read, but there is no pending datagram!\n");
@@ -221,6 +223,25 @@ void Server::checkConnection()
         std::cout << "NOT OK!\n";
         disconnected();
     } else {
+        // print minor info each 30 secs
+        static char srvinfo[300] = {0};
+        static int print_message = 0;
+        if (print_message > 30) {
+            print_message = 0;
+            snprintf(srvinfo, sizeof(srvinfo),
+                     "===========================================\n"
+                     "Packet counter :  (%d)\n"
+                     "Desynch counter:  (%d)\n"
+                     "Total lost:       (%d)\n"
+                     "===========================================\n",
+                     m_conn_info.paketCounter,
+                     m_conn_info.desynchCounter,
+                     m_conn_info.totalLost
+                     );
+            Logger::Instance().logMessage(srvinfo);
+        } else {
+            print_message++;
+        }
         // not ok!
         //disconnected();
         std::cout << "OK\n";

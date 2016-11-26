@@ -30,6 +30,8 @@ static int getOpts(char* str)
                 (strcmp(str, "--config")) == 0) {
         // reserved for future preloading of configuations!!!
         opts = 0;
+    } else {
+        opts = 3;
     }
     return opts;
 }
@@ -54,10 +56,12 @@ int main(int argc, char *argv[])
                break;
            case 2:
                std::cout << help_message;
-               exit(0);
+               break;
            case 0:
                std::cout << "Stub!!! Preloading configuration!" << std::endl;
                break;
+           case 3:
+
            default:
                std::cout << "No arguments!" << std::endl;
                break;
