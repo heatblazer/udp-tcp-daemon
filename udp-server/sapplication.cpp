@@ -218,19 +218,9 @@ void SApplication::loadPlugins()
            // put in any order for now
            // store into the indexed array
            if (iface != nullptr) {
-               if (iface->copy != nullptr && iface->init != nullptr
-                       && iface->deinit != nullptr && iface->main_proxy != nullptr
-                       && iface->put_data != nullptr && iface->put_ndata != nullptr
-                       && iface->get_data != nullptr) {
-                   snprintf(msg, sizeof(msg), "Loaded (%s) plugin.\n", list.at(i).m_type2.toStdString().data());
-                   Logger::Instance().logMessage(msg);
-                   m_plugins.push_back(*iface);
-               } else {
-                   snprintf(msg, sizeof(msg), "Plugin: [%s] is not setup properly!\n"
-                            "I will not load it in the manager!\n",
-                            list.at(i).m_type2.toStdString().data());
-                   Logger::Instance().logMessage(msg);
-               }
+               snprintf(msg, sizeof(msg), "Loaded (%s) plugin.\n", list.at(i).m_type2.toStdString().data());
+               Logger::Instance().logMessage(msg);
+               m_plugins.push_back(*iface);
            } else {
                snprintf(msg, sizeof(msg), "\nFailed to load (%s) plugin.\n",
                        list.at(i).m_type2.toStdString().data());

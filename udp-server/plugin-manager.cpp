@@ -11,6 +11,7 @@ namespace iz {
 struct interface_t
 {
     void    (*init)(void);
+    void    (*copy)(const void*, void*, int);
     int     (*put_ndata)(void*, int);
     int     (*put_data)(void*);
     void*   (*get_data)(void);
@@ -44,10 +45,13 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
 
     if (lib_ifaceCb != nullptr) {
         struct interface_t* lib_symbols = lib_ifaceCb();
-        if (lib_symbols->deinit == nullptr || lib_symbols->init == nullptr
-                || lib_symbols->get_data == nullptr || lib_symbols->put_data == nullptr
+        if (lib_symbols->deinit == nullptr
+                || lib_symbols->init == nullptr
+                || lib_symbols->get_data == nullptr
+                || lib_symbols->put_data == nullptr
                 || lib_symbols->put_ndata == nullptr
-                || lib_symbols->main_proxy == nullptr)
+                || lib_symbols->main_proxy == nullptr
+                || lib_symbols->copy == nullptr)
         {
             load_all_res = false;
 
