@@ -226,10 +226,10 @@ PairList &RecorderConfig::getTagPairs(const QString &tag)
 const MPair<QString, QString>
 &RecorderConfig::getAttribPairFromTag(const QString &tag, const QString& attrib)
 {
-    PairList& l = getTagPairs(tag);
-    for(int i=0; i < l.count(); ++i) {
-        if (l[i].m_type1 == attrib) {
-            return l.at(i);
+    PairList& plst = getTagPairs(tag);
+    for(int i=0; i < plst.count(); ++i) {
+        if (plst[i].m_type1 == attrib) {
+            return plst.at(i);
         }
     }
     // return some error static object
