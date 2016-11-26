@@ -146,13 +146,17 @@ bool RecorderConfig::loadDefaults()
 {
     bool res = true;
 
-    // hotswap defaults
+    // channels count - default 32
+    m_tags["Channels"].append(MPair<QString, QString>(QString("count"),
+                                                    QString("32")));
+
+    // hotswap defaults - time based each 30 minutes
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("timeBased"),
-                             QString("false")));
+                             QString("true")));
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("maxSize"),
-                             QString("30000000")));
+                             QString("100MB")));
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("interval"),
-                             QString("10000")));
+                             QString("30")));
 
     // wav setup defaults
     m_tags["Wave"].append(MPair<QString, QString>(QString("samplesPerFrame"),
@@ -168,7 +172,7 @@ bool RecorderConfig::loadDefaults()
     m_tags["Wave"].append(MPair<QString, QString>(QString("endiness"),
                                                   QString("LE")));
 
-    // paths defaults
+    // paths defaults - default directory support
     m_tags["Paths"].append(MPair<QString, QString>(QString("records"),
                                                   QString("records")));
     m_tags["Paths"].append(MPair<QString, QString>(QString("logs"),
@@ -186,7 +190,8 @@ bool RecorderConfig::loadDefaults()
     m_tags["Network"].append(MPair<QString, QString>(QString("port"),
                                                   QString("1234")));
 
-    // log defaults
+    // TODO: fix the speed check!!!!!
+    // log defaults - speed is not checked yet!!!
     m_tags["Log"].append(MPair<QString, QString>(QString("name"),
                                                   QString("recorder.log")));
     m_tags["Log"].append(MPair<QString, QString>(QString("timestamp"),
@@ -194,7 +199,7 @@ bool RecorderConfig::loadDefaults()
     m_tags["Log"].append(MPair<QString, QString>(QString("speed"),
                                                   QString("1000")));
 
-    // heartbeat defaults
+    // heartbeat defaults - this is not used, just for some tests for now!
     m_tags["Heartbeat"].append(MPair<QString, QString>(QString("timeout"),
                                                   QString("2000")));
     m_tags["Heartbeat"].append(MPair<QString, QString>(QString("port"),
@@ -204,6 +209,7 @@ bool RecorderConfig::loadDefaults()
     m_tags["Heartbeat"].append(MPair<QString, QString>(QString("enabled"),
                                                   QString("false")));
 
+    // never fails always TRUE!
     return res;
 }
 
