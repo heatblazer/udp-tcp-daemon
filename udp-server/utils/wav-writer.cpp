@@ -165,17 +165,8 @@ bool Wav::isOpened() const
 ///
 int Wav::write(short data[], int len)
 {
-    // if byteorder needs flipping
-    if (m_requiresFlip) {
-        short* ledata = new short[len];
-        for(int i=0; i < len; ++i) {
-            ledata[i] = flip16(data[i]);
-        }
-        fwrite(ledata, sizeof(short), len, m_file);
-        delete [] ledata;
-    } else {
-        fwrite(data, sizeof(short), len, m_file);
-    }
+    fwrite(data, sizeof(short), len, m_file);
+
     // this will avoid checking the file size each time in
     // the system watcher, losing a bit of precision in bytes tho
 
