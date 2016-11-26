@@ -8,7 +8,7 @@
 
 namespace iz {
 
-/// date time utility
+/// date time utility inline functions
 /// \brief The DateTime class
 ///
 class DateTime
