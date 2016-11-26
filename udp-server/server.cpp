@@ -63,7 +63,6 @@ void Server::init(bool udp, quint16 port, bool send_heart)
     }
 
     m_sendHeart = send_heart;
-
     if (m_sendHeart) {
         // heartattack for flooding for testing
         m_heartbeat.setInterval(10);

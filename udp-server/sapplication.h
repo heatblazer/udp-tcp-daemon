@@ -40,12 +40,7 @@ public:
 private:
     void loadPlugins();
 
-    // TODO: delete it!!!!
-    void testLoadedPlugins();
-
 private slots:
-    // TODO: delete it!!!
-    void testKill();
 
 private:
     Server              m_server;

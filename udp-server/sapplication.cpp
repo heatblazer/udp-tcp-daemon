@@ -171,8 +171,6 @@ int SApplication::init()
     // for now nothing...
     Logger::Instance().logMessage("Loading pluggins...\n");
     loadPlugins();
-     // test loaded plugins
-    testLoadedPlugins();
 
     Logger::Instance().logMessage("Initialization of application completed!\n");
 
@@ -230,41 +228,6 @@ void SApplication::loadPlugins()
            }
         }
     }
-}
-
-/// TODO: remove this function later
-/// \brief SApplication::testLoadedPlugins
-///
-void SApplication::testLoadedPlugins()
-{
-    std::cout << "Testing loaded plugins!" << std::endl;
-    for(int i=0; i < m_plugins.count(); ++i) {
-        // prevend segfaults
-        if (m_plugins.at(i).init) {
-            m_plugins.at(i).init();
-        }
-        if (m_plugins.at(i).get_data()) {
-            m_plugins.at(i).get_data();
-        }
-        if (m_plugins.at(i).put_data) {
-            m_plugins.at(i).put_data(0);
-        }
-        if (m_plugins.at(i).put_ndata) {
-            m_plugins.at(i).put_ndata(0, 0);
-        }
-        if (m_plugins.at(i).main_proxy) {
-            m_plugins.at(i).main_proxy(SApplication::s_argc,
-                                       SApplication::s_argv);
-        }
-    }
-}
-
-/// TODO: remove after tests
-/// \brief SApplication::testKill
-///
-void SApplication::testKill()
-{
-    Daemon::sendSignal(Daemon::m_pid, SIGKILL);
 }
 
 } // iz
