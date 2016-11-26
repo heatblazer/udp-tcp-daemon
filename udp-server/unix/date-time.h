@@ -15,6 +15,16 @@ class DateTime
 {
 public:
 
+
+    static inline long getTimeAsInteger()
+    {
+        time_t current_time;
+        struct tm* time_info;
+        time(&current_time);
+        time_info = localtime(&current_time);
+        return time_info->tm_gmtoff;
+    }
+
     /// get time HH:MM:SS
     /// \brief getTimeString
     /// \return time as str
