@@ -21,7 +21,6 @@ A wav playback with waveform for listening the records.
 ## Config File
     Channels: count - number of channels up to 128
     HotSwap: maxSize in bytes or interval with timer.
-    ChannelCount: unused.
     Wave: setup wav file - see the config file.
     Record: setup directories and other stuff for the recorder.
     Network: transport - can be udp or tcp, port to bind to.
