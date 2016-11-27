@@ -88,14 +88,15 @@ void Client::transmit()
 {
     std::cout << "Transmitting...\n";
     static uint32_t counter = 0;
-    uint16_t* buff = (uint16_t*) gen_const_tone(16);
+    uint16_t* buff = (uint16_t*) gen_sawtooth(16);
     if (buff) {
-        for(int i=0; i < 32; ++i) {
-            memcpy(m_packet.packet.data[i], buff, 16);
+        for(int i=0; i < 16; ++i) {
+            for(int j=0; j < 32; j++) {
+                m_packet.packet.data[i][j] = buff[i];
+            }
         }
         memset(m_packet.packet.null_bytes, 0, sizeof(m_packet.packet.null_bytes)
                                                 / sizeof(m_packet.packet.null_bytes[0]));
-
         m_packet.packet.counter = ++counter;
         p_socket->write(m_packet.data, sizeof(udp_data_t));
         free(buff);

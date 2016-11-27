@@ -9,17 +9,29 @@
 
 namespace iz {
 
+/// postimplemented struct for udp header
+/// \brief The udp_data_t struct
+///
 struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
+#if (REQUIRE_FLIP_CHANNS_SAMPLES)
+    int16_t    data[16][32];
+#else
     int16_t    data[32][16];
-    //int16_t    data[16][32];
+#endif
+
 };
 
+/// UNUSED
+/// postimplemented struct for tcp data
+/// not used anywhere
+/// \brief The tcp_data_t struct
+///
 struct tcp_data_t
 {
-    int16_t data[128];
+    int16_t data[32*16];
 };
 
 // the err udp packet

@@ -37,8 +37,11 @@ struct udp_data_t
 {
     uint32_t    counter;
     uint8_t     null_bytes[32];
+#if (REQUIRE_FLIP_CHANNS_SAMPLES)
+    int16_t    data[16][32];
+#else
     int16_t    data[32][16];
-    //int16_t    data[16][32];
+#endif
 };
 
 struct tcp_data_t
@@ -301,7 +304,7 @@ bool Recorder::setupWavFiles()
 /// buffered recording for future use
 /// and for now for use of writing error packets
 /// \brief Recorder::record
-/// \param buffered packets
+/// \param buffered packets write a buffer of packets
 ///
 void Recorder::record(QQueue<udp_data_t> &packets)
 {
@@ -325,9 +328,15 @@ void Recorder::record(QQueue<udp_data_t> &packets)
 ///
 void Recorder::record(const udp_data_t &data)
 {
-    // flip the data for dimo`s recorder
-#if OK_PASSED_TEST
-    int16_t flip_data[32][16] = {0};
+    // flip the data for dimo`s recorder wich comes 16 x 32
+    // unlike the other device that is 32 x 16, for me
+    // it`s more friendly to write one time 16 samples so
+    // I`ll flip  ROW x COL and COL x ROW to be fwrite friendly
+    // this is a macrodef for tests: in the final requirements
+    // this structure is still unknown but the idea will be similar.
+
+#if (REQUIRE_FLIP_CHANNS_SAMPLES)
+    int16_t flip_data[32][16];
 
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
@@ -338,24 +347,12 @@ void Recorder::record(const udp_data_t &data)
     for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             // TODO: test!
-#ifdef OK_PASSED_TEST // for dimo`s recorder
+#if (REQUIRE_FLIP_CHANNS_SAMPLES) // for dimo`s recorder
             m_wavs[i]->write((short*) flip_data[i], 16);
 #else
 
-#ifdef PLUGIN_TEST
-            // test plugin iface
-            RecIface* iface = RecPluginMngr::getInterface("DFT");
-            // filtered the first three only for tests
-            if (iface != nullptr && i < 2 /* first 3*/) {
-                short* dft_data = (short*) data.data[i];
-                iface->put_ndata((short*) data.data[i], 16);
-                dft_data = (short*) iface->get_data();
-                m_wavs[i]->write(dft_data, 16);
-            } else {
-                m_wavs[i]->write((short*) data.data[i], 16);
-            }
-#else
             const QList<RecIface>& plugins = SApplication::m_plugins;
+
             // pass the data to multiple plugins
             // TODO: fill in later when a specific need is pending.
             if (/*plugins.count() > */0) {
@@ -374,7 +371,6 @@ void Recorder::record(const udp_data_t &data)
                 // noplugins - I will rewrite the logic later
                 m_wavs[i]->write((short*) data.data[i], 16);
             }
-#endif // plugintest
 
 #endif // dimo`s flip array
         }

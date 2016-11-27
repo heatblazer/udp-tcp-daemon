@@ -127,6 +127,7 @@ A wav playback with waveform for listening the records.
     23.11.2016: Wav library has rename functionality and endian swaps.
     24.11.2016: Added a timer based transmission monitoring to the server.
     25.11.2016: Configurable channel count.
+    27.11.2016: Tested flippin 32x16 sample data to 16x32... working ax expected.
 
 ***
 <ilianzapryanov@abv.bg>
