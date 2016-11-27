@@ -103,7 +103,8 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             snprintf(msg, sizeof(msg), "Binding to port (%d) succeeds!\n", port);
             Logger::Instance().logMessage(msg);
             Logger::Instance().logMessage(msg2);
-            // start timers
+
+            // finally start connection monitoring
             m_liveConnection.setInterval(1000);
             connect(&m_liveConnection, SIGNAL(timeout()),
                     this, SLOT(checkConnection()));
@@ -206,7 +207,7 @@ void Server::readyReadUdp()
     }
 }
 
-/// Connect and read TCP packets
+/// stub
 /// \brief Server::handleConnection
 ///
 void Server::handleConnection()
@@ -214,11 +215,19 @@ void Server::handleConnection()
     // unimplemented
 }
 
+/// stub
+/// \brief Server::hStateChange
+/// \param state
+///
 void Server::hStateChange(QAbstractSocket::SocketState state)
 {
     (void) state;
 }
 
+///
+/// \brief Server::error
+/// \param err
+///
 void Server::error(QAbstractSocket::SocketError err)
 {
     std::cout << "Got err: "  << err << std::endl;
@@ -233,32 +242,33 @@ void Server::error(QAbstractSocket::SocketError err)
 /// outside.
 void Server::checkConnection()
 {
+    static char srvinfo[400] = {0};
+    static int print_message = 0;
+
     if (m_monitorData.isEmpty()) {
         // not ok!
         disconnected();
     } else {
-        // print minor info each 30 secs
-        static char srvinfo[300] = {0};
-        static int print_message = 0;
-        if (print_message > 30) {
-            print_message = 0;
-            snprintf(srvinfo, sizeof(srvinfo),
-                     "===========================================\n"
-                     "Packet counter :  (%d)\n"
-                     "Desynch counter:  (%d)\n"
-                     "Total lost:       (%d)\n"
-                     "===========================================\n",
-                     m_conn_info.paketCounter,
-                     m_conn_info.desynchCounter,
-                     m_conn_info.totalLost);
-
-            Logger::Instance().logMessage(srvinfo);
-        }
-        print_message++;
-
         // make sure you purge the list
         m_monitorData.clear();
     }
+
+    if (print_message > 30) {
+        print_message = 0;
+        snprintf(srvinfo, sizeof(srvinfo),
+                 "===========================================\n"
+                 "Packet counter :  (%d)\n"
+                 "Desynch counter:  (%d)\n"
+                 "Total lost:       (%d)\n"
+                 "===========================================\n",
+                 m_conn_info.paketCounter,
+                 m_conn_info.desynchCounter,
+                 m_conn_info.totalLost);
+
+        Logger::Instance().logMessage(srvinfo);
+    }
+    print_message++;
+
 }
 
 /// dummy router for future uses of the states

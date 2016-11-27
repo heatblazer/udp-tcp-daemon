@@ -23,12 +23,10 @@ struct rtp_hdr_t
         } f;
         int32_t i;
     } u;
-
     int32_t time_stamp; // timestampe, init value should be random!
     int32_t SSRC;       // syncrhonization identifier, should be random
     int32_t CSRC[1];    // 0 - 15 items contrib sources
 };
-
 
 }  // iz
 

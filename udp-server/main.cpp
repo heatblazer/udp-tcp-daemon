@@ -81,7 +81,6 @@ int main(int argc, char *argv[])
                std::cout << "Stub!!! Preloading configuration!" << std::endl;
                break;
            case 3:
-
            default:
                std::cout << "No arguments!" << std::endl;
                break;

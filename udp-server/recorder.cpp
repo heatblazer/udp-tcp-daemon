@@ -347,9 +347,6 @@ void Recorder::record(const udp_data_t &data)
     for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             // TODO: test!
-#if (REQUIRE_FLIP_CHANNS_SAMPLES) // for dimo`s recorder
-            m_wavs[i]->write((short*) flip_data[i], 16);
-#else
 
             const QList<RecIface>& plugins = SApplication::m_plugins;
 
@@ -368,11 +365,16 @@ void Recorder::record(const udp_data_t &data)
                     // write to wave file
                 }
             } else {
+// if flip is required - for now as macrodef
+// later I'll cleanup the whole thing after
+// a fixed structure is decided.
+#if (REQUIRE_FLIP_CHANNS_SAMPLES)
+            m_wavs[i]->write((short*) flip_data[i], 16);
+#else
                 // noplugins - I will rewrite the logic later
                 m_wavs[i]->write((short*) data.data[i], 16);
+#endif
             }
-
-#endif // dimo`s flip array
         }
     }
 }
