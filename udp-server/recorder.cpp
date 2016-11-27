@@ -190,7 +190,6 @@ bool Recorder::init()
 
 void Recorder::deinit()
 {
-
     Logger::Instance().logMessage("Deinitializing recorder...\n");
     Logger::Instance().logMessage("Closing all opened records...\n");
     for(int i=0; i < m_maxChans; ++i) {

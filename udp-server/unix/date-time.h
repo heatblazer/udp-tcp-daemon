@@ -22,7 +22,7 @@ public:
         struct tm* time_info;
         time(&current_time);
         time_info = localtime(&current_time);
-        return time_info->tm_gmtoff;
+        return current_time;
     }
 
     /// get time HH:MM:SS

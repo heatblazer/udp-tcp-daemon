@@ -328,6 +328,7 @@ void Server::deinit()
 {
     // nothing for now
     Logger::Instance().logMessage("Deinitializing server...\n");
+
 }
 
 ServerThread::ServerThread(QThread *parent)

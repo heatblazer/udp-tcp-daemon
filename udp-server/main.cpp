@@ -1,9 +1,29 @@
+#ifdef MAIN_TEST
+
+#include "unix/date-time.h"
+#include <unistd.h>
+
+int main(void)
+{
+    for(int i=0; i < 20; ++i) {
+        long time = iz::DateTime::getTimeAsInteger();
+        printf("[%ld]\n", time);
+        usleep(10000);
+    }
+    return 0;
+}
+
+#else
+// std //
+#include <iostream>
+
+// local headers //
+#include "types.h"
 #include "sapplication.h"
 #include "unix/daemon.h"
 #include "utils/recorder-config.h"
-#include "types.h"
-#include <iostream>
 
+// help message //
 static const char* help_message = "This is a recording server over udp streams.\n"
         "The program is in early test mode and shall be used until proved"
         "and comes with no warranty!\n";
@@ -95,3 +115,5 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+
+#endif
