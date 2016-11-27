@@ -14,7 +14,12 @@
 #include "utils/logger.h"
 #include "utils/wav-writer.h"
 
-static const char* is_digit(const char* str) {
+/// aux function to check for digits
+/// \brief is_digit
+/// \param str digit str
+/// \return digit str
+///
+static inline const char* is_digit(const char* str) {
 #define DIGIT(c) ((c >= '0') && (c <= '9'))
     static char digit[10] = {0};
     int size = 0;
@@ -208,7 +213,7 @@ Wav* Recorder::getWavByName(const QString &fname)
 {
     for(int i=0; i < m_maxChans; ++i) {
         // fixed a bug with calling compare() here isntead of
-        // ==
+        // QString == QString
         if (fname == (QString(m_wavs[i]->getFileName()))) {
             return m_wavs[i];
         }
@@ -292,6 +297,7 @@ bool Recorder::setupWavFiles()
     return res;
 }
 
+/// UNUSED!!!
 /// buffered recording for future use
 /// and for now for use of writing error packets
 /// \brief Recorder::record
