@@ -39,7 +39,8 @@ HEADERS += \
     plugin-manager.h \
     recorder-iface.h \
     utils/logger.h \
-    unix/date-time.h
+    unix/date-time.h \
+    protocols.h
 
 
 QMAKE_CFLAGS += \
