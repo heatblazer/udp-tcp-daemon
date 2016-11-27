@@ -40,7 +40,8 @@ HEADERS += \
     recorder-iface.h \
     utils/logger.h \
     unix/date-time.h \
-    protocols.h
+    protocols.h \
+    defs.h
 
 
 QMAKE_CFLAGS += \
@@ -72,6 +73,14 @@ QMAKE_INSTALL_PROGRAM = install -m 4755 -p
 
 target.path = /usr/bin
 INSTALLS += target
+
+debug
+{
+    message("Debug mode")
+    QMAKE_CXXFLAGS += -DRECD_DEBUG
+}
+
+
 
 DISTFILES += \
     ../resources/30-31-13:51:39.wav \

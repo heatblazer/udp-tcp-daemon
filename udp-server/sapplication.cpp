@@ -1,4 +1,5 @@
 #include "sapplication.h"
+#include "defs.h"
 
 #include <iostream> // remove it later
 
@@ -218,6 +219,8 @@ void SApplication::loadPlugins()
            snprintf(msg, sizeof(msg), "Loading (%s) plugin...\n",
                    list.at(i).m_type2.toStdString().data());
            Logger::Instance().logMessage(msg);
+
+           ASSERT_MACRO(list.at(i+3).m_type2.toStdString().data() != NULL);
 
            RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
            const RecIface* iface =
