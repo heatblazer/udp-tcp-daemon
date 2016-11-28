@@ -5,6 +5,8 @@
 
 #include <QXmlStreamReader>
 
+static const char* THIS_FILE = "recorder-config.cpp";
+
 namespace iz {
 
 RecorderConfig* RecorderConfig::s_inst = nullptr;

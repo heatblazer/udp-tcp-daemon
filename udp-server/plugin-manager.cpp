@@ -1,10 +1,13 @@
 #include "plugin-manager.h"
 
+
 // std //
 #include <iostream>
 
 // logger //
 #include "utils/logger.h"
+
+static const char* THIS_FILE = "plugin-manager.cpp";
 
 namespace iz {
 

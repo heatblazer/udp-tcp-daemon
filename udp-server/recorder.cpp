@@ -14,6 +14,8 @@
 #include "utils/logger.h"
 #include "utils/wav-writer.h"
 
+static const char* THIS_FILE = "recorder.cpp";
+
 /// aux function to check for digits
 /// \brief is_digit
 /// \param str digit str

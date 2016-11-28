@@ -10,8 +10,9 @@
 #include "utils/logger.h"
 #include "unix/daemon.h"
 
-namespace iz {
+static const char* THIS_FILE = "sapplication.cpp";
 
+namespace iz {
 
 int SApplication::m_fdHUP = -1;
 int SApplication::m_fdTERM = -1;

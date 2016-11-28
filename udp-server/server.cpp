@@ -7,6 +7,8 @@
 #include "utils/wav-writer.h"
 #include "unix/date-time.h"
 
+static const char* THIS_FILE = "server.cpp";
+
 namespace iz {
 
 /// postimplemented struct for udp header

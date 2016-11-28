@@ -7,6 +7,8 @@
 #include "recorder-config.h"
 #include "unix/date-time.h"
 
+static const char* THIS_FILE = "logger.cpp";
+
 namespace iz {
 
 Logger* Logger::s_inst = nullptr;

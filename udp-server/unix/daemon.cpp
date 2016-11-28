@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
+static const char* THIS_FILE = "daemon.cpp";
+
 static FILE*  s_log = NULL;
 
 // all linux signals goes here

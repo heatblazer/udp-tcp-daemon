@@ -1,5 +1,7 @@
 #include "qwave-writer.h"
 
+static const char* THIS_FILE = "qwave-writer.cpp";
+
 namespace iz {
 
 static inline bool isBigEndian(void)

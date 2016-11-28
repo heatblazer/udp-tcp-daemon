@@ -4,6 +4,7 @@
 #include <string.h> // strcpy
 #include <unistd.h>
 
+static const char* THIS_FILE = "wav-writer.cpp";
 
 namespace iz {
 

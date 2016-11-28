@@ -5,6 +5,8 @@
 
 #include "recorder-config.h"
 
+static const char* THIS_FILE = "writer.cpp";
+
 namespace iz {
 
 /// TODO: configure speed of the logging!!!
