@@ -169,6 +169,7 @@ int Wav::write(short data[], int len)
 
     // this will avoid checking the file size each time in
     // the system watcher, losing a bit of precision in bytes tho
+    // in the final I`ll make sure ftell is called periodicly
 
     m_maxSize += (len * sizeof(short));
     return m_maxSize;

@@ -1,19 +1,3 @@
-#ifdef MAIN_TEST
-
-#include "unix/date-time.h"
-#include <unistd.h>
-
-int main(void)
-{
-    for(int i=0; i < 20; ++i) {
-        long time = iz::DateTime::getTimeAsInteger();
-        printf("[%ld]\n", time);
-        usleep(10000);
-    }
-    return 0;
-}
-
-#else
 // std //
 #include <iostream>
 
@@ -102,7 +86,6 @@ int main(int argc, char *argv[])
         iz::Daemon::daemonize();
     }
 
-
     iz::SApplication app(argc, argv);
     int res = app.init();
     if (res < 0) {
@@ -114,5 +97,3 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
-
-#endif

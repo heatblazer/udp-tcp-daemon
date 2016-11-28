@@ -80,8 +80,6 @@ debug
     QMAKE_CXXFLAGS += -DRECD_DEBUG
 }
 
-
-
 DISTFILES += \
     ../resources/30-31-13:51:39.wav \
     ../resources/31-32-13:51:39.wav \

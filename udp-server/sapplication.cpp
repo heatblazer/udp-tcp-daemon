@@ -38,6 +38,7 @@ SApplication::SApplication(int &argc, char **argv)
     : QCoreApplication(argc, argv),
       m_setup(false)
 {
+    // proxy them to the plugins if needed
     s_argc = argc;
     s_argv = argv;
 
@@ -73,6 +74,13 @@ SApplication::SApplication(int &argc, char **argv)
                     }
 #endif
                 }
+            } else if (strcmp(argv[i], "-d") == 0 ||
+                       strcmp(argv[i], "--daemon") == 0) {
+                Logger::Instance().logMessage("Program is running in daemon mode!\n");
+                m_setup = RecorderConfig::Instance().loadDefaults();
+            } else {
+                // it`s unknown stuff to me...
+                // should never fall here since main(...) won`t allow it
             }
         }
     }
@@ -182,7 +190,7 @@ int SApplication::init()
 
     Logger::Instance().logMessage("Initialization of application completed!\n");
 
-    // registe user server
+    // register user server
     m_user_server.setObjectName("user server");
     m_user_server.moveToThread(&m_user_server);
     m_user_server.start();
@@ -194,13 +202,22 @@ int SApplication::init()
 void SApplication::deinit()
 {
     Daemon::log("SApplication::deinit()!\n");
+
+    // close all files that are being recorded
     m_recorder.deinit();
+
+    // stop the server ... if something has to be done
     m_server.deinit();
+
+    // finally deinit plugins, since somebody may still
+    // depend on them... better make sure your plugin
+    // has finished it`s job to prevent artifacts
     for(int i=0; i < m_plugins.count(); ++i) {
         // deinit in priority order
         m_plugins.at(i).deinit();
     }
 
+    // join the user server ...
     m_user_server.wait(1000);
 }
 
@@ -219,9 +236,9 @@ void SApplication::loadPlugins()
            snprintf(msg, sizeof(msg), "Loading (%s) plugin...\n",
                    list.at(i).m_type2.toStdString().data());
            Logger::Instance().logMessage(msg);
-
-           const RecIface* iface = nullptr;
            // defensive programming - array out of boudns prevention!
+           const RecIface* iface = nullptr;
+
            if (i+3 > list.count()) {
                // don`t load item since program will crash!!!
            } else {

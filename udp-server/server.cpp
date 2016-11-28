@@ -131,7 +131,6 @@ void Server::readyReadUdp()
     // I`ll write a 16 samples with max valuse
 
     if (m_socket.udp->hasPendingDatagrams()) {
-        // stream control
         m_monitorData.append('.');
 
         while (m_socket.udp->hasPendingDatagrams()) {
@@ -324,7 +323,7 @@ void Server::disconnected()
     m_conn_info.onetimeSynch = false;
 }
 
-/// stub
+///
 /// \brief Server::sendHeartbeat
 ///
 void Server::sendHeartbeat()
@@ -436,7 +435,6 @@ void UserServer::hConnection()
         p_conn->write(resp);
         p_conn->flush();
         p_conn->waitForBytesWritten();
-
     }
 }
 

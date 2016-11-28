@@ -57,7 +57,7 @@ Recorder::Recorder(QObject *parent)
       m_maxChans(0),
       m_maxFileSize(0)
 {
-    for(int i = 0; i < 128; ++i) {
+    for(int i=0; i < 128; ++i) {
         m_wavs[i] = nullptr;
     }
 }
@@ -87,8 +87,6 @@ bool Recorder::init()
             QDir().mkdir(dir.m_type2);
         }
     }
-
-
 
     // setup channels
     const MPair<QString, QString> max =

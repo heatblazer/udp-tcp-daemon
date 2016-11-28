@@ -45,8 +45,8 @@ private slots:
 
 private:
     // 128  chans max - I can use Wav** m_wavs but
-    // I`ll just unuse the rest
-    // but will be configured outside
+    // I`ll just not use the rest since double ptr is
+    // not allowed...
     Wav* m_wavs[128];
     int m_maxChans;
     // hotswap

@@ -12,13 +12,22 @@ RecorderConfig* RecorderConfig::s_inst = nullptr;
 RecorderConfig::RecorderConfig(QObject *parent)
     : QObject(parent)
 {
-
 }
 
 RecorderConfig::~RecorderConfig()
 {
 }
 
+/// TODO: update it!!!
+/// this has to be updated for more defensive
+/// programming and parsing, for now I am using
+/// fastLoadFile(...) that does no checks so I am
+/// doing this in the object requesting it, but next
+/// I`ll make sure all is OK from this point.
+/// \brief RecorderConfig::loadFile
+/// \param fname
+/// \return
+///
 bool RecorderConfig::loadFile(const QString &fname)
 {
     bool res = false;
@@ -105,10 +114,12 @@ bool RecorderConfig::loadFile(const QString &fname)
 
 /// this is fast, non precision, no checking
 /// function to just load all tags and attribs
-/// do not use in release, jsut in tests
+/// I`ll use the safe version, for now it`s easier
+/// to just load all stuff from the XML file then
+/// work with it...
 /// \brief RecorderConfig::fastLoadFile
 /// \param fname
-///
+/// \return always true since it`s UNSAFE
 bool RecorderConfig::fastLoadFile(const QString &fname)
 {
     bool res = false;
@@ -138,7 +149,10 @@ bool RecorderConfig::fastLoadFile(const QString &fname)
     return res;
 }
 
-/// load dfault settings
+/// load dfault settings, this will be used
+/// in case no config is present, I`ll setup
+/// a default list of attribs to provide a default
+/// behaviour.
 /// \brief RecorderConfig::loadDefaults
 /// \return true always
 ///
@@ -152,11 +166,11 @@ bool RecorderConfig::loadDefaults()
 
     // hotswap defaults - time based each 30 minutes
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("timeBased"),
-                             QString("true")));
+                             QString("enabled")));
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("maxSize"),
                              QString("100MB")));
     m_tags["HotSwap"].append(MPair<QString, QString>(QString("interval"),
-                             QString("30")));
+                             QString("30"))); // minutes
 
     // wav setup defaults
     m_tags["Wave"].append(MPair<QString, QString>(QString("samplesPerFrame"),
