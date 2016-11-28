@@ -169,11 +169,6 @@ void Daemon::daemonize()
     // why does ide says they are unused???
     (void) fd0; (void) fd1; (void) fd2;
 
-    // start at 1
-    for(int i=1; i < 32; ++i) {
-        attachSignalHandler(&testSig, i);
-//        attachSignalHandler(0, i);
-    }
 }
 
 /// for future use:
@@ -216,6 +211,11 @@ void Daemon::registerAppData(void *data)
     if(data != nullptr) {
         g_application = (SApplication*)data;
         log_message("Registered SApplication to the signal manager!\n");
+    }
+
+    // start at 1
+    for(int i=1; i < 32; ++i) {
+        attachSignalHandler(&testSig, i);
     }
 }
 
