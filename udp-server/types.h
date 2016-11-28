@@ -42,6 +42,12 @@ template <typename T1, typename T2> struct MPair
         m_type2 = ref.m_type2;
     }
 
+    bool operator==(const MPair& ref)
+    {
+        return (ref.m_type1 == m_type1) &&
+                (ref.m_type2 == m_type2);
+    }
+
     T2& operator[] (const T1& t1)
     {
         if(t1 == m_type1) {
