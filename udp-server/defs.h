@@ -7,7 +7,7 @@
 #ifdef RECD_DEBUG
 #define ASSERT_MACRO(EXPR) assert(EXPR)
 #else
-#define ASSERT_MACRO(EXPR) EXPR
+#define ASSERT_MACRO(EXPR)
 #endif
 
 
