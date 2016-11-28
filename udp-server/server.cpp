@@ -253,6 +253,7 @@ void Server::checkConnection()
         m_monitorData.clear();
     }
 
+    // always print this status in every 30 seconds.
     if (print_message > 30) {
         print_message = 0;
         snprintf(srvinfo, sizeof(srvinfo),
@@ -361,12 +362,16 @@ ServerThread::ServerThread(QThread *parent)
 
 ServerThread::~ServerThread()
 {
+    if (p_usr != nullptr) {
+        p_usr->deleteLater(); // maybe call this one...
+    }
 }
 
 void ServerThread::run()
 {
     p_usr = new UserServer;
     p_usr->startServer();
+    // make it an event loop
     exec();
 }
 
@@ -390,9 +395,9 @@ void UserServer::startServer()
     connect(this, SIGNAL(newConnection()),
             this, SLOT(hConnection()));
 
+    // probably i am printing wrong message here...
     if (!this->listen(QHostAddress::Any, port)) {
         std::cout << "Could not start user server\n";
-
     } else {
         std::cout << "Started user server!\n";
     }
