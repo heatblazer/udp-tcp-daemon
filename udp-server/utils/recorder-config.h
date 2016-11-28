@@ -9,10 +9,8 @@
 
 namespace iz {
 
-// C++ "using" keyword can replace typedefs
-// but for now to prettyfu the code I`ll typedef
-// this
-typedef QList<MPair<QString, QString> >  PairList;
+// C++ "using" keyword to replace typedef
+using PairList = QList<MPair<QString, QString> > ;
 
 class RecorderConfig : public QObject
 {

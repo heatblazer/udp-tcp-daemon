@@ -213,7 +213,7 @@ void Recorder::deinit()
     }
 }
 
-Wav* Recorder::getWavByName(const QString &fname)
+WavIface *Recorder::getWavByName(const QString &fname)
 {
     for(int i=0; i < m_maxChans; ++i) {
         // fixed a bug with calling compare() here isntead of
@@ -438,7 +438,7 @@ void Recorder::hotSwapFiles()
 ///
 void Recorder::performHotSwap(const QString &file)
 {
-    Wav* w = getWavByName(file);
+    Wav* w = (Wav*)getWavByName(file);
     if (w != nullptr && w->isOpened()) {
         if (w->getFileSize() > m_maxFileSize) {
             m_filewatcher.removePath(w->getFileName());

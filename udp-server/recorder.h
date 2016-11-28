@@ -11,7 +11,7 @@
 
 namespace iz {
 
-class Wav;
+class WavIface;
 
 class Recorder : public QObject
 {
@@ -22,7 +22,7 @@ public:
     // will use later the num_channels when concept is more clear
     bool init();
     void deinit();
-    Wav *getWavByName(const QString& fname);
+    WavIface *getWavByName(const QString& fname);
 
 
 private:
@@ -47,7 +47,9 @@ private:
     // 128  chans max - I can use Wav** m_wavs but
     // I`ll just not use the rest since double ptr is
     // not allowed...
-    Wav* m_wavs[128];
+
+    // abstracted!!!
+    WavIface* m_wavs[128];
     int m_maxChans;
     // hotswap
     QTimer m_hotswap; // timer based
