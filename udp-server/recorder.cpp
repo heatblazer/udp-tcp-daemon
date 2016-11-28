@@ -57,6 +57,9 @@ Recorder::Recorder(QObject *parent)
       m_maxChans(0),
       m_maxFileSize(0)
 {
+    for(int i = 0; i < 128; ++i) {
+        m_wavs[i] = nullptr;
+    }
 }
 
 // handle with care the opened files

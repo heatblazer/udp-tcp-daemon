@@ -203,6 +203,13 @@ static int main_proxy(int argc, char** argv)
     return 0;
 }
 
+static void copy(const void* src, void* dst, int len)
+{
+    (void) src;
+    (void) dst;
+    (void) len;
+}
+
 static struct interface_t s_iface;
 
 const struct interface_t *get_interface()
@@ -213,6 +220,7 @@ const struct interface_t *get_interface()
     s_iface.put_data = &put_data;
     s_iface.put_ndata = &put_ndata;
     s_iface.main_proxy = &main_proxy;
+    s_iface.copy = &copy;
     return &s_iface;
 }
 

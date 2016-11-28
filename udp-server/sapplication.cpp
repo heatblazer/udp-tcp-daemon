@@ -219,15 +219,17 @@ void SApplication::loadPlugins()
            snprintf(msg, sizeof(msg), "Loading (%s) plugin...\n",
                    list.at(i).m_type2.toStdString().data());
            Logger::Instance().logMessage(msg);
+
+           const RecIface* iface = nullptr;
            // defensive programming - array out of boudns prevention!
            if (i+3 > list.count()) {
                // don`t load item since program will crash!!!
            } else {
                ASSERT_MACRO(list.at(i+3).m_type2.toStdString().data() != NULL);
                RecPluginMngr::loadLibrary(list.at(i+3).m_type2, list.at(i).m_type2);
+               iface = RecPluginMngr::getInterface(list.at(i).m_type2);
            }
-           const RecIface* iface =
-                    RecPluginMngr::getInterface(list.at(i).m_type2);
+
            // put in any order for now
            // store into the indexed array
            if (iface != nullptr) {

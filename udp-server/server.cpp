@@ -131,6 +131,7 @@ void Server::readyReadUdp()
     // I`ll write a 16 samples with max valuse
 
     if (m_socket.udp->hasPendingDatagrams()) {
+        // stream control
         m_monitorData.append('.');
 
         while (m_socket.udp->hasPendingDatagrams()) {
@@ -142,6 +143,7 @@ void Server::readyReadUdp()
             qint64 read = m_socket.udp->readDatagram(buff.data(), buff.size(),
                                    &m_senderHost, &m_senderPort);
 ////////////////// deleteme later ///////////////////
+// flood the device to simulate packet loss
 #ifdef HEARTATTACK
             static bool onetime = false;
             if (!onetime) {
