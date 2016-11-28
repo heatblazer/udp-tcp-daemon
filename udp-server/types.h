@@ -33,22 +33,29 @@ struct wav_hdr_t
 template <typename T1, typename T2> struct MPair
 {
     MPair() {}
+
     MPair(const T1& t1, const T2& t2) :
         m_type1(t1), m_type2(t2)
     {}
+
     MPair(const MPair& ref)
     {
         m_type1 = ref.m_type1;
         m_type2 = ref.m_type2;
     }
 
-    bool operator==(const MPair& ref)
+    bool operator ==(const MPair& ref)
     {
-        return (ref.m_type1 == m_type1) &&
-                (ref.m_type2 == m_type2);
+        return (ref.m_type1 == ref.m_type1) &&
+                (ref.m_type2 == ref.m_type2);
     }
 
-    T2& operator[] (const T1& t1)
+    const MPair& operator=(const MPair& ref)
+    {
+        return ref;
+    }
+
+    const T2& operator[] (const T1& t1)
     {
         if(t1 == m_type1) {
             return m_type2;
