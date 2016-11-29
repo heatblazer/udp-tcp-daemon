@@ -7,8 +7,6 @@ DISTFILES += README.md \
 SUBDIRS += \
     udp-server \
     udp-client \
-    recorder-gui \
-    crypto \
     DFT   #discrete fourier transform
 
 
