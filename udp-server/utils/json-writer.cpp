@@ -1,5 +1,7 @@
 #include "json-writer.h"
 
+static const char* THIS_FILE = "json-writer.cpp";
+
 namespace iz {
 
 JsonWriter::JsonWriter(QObject *parent)
