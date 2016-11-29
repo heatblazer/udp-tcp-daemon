@@ -44,7 +44,6 @@ private:
     void loadPlugins();
     void initAllPlugins();
 
-private slots:
 private:
     Server              m_server;
     Recorder            m_recorder;

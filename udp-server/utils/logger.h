@@ -12,7 +12,7 @@ public:
     static Logger& Instance();
     bool init();
     void deinit();
-    void logMessage(const QByteArray& msg);
+    void logMessage(const char *module, const QByteArray& msg);
 
 private:
     explicit Logger();

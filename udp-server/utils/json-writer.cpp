@@ -7,7 +7,6 @@ namespace iz {
 JsonWriter::JsonWriter(QObject *parent)
     : QObject(parent)
 {
-    m_json.prepend(1000);
 }
 
 JsonWriter::~JsonWriter()

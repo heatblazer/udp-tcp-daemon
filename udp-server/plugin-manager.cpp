@@ -38,7 +38,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
     QLibrary plugin(src);
     res = plugin.load();
     if (!res) {
-        Logger::Instance().logMessage(plugin.errorString().toStdString().data());
+        Logger::Instance().logMessage(THIS_FILE, plugin.errorString().toStdString().data());
         return res;
     }
 
@@ -73,7 +73,7 @@ bool RecPluginMngr::loadLibrary(const QString &src, const QString& name)
     } else {
         static char err [256] = {0};
         snprintf(err, sizeof(err), "\n%s\n", plugin.errorString().toStdString().data());
-        Logger::Instance().logMessage(err);
+        Logger::Instance().logMessage(THIS_FILE, err);
     }
 
     return load_all_res;

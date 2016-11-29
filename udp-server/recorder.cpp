@@ -79,7 +79,7 @@ bool Recorder::init()
     char buff[256]={0};
     bool res = true;
 
-    Logger::Instance().logMessage("Initializing recorder...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Initializing recorder...\n");
     const MPair<QString, QString>& dir =
             RecorderConfig::Instance()
             .getAttribPairFromTag("Paths", "records");
@@ -143,7 +143,7 @@ bool Recorder::init()
         if (hot_swap.m_type2 == "enabled" ||
                 hot_swap.m_type2 == "true") {
             // setup timer based
-            Logger::Instance().logMessage("HotSwap is set to time based!\n");
+            Logger::Instance().logMessage(THIS_FILE, "HotSwap is set to time based!\n");
             ulong time = 60000; // 1 min minumum
             ulong time_modifier = 1;
             if (interval.m_type1 != "") {
@@ -155,7 +155,7 @@ bool Recorder::init()
                 }
                 time = time * time_modifier;
                 snprintf(init_msg, sizeof(init_msg),"Time interval is: (%ld)\n", time);
-                Logger::Instance().logMessage(init_msg);
+                Logger::Instance().logMessage(THIS_FILE, init_msg);
             }
             // set the timer
             m_hotswap.setInterval(time);
@@ -163,7 +163,7 @@ bool Recorder::init()
             m_hotswap.start();
         } else {
             // setup filesize change
-            Logger::Instance().logMessage("HotSwap is set to file size changed!\n");
+            Logger::Instance().logMessage(THIS_FILE, "HotSwap is set to file size changed!\n");
             if (max_size.m_type1 != "") {
                 bool res = false;
                 ulong max_size_modifier = 1;
@@ -183,7 +183,7 @@ bool Recorder::init()
                 }
             }
             snprintf(init_msg, sizeof(init_msg), "File size limit is: (%d) bytes\n", m_maxFileSize);
-            Logger::Instance().logMessage(init_msg);
+            Logger::Instance().logMessage(THIS_FILE, init_msg);
 
             connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
                     this, SLOT(performHotSwap(QString)));
@@ -201,13 +201,13 @@ bool Recorder::init()
 
 void Recorder::deinit()
 {
-    Logger::Instance().logMessage("Deinitializing recorder...\n");
-    Logger::Instance().logMessage("Closing all opened records...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Deinitializing recorder...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Closing all opened records...\n");
     for(int i=0; i < m_maxChans; ++i) {
         if (m_wavs[i] != nullptr && m_wavs[i]->isOpened()) {
             static char msg[256] = {0};
             snprintf(msg, sizeof(msg), "Closing file: (%s)\n", m_wavs[i]->getFileName());
-            Logger::Instance().logMessage(msg);
+            Logger::Instance().logMessage(THIS_FILE, msg);
             m_wavs[i]->close();
             delete m_wavs[i];
             m_wavs[i] = nullptr;
@@ -386,7 +386,7 @@ void Recorder::record(const udp_data_t &data)
 void Recorder::record(const tcp_data_t &data)
 {
     (void) data;
-    Logger::Instance().logMessage("STUB! Record from TCP!\n");
+    Logger::Instance().logMessage(THIS_FILE, "STUB! Record from TCP!\n");
 }
 
 /// Timer based hotswap, if time elapses

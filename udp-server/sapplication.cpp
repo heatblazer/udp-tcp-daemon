@@ -77,7 +77,8 @@ SApplication::SApplication(int &argc, char **argv)
                 }
             } else if (strcmp(argv[i], "-d") == 0 ||
                        strcmp(argv[i], "--daemon") == 0) {
-                Logger::Instance().logMessage("Program is running in daemon mode!\n");
+                Logger::Instance().logMessage(THIS_FILE,
+                                              "Program is running in daemon mode!\n");
                 m_setup = RecorderConfig::Instance().loadDefaults();
             } else {
                 // it`s unknown stuff to me...
@@ -91,7 +92,7 @@ SApplication::SApplication(int &argc, char **argv)
     // since I may want to pass some args to
     // the main proxies
     // for now nothing...
-    Logger::Instance().logMessage("Loading pluggins...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Loading pluggins...\n");
     loadPlugins();
 
     // call all plugins main proxies if needed
@@ -131,9 +132,9 @@ int SApplication::init()
         return -1;
     }
 
-    Logger::Instance().logMessage("Initializing application...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Initializing application...\n");
     if (!m_setup) {
-        Logger::Instance().logMessage("Failed to initialize application!\n");
+        Logger::Instance().logMessage(THIS_FILE, "Failed to initialize application!\n");
         return -1;
     } else {
         // transport initialization
@@ -152,7 +153,7 @@ int SApplication::init()
             snprintf(msg, sizeof(msg), "Parsing (%s) failed. Will use default: (%d)\n",
                     port_attr.m_type2.toStdString().data(),
                     1234);
-            Logger::Instance().logMessage(msg);
+            Logger::Instance().logMessage(THIS_FILE, msg);
             port = 1234U;
         }
 
@@ -163,7 +164,7 @@ int SApplication::init()
         }
         // they need not to depend each other
         if (!m_recorder.init()) {
-            Logger::Instance().logMessage("Failed initialize recorder\n");
+            Logger::Instance().logMessage(THIS_FILE, "Failed initialize recorder\n");
             return -1;
         }
 
@@ -189,7 +190,7 @@ int SApplication::init()
         }
     }
 
-    Logger::Instance().logMessage("Initialization of application completed!\n");
+    Logger::Instance().logMessage(THIS_FILE, "Initialization of application completed!\n");
 
 
     // register user server
@@ -219,7 +220,6 @@ void SApplication::deinit()
         m_plugins.at(i).deinit();
     }
 
-    // join the user server ...
     m_user_server.wait(1000);
 }
 
@@ -237,7 +237,7 @@ void SApplication::loadPlugins()
             // in the front
            snprintf(msg, sizeof(msg), "Loading (%s) plugin...\n",
                    list.at(i).m_type2.toStdString().data());
-           Logger::Instance().logMessage(msg);
+           Logger::Instance().logMessage(THIS_FILE, msg);
            // defensive programming - array out of boudns prevention!
            const RecIface* iface = nullptr;
 
@@ -253,12 +253,12 @@ void SApplication::loadPlugins()
            // store into the indexed array
            if (iface != nullptr) {
                snprintf(msg, sizeof(msg), "Loaded (%s) plugin.\n", list.at(i).m_type2.toStdString().data());
-               Logger::Instance().logMessage(msg);
+               Logger::Instance().logMessage(THIS_FILE, msg);
                m_plugins.push_back(*iface);
            } else {
                snprintf(msg, sizeof(msg), "\nFailed to load (%s) plugin.\n",
                        list.at(i).m_type2.toStdString().data());
-                Logger::Instance().logMessage(msg);
+                Logger::Instance().logMessage(THIS_FILE, msg);
            }
         }
     }
@@ -274,5 +274,6 @@ void SApplication::initAllPlugins()
         m_plugins.at(i).init();
     }
 }
+
 
 } // iz

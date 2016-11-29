@@ -94,8 +94,14 @@ void Logger::deinit()
     m_writer.stopWriter();
 }
 
-void Logger::logMessage(const QByteArray &msg)
+/// implement the module
+/// \brief Logger::logMessage
+/// \param modlue - caller
+/// \param msg
+///
+void Logger::logMessage(const char* module, const QByteArray &msg)
 {
+    (void) module;
     m_writer.write(msg);
 }
 

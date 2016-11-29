@@ -62,7 +62,7 @@ Server::~Server()
 ///
 void Server::init(bool udp, quint16 port, bool send_heart)
 {
-    Logger::Instance().logMessage("Initializing server...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Initializing server...\n");
     // the error packet to be sent on packet lost
     for(int i=0; i < 32; ++i) {
         for(int j=0; j < 16; ++j) {
@@ -103,8 +103,8 @@ void Server::init(bool udp, quint16 port, bool send_heart)
 
             printf("Bind OK!\n");
             snprintf(msg, sizeof(msg), "Binding to port (%d) succeeds!\n", port);
-            Logger::Instance().logMessage(msg);
-            Logger::Instance().logMessage(msg2);
+            Logger::Instance().logMessage(THIS_FILE, msg);
+            Logger::Instance().logMessage(THIS_FILE, msg2);
 
             // finally start connection monitoring
             m_liveConnection.setInterval(1000);
@@ -116,7 +116,7 @@ void Server::init(bool udp, quint16 port, bool send_heart)
             printf("Bind FAIL!\n");
             snprintf(msg, sizeof(msg), "Binding to port (%d) failed!\n", port);
             route(DISCONNECTED);
-            Logger::Instance().logMessage(msg);
+            Logger::Instance().logMessage(THIS_FILE, msg);
         }
     } else {
         // unused tcp logic for now
@@ -178,7 +178,7 @@ void Server::readyReadUdp()
                     int errs = udp->counter - m_conn_info.paketCounter;
                     m_conn_info.totalLost += errs;
 
-                    Logger::Instance().logMessage(msg);
+                    Logger::Instance().logMessage(THIS_FILE, msg);
                     m_conn_info.paketCounter = udp->counter; // synch back
 
                     // always write a null bytes packet on missed udp
@@ -199,13 +199,13 @@ void Server::readyReadUdp()
                 }
 
              } else {
-                Logger::Instance().logMessage("Missed an UDP!\n");
+                Logger::Instance().logMessage(THIS_FILE, "Missed an UDP!\n");
             }
         }
 
     } else {
         Logger::Instance()
-                .logMessage("We can read, but there is no pending datagram!\n");
+                .logMessage(THIS_FILE, "We can read, but there is no pending datagram!\n");
         disconnected();
     }
 }
@@ -269,7 +269,7 @@ void Server::checkConnection()
                  m_conn_info.desynchCounter,
                  m_conn_info.totalLost);
 
-        Logger::Instance().logMessage(srvinfo);
+        Logger::Instance().logMessage(THIS_FILE, srvinfo);
     }
     print_message++;
 
@@ -284,11 +284,11 @@ void Server::route(States state)
     // handle state in this routing function
     switch (state) {
     case DISCONNECTED:
-        Logger::Instance().logMessage("Not connected!\n");
+        Logger::Instance().logMessage(THIS_FILE, "Not connected!\n");
         disconnected();
         break;  // try to reconnect
     case CONNECTED:
-        Logger::Instance().logMessage("Connected!\n");
+        Logger::Instance().logMessage(THIS_FILE, "Connected!\n");
         break;
     case LOST_CONNECTION:
     case GOT_CONNECTION:
@@ -318,7 +318,7 @@ void Server::disconnected()
              m_conn_info.totalLost,
              m_conn_info.paketCounter);
 
-    Logger::Instance().logMessage(msg);
+    Logger::Instance().logMessage(THIS_FILE, msg);
     m_conn_info.desynchCounter = 0;
     m_conn_info.paketCounter = 0;
     m_conn_info.totalLost = 0;
@@ -353,7 +353,7 @@ void Server::sendHeartbeat()
 void Server::deinit()
 {
     // nothing for now
-    Logger::Instance().logMessage("Deinitializing server...\n");
+    Logger::Instance().logMessage(THIS_FILE, "Deinitializing server...\n");
 
 }
 
