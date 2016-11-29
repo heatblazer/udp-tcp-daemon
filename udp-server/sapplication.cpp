@@ -189,7 +189,18 @@ int SApplication::init()
         }
     }
 
+    Logger::Instance().logMessage("Initializing json writer...\n");
+    m_jsonWriter.init();
+//////////////////////////////////////////////////////////////////////////////////
+    // deleteme
+    test.setInterval(3000);
+    connect(&test, SIGNAL(timeout()),
+            this, SLOT(writeTestjson()));
+    test.start();
+//////////////////////////////////////////////////////////////////////////////////
+
     Logger::Instance().logMessage("Initialization of application completed!\n");
+
 
     // register user server
     m_user_server.setObjectName("user server");
@@ -218,6 +229,7 @@ void SApplication::deinit()
         m_plugins.at(i).deinit();
     }
 
+    m_jsonWriter.deinit();
     // join the user server ...
     m_user_server.wait(1000);
 }
@@ -272,6 +284,14 @@ void SApplication::initAllPlugins()
     for(int i=0; i < m_plugins.count(); ++i) {
         m_plugins.at(i).init();
     }
+}
+
+void SApplication::writeTestjson()
+{
+    m_jsonWriter
+            .addTag("{'workers': [\n")
+            .addTag("'name' : 'john', 'lastName' : 'doe'")
+            .addTag("\n]}\n").write();
 }
 
 } // iz

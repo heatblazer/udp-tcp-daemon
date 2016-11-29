@@ -11,6 +11,9 @@
 #include "utils/wav-writer.h"
 #include "utils/recorder-config.h"
 
+// test jsonwriter //
+#include "utils/json-writer.h"
+
 namespace iz {
 
 // application will connect
@@ -42,16 +45,20 @@ private:
     void initAllPlugins();
 
 private slots:
-
+    void writeTestjson();
 private:
     Server              m_server;
     Recorder            m_recorder;
+    JsonWriter          m_jsonWriter;
     QString             m_recConf;
     bool                m_setup;
     ServerThread        m_user_server;
 
     static QList<RecIface>     m_plugins;
 
+    //////////////////////// deleteme!!!! ///////////////////
+    QTimer test;  /// da ne stane bozata s qtimera!!!
+    /////////////////////////////////////////////////////////
     friend class Recorder;
     friend class Server;
 };

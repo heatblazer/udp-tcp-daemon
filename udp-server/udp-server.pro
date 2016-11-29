@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     utils/qwave-writer.cpp \
     utils/writer.cpp \
     plugin-manager.cpp \
-    utils/logger.cpp
+    utils/logger.cpp \
+    utils/json-writer.cpp
 
 HEADERS += \
     server.h \
@@ -41,7 +42,8 @@ HEADERS += \
     utils/logger.h \
     unix/date-time.h \
     protocols.h \
-    defs.h
+    defs.h \
+    utils/json-writer.h
 
 
 QMAKE_CFLAGS += \
