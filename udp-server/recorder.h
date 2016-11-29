@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "utils/recorder-config.h"
+#include "utils/json-writer.h"
 
 namespace iz {
 
@@ -69,6 +70,8 @@ private:
     } m_wavParams;
 
     QString m_directory;
+    JsonWriter m_jsonWritter;
+
 };
 
 } // iz

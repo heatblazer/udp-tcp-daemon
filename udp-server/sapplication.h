@@ -11,9 +11,6 @@
 #include "utils/wav-writer.h"
 #include "utils/recorder-config.h"
 
-// test jsonwriter //
-#include "utils/json-writer.h"
-
 namespace iz {
 
 // application will connect

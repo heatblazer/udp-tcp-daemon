@@ -194,8 +194,10 @@ bool Recorder::init()
         connect(&m_filewatcher, SIGNAL(fileChanged(QString)),
                 this, SLOT(performHotSwap(QString)));
     }
-    // test the new concept for hotswapping !
-    // nailed the BUG
+
+    // init json writter
+    m_jsonWritter.init();
+
     return res;
 }
 
@@ -213,6 +215,8 @@ void Recorder::deinit()
             m_wavs[i] = nullptr;
         }
     }
+
+    m_jsonWritter.deinit();
 }
 
 WavIface *Recorder::getWavByName(const QString &fname)
@@ -365,7 +369,7 @@ void Recorder::record(const udp_data_t &data)
 
                     // pass it to the filter
                     next_plugin.put_ndata((short*) copy_data, 16);
-                    // write to wave file
+                    // write to wave file and write a meta info too
                 }
             } else {
 // if flip is required - for now as macrodef
@@ -373,6 +377,13 @@ void Recorder::record(const udp_data_t &data)
 // a fixed structure is decided.
 #if (REQUIRE_FLIP_CHANNS_SAMPLES)
             m_wavs[i]->write((short*) flip_data[i], 16);
+            static char json[512]  = {0};
+            snprintf(json, sizeof(json),
+            "{'%s' : ["
+            "{'%s' : '%d'}"
+            "]}\n", m_wavs[i]->getFileName(),
+                     "slot", m_wavs[i]->getSlot());
+            m_jsonWritter.add(json).write();
 #else
                 // noplugins - I will rewrite the logic later
                 m_wavs[i]->write((short*) data.data[i], 16);
@@ -417,6 +428,7 @@ void Recorder::hotSwapFiles()
                 m_wavs[i]->close();
                 // TODO: rename after a name pattern is set
                 //m_wavs[i]->renameFile(m_wavs[i]->getFileName(), buff);
+
                 delete m_wavs[i];
                 m_wavs[i] = nullptr;
 

@@ -38,7 +38,7 @@ void JsonWriter::write()
     m_json.clear(); // make sure it`s cleared for new writing
 }
 
-JsonWriter &JsonWriter::addTag(const QString &tag)
+JsonWriter &JsonWriter::add(const QString &tag)
 {
     m_json.append(tag);
     return *this;
